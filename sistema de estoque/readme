@@ -1,0 +1,33 @@
+Estoque Drop Plugin
+Descrição
+Este plugin do WordPress foi projetado para gerenciar o estoque de produtos. Ele permite a adição, atualização e remoção de produtos, além de importar produtos via CSV. O plugin inclui funcionalidades como categorização, variação, gerenciamento de estoque, preços e marcações específicas para produtos.
+
+Características
+Criação de Tabela de Estoque: O plugin cria uma tabela no banco de dados para armazenar informações dos produtos.
+Importação de Produtos: Permite a importação de produtos através de arquivos CSV.
+Gerenciamento de Produtos: Adição, atualização e remoção de produtos no estoque.
+Filtros e Pesquisa: Busca de produtos por nome, categoria, marca e status.
+Páginas de Administração e Relatórios: Interface para gerenciamento do estoque e visualização de relatórios.
+Shortcodes: Para exibição de produtos e relatórios na frente do site.
+Notificações Automáticas: Envia notificações para alterações de status e preços dos produtos.
+Instruções de Uso
+Instalação: Instale e ative o plugin no seu site WordPress.
+Importação de Produtos: Vá até a página 'Estoque Drop' no menu de administração e use a opção de importação CSV para adicionar produtos em massa.
+Gerenciamento de Estoque: Adicione, edite ou remova produtos manualmente usando as opções fornecidas.
+Pesquisa de Produtos: Utilize a funcionalidade de pesquisa para encontrar produtos específicos no seu estoque.
+Visualização de Relatórios: Acesse relatórios detalhados sobre o estado do estoque através do submenu 'Relatório'.
+Shortcodes: Use os shortcodes fornecidos para exibir informações do estoque em qualquer página do seu site.
+Requisitos
+WordPress versão 5.0 ou superior.
+PHP versão 7.2 ou superior.
+Changelog
+1.0
+Lançamento inicial do plugin.
+Suporte
+Para suporte, entre em contato com o desenvolvedor através do e-mail: [contato@ladygriffeoficial.com.br].
+
+Contribuições
+Contribuições são bem-vindas. Por favor, envie seus pull requests para o repositório do plugin no GitHub.
+
+Licença
+Este plugin é licenciado sob a GPL v2 ou posterior.
