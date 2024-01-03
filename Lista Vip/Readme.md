@@ -1,12 +1,12 @@
-#Lista Vip
+# Lista Vip#
 
 
-###Descrição
+### Descrição ### 
 Este plugin para WordPress oferece um sistema avançado de formulários, incluindo a capacidade de coletar informações do usuário, registrar visualizações de formulários e gerenciar redirecionamentos após o envio. Ideal para criar formulários personalizados para inscrição em listas de email, contato e outros propósitos.
 
+ 
 
-
-###Características
+### Características  
 Criação de Tabela de Formulários: O plugin cria uma tabela no banco de dados para armazenar informações dos formulários enviados.
 Shortcode de Formulário: Permite a inserção de formulários em qualquer página ou post com um shortcode.
 Registro de Visualizações de Formulário: Mantém um registro de quantas vezes um formulário foi visualizado.
