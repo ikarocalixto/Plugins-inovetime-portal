@@ -16,70 +16,102 @@ jQuery(document).ready(function($) {
             data: taskData,
             success: function(response) {
                 var uniqueId = 'task-' + response;
-                var taskHtml = '<div id="' + uniqueId + '" class="task" draggable="true" ondragstart="window.drag(event)" data-descricao="' + taskData.description + '" data-prazo="' + taskData.due_date + '">' + taskData.task_name + '</div>';
+                var taskHtml = '<div id="' + uniqueId + '" class="task" draggable="true" ondragstart="drag(event)" data-descricao="' + taskData.description + '" data-prazo="' + taskData.due_date + '">' + taskData.task_name + '</div>';
                 $('.kanban-tasks[data-status="todo"]').append(taskHtml);
             }
         });
     });
 
-    // Funções globais para arrastar e soltar
+    
     window.allowDrop = function(event) {
         event.preventDefault();
     };
-
+    
     window.drag = function(event) {
         event.dataTransfer.setData("text", event.target.id);
     };
-
+    
     window.drop = function(event) {
         event.preventDefault();
+    
         var data = event.dataTransfer.getData("text");
         var taskElement = document.getElementById(data);
-
-        if (event.target.classList.contains('kanban-tasks')) {
-            event.target.appendChild(taskElement);
-        } else if (event.target.classList.contains('task')) {
-            event.target.parentNode.appendChild(taskElement);
+        var targetColumn = event.target.closest('.kanban-column');
+    
+        if (!targetColumn) {
+            console.error("Não foi possível encontrar a coluna de destino.");
+            return;
         }
-
-        var novoStatus = taskElement.parentNode.getAttribute('data-status');
+    
+        targetColumn.appendChild(taskElement);
+        var novoStatus = targetColumn.getAttribute('data-status');
         var taskId = taskElement.id.split('-')[1];
-
-        // Atualizar status da tarefa no banco de dados via AJAX
-        $.ajax({
+    
+        // Atualizar o status da tarefa no banco de dados via AJAX
+        atualizarStatusTarefa(taskId, novoStatus);
+    };
+    
+    function atualizarStatusTarefa(taskId, novoStatus) {
+        jQuery.ajax({
             type: "POST",
             url: kanban_ajax.ajax_url,
             data: {
                 action: 'mover_tarefa_kanban',
                 task_id: taskId,
                 task_status: novoStatus
+            },
+            success: function(response) {
+                console.log("Tarefa movida com sucesso: ", response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Erro ao mover tarefa: ", textStatus, errorThrown);
             }
         });
-    };
-
-    // Evitar conflito entre clique e arrastar
-    var clickDelay = 200, lastClick = 0;
-    $(document).on('click', '.task', function(e) {
-        if (new Date() - lastClick < clickDelay) {
-            return;
-        }
-        lastClick = new Date();
-
+    }
+    
+    
+    
+    $(document).on('click', '.task', function() {
         var taskId = $(this).attr('id').split('-')[1];
         var descricao = $(this).data('descricao');
         var prazo = $(this).data('prazo');
         var nomeTarefa = $(this).text().trim();
-
+    
         var formHtml = '<form id="form-editar-tarefa">' +
                        '<input type="hidden" name="task_id" value="' + taskId + '">' +
                        '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
                        '<textarea name="description">' + descricao + '</textarea>' +
                        '<input type="date" name="due_date" value="' + prazo + '">' +
                        '<button type="submit">Salvar</button>' +
+                       '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
                        '</form>';
-
+    
         $('#popup-info').html(formHtml).show();
     });
+
+    $(document).on('click', '#btn-excluir-tarefa', function() {
+        var taskId = $(this).data('task-id');
+    
+        if(confirm("Tem certeza que deseja excluir esta tarefa?")) {
+            $.ajax({
+                type: "POST",
+                url: kanban_ajax.ajax_url,
+                data: {
+                    action: 'excluir_tarefa_kanban',
+                    task_id: taskId
+                },
+                success: function(response) {
+                    console.log("Tarefa excluída: ", response);
+                    $('#popup-info').hide();
+                    $('#task-' + taskId).remove(); // Remove a tarefa do quadro
+                },
+                error: function(error) {
+                    console.error("Erro ao excluir tarefa: ", error);
+                }
+            });
+        }
+    });
+    
 
     // Enviar dados do formulário de edição via AJAX
     $(document).on('submit', '#form-editar-tarefa', function(e) {
@@ -111,5 +143,26 @@ jQuery(document).ready(function($) {
     // Fechar o popup ao clicar fora
     $(document).on('click', '#popup-info', function() {
         $(this).hide();
+    });
+});
+
+jQuery(document).ready(function($) {
+    $('#kanban-add-task').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize(); // Isso irá capturar os dados do formulário
+
+        $.ajax({
+            type: "POST",
+            url: ajaxurl, // URL para o manipulador AJAX do WordPress
+            data: formData + '&action=adicionar_tarefa_kanban',
+            success: function(response) {
+                // Tratar a resposta do sucesso
+                console.log(response);
+            },
+            error: function() {
+                // Tratar erro
+                console.error('Erro ao adicionar tarefa.');
+            }
+        });
     });
 });
