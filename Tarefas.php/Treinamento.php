@@ -30,6 +30,9 @@
 }
 register_activation_hook(__FILE__, 'meu_kanban_activate');
 
+
+
+
 function kanban_enqueue_scripts() {
     wp_enqueue_style('kanban-css', plugins_url('front-end.css', __FILE__));
     wp_enqueue_script('kanban-js', plugins_url('front-end.js', __FILE__), array('jquery'), null, true);
@@ -231,4 +234,97 @@ function adicionar_tarefa_kanban() {
     }
     add_action('wp_ajax_adicionar_tarefa_kanban', 'adicionar_tarefa_kanban_ajax');
     add_action('wp_ajax_nopriv_adicionar_tarefa_kanban', 'adicionar_tarefa_kanban_ajax');
+    
+
+
+
+    function treinamento_trainee_shortcode() {
+        global $wpdb;
+        $mensagem = '';
+        if (isset($_POST['iniciar_treinamento']) && !empty($_POST['user_id'])) {
+            $user_id = intval($_POST['user_id']);
+            $table_name = $wpdb->prefix . 'kanban_tarefas';
+    
+           
+    
+            // Mensagem de confirmação
+            $mensagem = 'Treinamento iniciado para o usuário com ID ' . $user_id . '. Primeira tarefa adicionada.';
+        }
+    
+        ob_start();
+    
+        // Formulário para escolher um usuário para treinamento
+        $html = '<form id="treinamento-trainee-form" action="" method="post">
+                    <select name="user_id" required>';
+        
+        $users = get_users();
+        foreach ($users as $user) {
+            $html .= '<option value="' . esc_attr($user->ID) . '">' . esc_html($user->display_name) . '</option>';
+        }
+    
+        $html .= '</select>
+                  <input type="submit" name="iniciar_treinamento" value="Iniciar Treinamento">
+                 </form>';
+    
+        if (!empty($mensagem)) {
+            $html .= '<div class="mensagem">' . esc_html($mensagem) . '</div>';
+        }
+    
+        echo $html;
+        return ob_get_clean();
+    }
+    add_shortcode('treinamento_trainee', 'treinamento_trainee_shortcode');
+    
+
+
+
+// Função para adicionar tarefas automaticamente para um usuário específico
+function iniciar_treinamento_trainee($user_id) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'kanban_tarefas';
+
+    // Defina as tarefas padrão para o treinamento
+    $tarefas_treinamento = [
+        ['nome_tarefa' => 'Tarefa teste', 'descricao' => 'Descrição da Tarefa 1', 'prazo' => '2024-02-01'],
+        // Adicione mais tarefas conforme necessário
+    ];
+
+    error_log("Iniciando treinamento para o usuário ID: " . $user_id);
+
+    // Após cada inserção de tarefa, adicione uma declaração de depuração
+    $wpdb->insert($table_name, array(
+        'nome_tarefa' => $tarefa['nome_tarefa'],
+        'descricao' => $tarefa['descricao'],
+        'prazo' => $tarefa['prazo'],
+        'user_id' => $user_id
+    ));
+    error_log("Tarefa inserida com sucesso para o usuário ID: " . $user_id);
+    
+}
+
+function ajax_iniciar_treinamento_trainee() {
+    global $wpdb;
+
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+    $table_name = $wpdb->prefix . 'kanban_tarefas';
+
+    // Define a tarefa de treinamento
+    $tarefa_treinamento = array(
+        'nome_tarefa' => 'Definição do Nome da Sua Loja Franqueada',
+        'descricao' => 'Descreva o processo de escolha do nome da sua franquia.',
+        'prazo' => date('Y-m-d', strtotime('+1 week')), // Define o prazo para uma semana a partir de hoje
+        'user_id' => $user_id
+    );
+
+    // Insere a tarefa no banco de dados
+    $wpdb->insert($table_name, $tarefa_treinamento);
+
+    wp_send_json_success(['message' => 'Treinamento iniciado. Primeira tarefa adicionada.']);
+}
+
+add_action('wp_ajax_iniciar_treinamento_trainee', 'ajax_iniciar_treinamento_trainee');
+add_action('wp_ajax_nopriv_iniciar_treinamento_trainee', 'ajax_iniciar_treinamento_trainee'); // se necessário
+
+
+    
     

@@ -166,3 +166,22 @@ jQuery(document).ready(function($) {
         });
     });
 });
+jQuery(document).ready(function($) {
+    $('#treinamento-trainee-form').on('submit', function(e) {
+        e.preventDefault();
+        var userId = $(this).find('select[name="user_id"]').val();
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                'action': 'iniciar_treinamento_trainee',
+                'user_id': userId
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.data.message); // Ou atualize a interface do usuário conforme necessário
+                }
+            }
+        });
+    });
+});
