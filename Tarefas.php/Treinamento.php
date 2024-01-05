@@ -278,29 +278,7 @@ function adicionar_tarefa_kanban() {
 
 
 
-// Função para adicionar tarefas automaticamente para um usuário específico
-function iniciar_treinamento_trainee($user_id) {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'kanban_tarefas';
 
-    // Defina as tarefas padrão para o treinamento
-    $tarefas_treinamento = [
-        ['nome_tarefa' => 'Tarefa teste', 'descricao' => 'Descrição da Tarefa 1', 'prazo' => '2024-02-01'],
-        // Adicione mais tarefas conforme necessário
-    ];
-
-    error_log("Iniciando treinamento para o usuário ID: " . $user_id);
-
-    // Após cada inserção de tarefa, adicione uma declaração de depuração
-    $wpdb->insert($table_name, array(
-        'nome_tarefa' => $tarefa['nome_tarefa'],
-        'descricao' => $tarefa['descricao'],
-        'prazo' => $tarefa['prazo'],
-        'user_id' => $user_id
-    ));
-    error_log("Tarefa inserida com sucesso para o usuário ID: " . $user_id);
-    
-}
 
 function ajax_iniciar_treinamento_trainee() {
     global $wpdb;
@@ -308,16 +286,51 @@ function ajax_iniciar_treinamento_trainee() {
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
     $table_name = $wpdb->prefix . 'kanban_tarefas';
 
-    // Define a tarefa de treinamento
-    $tarefa_treinamento = array(
-        'nome_tarefa' => 'Definição do Nome da Sua Loja Franqueada',
-        'descricao' => 'Descreva o processo de escolha do nome da sua franquia.',
-        'prazo' => date('Y-m-d', strtotime('+1 week')), // Define o prazo para uma semana a partir de hoje
-        'user_id' => $user_id
-    );
+    $tarefas_treinamento = [
+        // Módulo 1
+        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 1],
+    
+        // Módulo 2
+        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Definindo Sua Visão, Missão e Valores: A Base do Seu Negócio', 'descricao' => '...', 'modulo' => 2],
+    
+        // Módulo 3
+        ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
+    
+        // Módulo 4
+        ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Alinhamento Estratégico: Preparando-se para a Inauguração e o Plano de Ação', 'descricao' => '...', 'modulo' => 4],
+        // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
+    ];
 
-    // Insere a tarefa no banco de dados
-    $wpdb->insert($table_name, $tarefa_treinamento);
+    // Insere apenas as 4 primeiras tarefas do Módulo 1 no banco de dados
+$contador = 0;
+foreach ($tarefas_treinamento as $tarefa) {
+    if ($contador < 4 && $tarefa['modulo'] == 1) { // Garantindo que apenas as tarefas do Módulo 1 sejam adicionadas
+        $wpdb->insert($table_name, array(
+            'nome_tarefa' => $tarefa['nome'],
+            'descricao' => $tarefa['descricao'],
+            'prazo' => date('Y-m-d', strtotime('+1 week')),
+            'user_id' => $user_id,
+            'status' => 'todo',
+            'modulo' => $tarefa['modulo'] // Adicionando a informação do módulo
+        ));
+        $contador++;
+    } else {
+        break;
+    }
+}
+
 
     wp_send_json_success(['message' => 'Treinamento iniciado. Primeira tarefa adicionada.']);
 }
@@ -326,5 +339,205 @@ add_action('wp_ajax_iniciar_treinamento_trainee', 'ajax_iniciar_treinamento_trai
 add_action('wp_ajax_nopriv_iniciar_treinamento_trainee', 'ajax_iniciar_treinamento_trainee'); // se necessário
 
 
+
+
+
+function ajax_carregar_mais_tarefas() {
+    global $wpdb;
+    $user_id = get_current_user_id();
+    $table_name = $wpdb->prefix . 'kanban_tarefas';
+
+    $tarefas_treinamento = [
+        // Módulo 1
+        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 1],
     
+        // Módulo 2
+        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Definindo Sua Visão, Missão e Valores: A Base do Seu Negócio', 'descricao' => '...', 'modulo' => 2],
     
+        // Módulo 3
+        ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
+        ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
+    
+        // Módulo 4
+        ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Alinhamento Estratégico: Preparando-se para a Inauguração e o Plano de Ação', 'descricao' => '...', 'modulo' => 4],
+        // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
+    ];
+
+    // Descobrir qual módulo carregar
+    $modulo_atual = $wpdb->get_var($wpdb->prepare(
+        "SELECT modulo FROM $table_name WHERE user_id = %d AND status = 'todo' ORDER BY modulo ASC LIMIT 1",
+        $user_id
+    ));
+
+    // Se não houver módulo em aberto, buscar o próximo módulo
+    if ($modulo_atual === null) {
+        $modulo_atual = $wpdb->get_var($wpdb->prepare(
+            "SELECT modulo FROM $table_name WHERE user_id = %d ORDER BY modulo DESC LIMIT 1",
+            $user_id
+        )) + 1;
+    }
+
+    // Carregar tarefas do módulo atual
+    $proximas_tarefas = array_filter($tarefas_treinamento, function($tarefa) use ($modulo_atual) {
+        return $tarefa['modulo'] == $modulo_atual;
+    });
+
+    // Inserir tarefas do módulo especificado para o usuário
+    foreach ($proximas_tarefas as $tarefa) {
+        $wpdb->insert($table_name, array(
+            'nome_tarefa' => $tarefa['nome'],
+            'descricao' => $tarefa['descricao'],
+            'prazo' => date('Y-m-d', strtotime('+1 week')),
+            'user_id' => $user_id,
+            'status' => 'todo',
+            'modulo' => $modulo_atual // Use $modulo_atual em vez de $modulo
+        ));
+    }
+
+    // Resposta AJAX
+    wp_send_json_success(['message' => "Tarefas do Módulo $modulo_atual adicionadas com sucesso."]);
+}
+
+add_action('wp_ajax_carregar_mais_tarefas', 'ajax_carregar_mais_tarefas');
+add_action('wp_ajax_nopriv_carregar_mais_tarefas', 'ajax_carregar_mais_tarefas');
+
+
+function ajax_marcar_tarefa_concluida() {
+    global $wpdb;
+    $tarefa_id = isset($_POST['tarefa_id']) ? intval($_POST['tarefa_id']) : 0;
+    $user_id = get_current_user_id(); // Certifique-se de obter o ID do usuário atual corretamente
+    $table_name = $wpdb->prefix . 'kanban_tarefas';
+
+    // Atualizar a tarefa para 'done'
+    $wpdb->update(
+        $table_name,
+        array('status' => 'done'),
+        array('id' => $tarefa_id)
+    );
+
+    // Verifique a conclusão do Módulo 1 e carregue o Módulo 2, se necessário
+    verificar_conclusao_modulo_1($user_id, $table_name);
+
+    wp_send_json_success();
+}
+
+
+
+
+function ajax_verificar_proximo_modulo($user_id, $table_name) {
+    global $wpdb;
+
+    // Verifique se todas as tarefas do módulo atual estão concluídas
+    $modulo_atual = $wpdb->get_var($wpdb->prepare(
+        "SELECT modulo FROM $table_name WHERE user_id = %d AND status = 'todo' ORDER BY modulo ASC LIMIT 1",
+        $user_id
+    ));
+
+    if ($modulo_atual === null) {
+        // Todas as tarefas do módulo atual foram concluídas, carregar o próximo módulo
+        $proximo_modulo = $wpdb->get_var($wpdb->prepare(
+            "SELECT MAX(modulo) FROM $table_name WHERE user_id = %d",
+            $user_id
+        )) + 1;
+
+        ajax_carregar_mais_tarefas($user_id, $proximo_modulo, $table_name);
+    }
+}
+
+
+add_action('wp_ajax_verificar_conclusao_modulo', 'verificar_conclusao_modulo_callback');
+add_action('wp_ajax_nopriv_verificar_conclusao_modulo', 'verificar_conclusao_modulo_callback');
+
+
+
+
+// Função para verificar se todas as tarefas do módulo estão concluídas
+function verificar_conclusao_modulo($user_id, $table_name) {
+    global $wpdb;
+
+    // Obtenha o módulo atual do usuário
+    $modulo_atual = $wpdb->get_var($wpdb->prepare(
+        "SELECT MAX(modulo) FROM $table_name WHERE user_id = %d",
+        $user_id
+    ));
+
+    if ($modulo_atual !== null) {
+        // Verifique se todas as tarefas do módulo atual estão concluídas
+        $tarefas_concluidas = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = %d AND status = 'done'",
+            $user_id,
+            $modulo_atual
+        ));
+
+        $total_tarefas_modulo = count(obter_tarefas_modulo($modulo_atual, $table_name)); // Função para obter todas as tarefas do módulo
+
+        if ($tarefas_concluidas == $total_tarefas_modulo) {
+            // Todas as tarefas do módulo estão concluídas
+            $proximo_modulo = $modulo_atual + 1;
+            $mensagem = "Parabéns! Você concluiu o Módulo $modulo_atual. Vamos para o Módulo $proximo_modulo.";
+            wp_send_json_success(['message' => $mensagem]);
+        }
+    }
+}
+
+function verificar_conclusao_modulo_1($user_id, $table_name) {
+    global $wpdb;
+
+    // Verifique se todas as tarefas do Módulo 1 estão concluídas
+    $tarefas_concluidas_modulo_1 = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = 1 AND status = 'done'",
+        $user_id
+    ));
+
+    $total_tarefas_modulo_1 = count(obter_tarefas_modulo(1, $table_name)); // Substitua obter_tarefas_modulo com a função correta
+
+    if ($tarefas_concluidas_modulo_1 == $total_tarefas_modulo_1) {
+        // Todas as tarefas do Módulo 1 estão concluídas, então carregue as tarefas do Módulo 2
+        ajax_carregar_tarefas_modulo_2($user_id, $table_name);
+    }
+}
+
+add_action('wp_ajax_verificar_conclusao_modulo_1', 'verificar_conclusao_modulo_1');
+add_action('wp_ajax_nopriv_verificar_conclusao_modulo_1', 'verificar_conclusao_modulo_1');
+
+
+function ajax_carregar_tarefas_modulo_2($user_id, $table_name) {
+    global $wpdb;
+
+    $tarefas_treinamento = [
+       
+        // Módulo 2
+        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Definindo Sua Visão, Missão e Valores: A Base do Seu Negócio', 'descricao' => '...', 'modulo' => 2],
+    
+        
+    ];
+
+    // Insira as tarefas do Módulo 2 para o usuário
+    foreach ($tarefas_modulo_2 as $tarefa) {
+        $wpdb->insert($table_name, array(
+            'nome_tarefa' => $tarefa['nome'],
+            'descricao' => $tarefa['descricao'],
+            'prazo' => date('Y-m-d', strtotime('+1 week')),
+            'user_id' => $user_id,
+            'status' => 'todo',
+            'modulo' => 2 // Defina o número do módulo
+        ));
+    }
+
+    wp_send_json_success(['message' => 'Tarefas do Módulo 2 adicionadas com sucesso.']);
+}
+

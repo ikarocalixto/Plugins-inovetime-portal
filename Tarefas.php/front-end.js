@@ -166,7 +166,8 @@ jQuery(document).ready(function($) {
         });
     });
 });
-jQuery(document).ready(function($) {
+jQuery(document).ready(function($) {    
+    // Iniciar o treinamento
     $('#treinamento-trainee-form').on('submit', function(e) {
         e.preventDefault();
         var userId = $(this).find('select[name="user_id"]').val();
@@ -180,8 +181,86 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     alert(response.data.message); // Ou atualize a interface do usuário conforme necessário
-                }
             }
+        }
         });
     });
 });
+
+// Função para carregar automaticamente as tarefas do próximo módulo
+function carregarTarefasProximoModulo(moduloAtual, userId) {
+    $.ajax({
+        type: "POST",
+        url: ajaxurl,
+        data: {
+            action: 'carregar_mais_tarefas', // Ação para carregar as tarefas
+            modulo: moduloAtual + 1, // Próximo módulo
+            user_id: userId
+        },
+        success: function(response) {
+            if (response.success) {
+                // Exibir mensagem de sucesso (se necessário)
+                alert(response.data.message);
+
+                // Atualizar a interface do usuário com as novas tarefas (se necessário)
+                // Por exemplo, você pode adicionar as tarefas à lista de tarefas do usuário
+            } else {
+                console.error('Erro ao carregar tarefas do próximo módulo.');
+            }
+        },
+        error: function() {
+            console.error('Erro ao carregar tarefas do próximo módulo.');
+        }
+    });
+}
+
+
+function drop(event) {
+    event.preventDefault();
+    var taskID = event.dataTransfer.getData("taskID");
+    var status = event.target.getAttribute("data-status");
+
+    if (status === "done") {
+        // Chame a função para marcar a tarefa como concluída no servidor
+        marcarTarefaConcluida(taskID, function () {
+            // Após a conclusão da tarefa, verifique se todas as tarefas do Módulo 1 estão concluídas
+            verificarConclusaoModulo1(function (message) {
+                // Se todas as tarefas do Módulo 1 estiverem concluídas, carregue o Módulo 2
+                if (message === "Todas as tarefas do Módulo 1 estão concluídas.") {
+                    carregarTarefasModulo2(function () {
+                        // Você pode adicionar a lógica de atualização da interface do usuário aqui
+                    });
+                } else {
+                    // Se o Módulo 2 não foi carregado, atualize apenas a interface do usuário
+                    // Você pode adicionar a lógica de atualização da interface do usuário aqui
+                }
+            });
+        });
+    }
+}
+
+function verificarConclusaoModulo1(callback) {
+    // Envie uma solicitação AJAX para verificar a conclusão do Módulo 1 no servidor
+    jQuery.post(kanban_ajax.ajax_url, {
+        action: "verificar_conclusao_modulo_1"
+    }, function (response) {
+        if (response.success) {
+            callback(response.message); // Chame o retorno de chamada com a mensagem
+        } else {
+            // Trate erros aqui, se necessário
+        }
+    });
+}
+
+function carregarTarefasModulo2(callback) {
+    // Envie uma solicitação AJAX para carregar as tarefas do Módulo 2 no servidor
+    jQuery.post(kanban_ajax.ajax_url, {
+        action: "carregar_tarefas_modulo_2"
+    }, function (response) {
+        if (response.success) {
+            callback(); // Chame o retorno de chamada quando as tarefas do Módulo 2 forem carregadas
+        } else {
+            // Trate erros aqui, se necessário
+        }
+    });
+}
