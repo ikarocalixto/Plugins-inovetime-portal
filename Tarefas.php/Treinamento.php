@@ -82,6 +82,22 @@ function adicionar_tarefa_kanban() {
     }
     add_shortcode('adicionar_tarefa', 'adicionar_tarefa_kanban_form');
     
+    function calcular_prazo($data_prazo) {
+        $data_atual = new DateTime();
+        $prazo = new DateTime($data_prazo);
+        $intervalo = $data_atual->diff($prazo);
+    
+        if ($intervalo->m >= 1) {
+            return $intervalo->m . ' mês(es)';
+        } elseif ($intervalo->d >= 7) {
+            return floor($intervalo->d / 7) . ' semana(s)';
+        } elseif ($intervalo->d > 0) {
+            return $intervalo->d . ' dia(s)';
+        } else {
+            return 'Hoje';
+        }
+    }
+    
 
     function mostrar_quadro_kanban() {
         global $wpdb;
@@ -95,25 +111,34 @@ function adicionar_tarefa_kanban() {
     
         $html = '<div id="kanban-board">';
     
-        // Coluna 'Para Fazer'
-        $html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="todo">
-                    <h3>Para Fazer</h3>
-                    <div class="kanban-tasks" data-status="todo">';
-        foreach ($tarefas as $tarefa) {
-            if ($tarefa->status == 'todo') {
-                $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" data-descricao="' . esc_attr($tarefa->descricao) . '" data-prazo="' . esc_attr($tarefa->prazo) . '">' . esc_html($tarefa->nome_tarefa) . '</div>';
-            }
-        }
-        $html .= '</div></div>';
+     // Coluna 'Para Fazer'
+$html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="todo">
+<h3>Para Fazer</h3>
+<div class="kanban-tasks" data-status="todo">';
+foreach ($tarefas as $tarefa) {
+if ($tarefa->status == 'todo') {
+$prazo_formatado = calcular_prazo($tarefa->prazo);
+$html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+      data-descricao="' . esc_attr($tarefa->descricao) . '" 
+      data-prazo="' . esc_attr($tarefa->prazo) . '">
+      <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+}
+}
+$html .= '</div></div>';
+
     
         // Coluna 'Em Andamento'
         $html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="doing">
                     <h3>Em Andamento</h3>
                     <div class="kanban-tasks" data-status="doing">';
-        foreach ($tarefas as $tarefa) {
-            if ($tarefa->status == 'doing') {
-                $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" data-descricao="' . esc_attr($tarefa->descricao) . '" data-prazo="' . esc_attr($tarefa->prazo) . '">' . esc_html($tarefa->nome_tarefa) . '</div>';
-            }
+                    foreach ($tarefas as $tarefa) {
+                        if ($tarefa->status == 'doing') {
+                        $prazo_formatado = calcular_prazo($tarefa->prazo);
+                        $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+                              data-descricao="' . esc_attr($tarefa->descricao) . '" 
+                              data-prazo="' . esc_attr($tarefa->prazo) . '">
+                              <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+                        }
         }
         $html .= '</div></div>';
     
@@ -123,17 +148,50 @@ function adicionar_tarefa_kanban() {
 
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
-        foreach ($tarefas as $tarefa) {
-            if ($tarefa->status == 'done') {
-                $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" data-descricao="' . esc_attr($tarefa->descricao) . '" data-prazo="' . esc_attr($tarefa->prazo) . '">' . esc_html($tarefa->nome_tarefa) . '</div>';
-            }
+                    foreach ($tarefas as $tarefa) {
+                        if ($tarefa->status == 'done') {
+                        $prazo_formatado = calcular_prazo($tarefa->prazo);
+                        $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+                              data-descricao="' . esc_attr($tarefa->descricao) . '" 
+                              data-prazo="' . esc_attr($tarefa->prazo) . '">
+                              <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+                        }
         }
         $html .= '</div></div>';
     
         $html .= '</div>'; // Fecha o #kanban-board
     
-        // Popup para exibir informações da tarefa
-        $html .= '<div id="popup-info" style="display:none;"></div>';
+        $html .= '
+        <!-- Fundo escurecido para o popup -->
+        <div id="popup-background" style="display:none;"></div>
+        <span id="popup-close-pp">&times;</span>
+    <div  id="popup-info" style="display:none;">
+   
+    <!-- Restante do conteúdo do popup -->
+</div>
+
+        <!-- Popup para exibir informações da tarefa -->
+        <div id="popup-info" style="display:none;">
+        
+        <span id="popup-close-pp" style="cursor: pointer; position: absolute; top: 10px; right: 15px; font-size: 20px;">&times;</span>
+            <h2>Detalhes da Tarefa</h2>
+            <div class="popup-section">
+                <div class="popup-section-title">Título</div>
+                <p id="popup-titulo">Nome da Tarefa</p>
+            </div>
+            <div class="popup-section">
+                <div class="popup-section-title">Descrição</div>
+                <p id="popup-descricao">Descrição da Tarefa</p>
+            </div>
+            <div class="popup-section">
+                <div class="popup-section-title">Prazo</div>
+                <p id="popup-prazo">Data do Prazo</p>
+            </div>
+            <!-- Botão para fechar o popup -->
+            <button id="popup-close-pp">Fechar</button>
+        </div>
+    ';
+    
     
         return $html;
     }
@@ -546,27 +604,34 @@ function ajax_carregar_tarefas_modulo_2($user_id, $table_name) {
 function ajax_concluir_modulo_atual() {
     global $wpdb;
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-    $moduloAtual = isset($_POST['modulo']) ? intval($_POST['modulo']) : 1; // Assumindo Módulo 1 como padrão
+    $moduloAtual = isset($_POST['modulo']) ? intval($_POST['modulo']) : 1;
 
     $table_name = $wpdb->prefix . 'kanban_tarefas';
 
-    // Verifica se todas as tarefas do módulo atual estão concluídas para o usuário logado
-    $tarefas_pendentes = $wpdb->get_var($wpdb->prepare(
-        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = %d AND status != 'done'",
+    // Contar o total de tarefas no módulo atual
+    $total_tarefas = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = %d",
         $user_id, $moduloAtual
     ));
 
-    if ($tarefas_pendentes == 0) {
-        // Todos as tarefas do módulo para o usuário foram concluídas
-        wp_send_json_success(['message' => 'Módulo concluído. Carregando próximo módulo...']);
+    // Contar as tarefas concluídas (status 'done') no módulo atual
+    $tarefas_concluidas = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = %d AND status = 'done'",
+        $user_id, $moduloAtual
+    ));
+
+    if ($total_tarefas == $tarefas_concluidas) {
+        // Se todas as tarefas do módulo foram concluídas
+        wp_send_json_success(['message' => 'Módulo ' . $moduloAtual . ' concluído. Carregando próximo módulo...']);
     } else {
-        // Ainda existem tarefas pendentes
-        wp_send_json_error(['message' => 'Algumas tarefas ainda não foram concluídas.']);
+        // Se ainda há tarefas pendentes
+        wp_send_json_error(['message' => 'Algumas tarefas do Módulo ' . $moduloAtual . ' ainda não foram concluídas.']);
     }
 
     wp_die();
 }
-add_action('wp_ajax_concluir_modulo_atual', 'ajax_concluir_modulo_atual');
 
+add_action('wp_ajax_concluir_modulo_atual', 'ajax_concluir_modulo_atual');
 add_action('wp_ajax_nopriv_concluir_modulo_atual', 'ajax_concluir_modulo_atual'); // se necessário
+
 

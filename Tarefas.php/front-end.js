@@ -79,8 +79,11 @@ jQuery(document).ready(function($) {
     
         var formHtml = '<form id="form-editar-tarefa">' +
                        '<input type="hidden" name="task_id" value="' + taskId + '">' +
+                       '<label for="task_name">Nome da Tarefa</label>' +
                        '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
+                       '<label for="description">Descrição</label>' +
                        '<textarea name="description">' + descricao + '</textarea>' +
+                       '<label for="due_date">Prazo</label>' +
                        '<input type="date" name="due_date" value="' + prazo + '">' +
                        '<button type="submit">Salvar</button>' +
                        '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
@@ -88,6 +91,7 @@ jQuery(document).ready(function($) {
     
         $('#popup-info').html(formHtml).show();
     });
+    
 
     $(document).on('click', '#btn-excluir-tarefa', function() {
         var taskId = $(this).data('task-id');
@@ -140,11 +144,21 @@ jQuery(document).ready(function($) {
         });
     });
 
-    // Fechar o popup ao clicar fora
-    $(document).on('click', '#popup-info', function() {
-        $(this).hide();
+    $(document).ready(function() {
+        // Fechar o popup ao clicar no botão 'X'
+        $('#popup-close-pp').click(function() {
+            $('#popup-info').hide();
+            $('#popup-background').hide(); // Não esqueça de esconder o fundo escurecido
+        });
+    
+        // Outros eventos do popup
+        // ...
     });
+    
+
+    
 });
+
 
 jQuery(document).ready(function($) {
     $('#kanban-add-task').on('submit', function(e) {
