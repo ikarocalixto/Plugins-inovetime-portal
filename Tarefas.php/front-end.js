@@ -186,81 +186,70 @@ jQuery(document).ready(function($) {
         });
     });
 });
+jQuery(document).ready(function($) {
+    $('#concluir-modulo').click(function() {
+        var userId = $(this).data('user-id');
+        var moduloAtual = 1; // Obtenha o número do módulo atual. Isso pode ser obtido do DOM ou de uma variável global.
 
-// Função para carregar automaticamente as tarefas do próximo módulo
-function carregarTarefasProximoModulo(moduloAtual, userId) {
-    $.ajax({
-        type: "POST",
-        url: ajaxurl,
-        data: {
-            action: 'carregar_mais_tarefas', // Ação para carregar as tarefas
-            modulo: moduloAtual + 1, // Próximo módulo
-            user_id: userId
-        },
-        success: function(response) {
-            if (response.success) {
-                // Exibir mensagem de sucesso (se necessário)
-                alert(response.data.message);
-
-                // Atualizar a interface do usuário com as novas tarefas (se necessário)
-                // Por exemplo, você pode adicionar as tarefas à lista de tarefas do usuário
-            } else {
-                console.error('Erro ao carregar tarefas do próximo módulo.');
+        $.ajax({
+            url: kanban_ajax.ajax_url,
+            type: 'post',
+            data: {
+                action: 'concluir_modulo_atual',
+                user_id: userId,
+                modulo: moduloAtual
+            },
+            success: function(response) {
+                if(response.success) {
+                    alert(response.data.message);
+                    carregarTarefasProximoModulo(moduloAtual, userId);
+                } else {
+                    alert('Algumas tarefas ainda não foram concluídas.');
+                }
+            },
+            error: function() {
+                alert('Ocorreu um erro ao tentar concluir o módulo.');
             }
-        },
-        error: function() {
+        });
+    });
+});
+
+function carregarTarefasProximoModulo(moduloAtual, userId) {
+    // Lógica para carregar tarefas do próximo módulo
+    // ...
+}
+
+
+
+function verificarConclusaoModuloAtual(userId, callback) {
+    // Substitua 'modulo_atual' pelo código que obtém o módulo atual do usuário
+    var moduloAtual = 1 
+
+    jQuery.post(ajaxurl, {
+        action: "verificar_conclusao_modulo",
+        user_id: userId,
+        modulo: moduloAtual
+    }, function (response) {
+        if (response.success) {
+            callback(response.data.moduloConcluido);
+        } else {
+            console.error('Erro ao verificar conclusão do módulo.');
+        }
+    });
+}
+
+function carregarTarefasProximoModulo(moduloAtual, userId) {
+    jQuery.post(ajaxurl, {
+        action: 'carregar_mais_tarefas',
+        modulo: moduloAtual + 1,
+        user_id: userId
+    }, function(response) {
+        if (response.success) {
+            alert(response.data.message);
+        } else {
             console.error('Erro ao carregar tarefas do próximo módulo.');
         }
     });
 }
 
-
-function drop(event) {
-    event.preventDefault();
-    var taskID = event.dataTransfer.getData("taskID");
-    var status = event.target.getAttribute("data-status");
-
-    if (status === "done") {
-        // Chame a função para marcar a tarefa como concluída no servidor
-        marcarTarefaConcluida(taskID, function () {
-            // Após a conclusão da tarefa, verifique se todas as tarefas do Módulo 1 estão concluídas
-            verificarConclusaoModulo1(function (message) {
-                // Se todas as tarefas do Módulo 1 estiverem concluídas, carregue o Módulo 2
-                if (message === "Todas as tarefas do Módulo 1 estão concluídas.") {
-                    carregarTarefasModulo2(function () {
-                        // Você pode adicionar a lógica de atualização da interface do usuário aqui
-                    });
-                } else {
-                    // Se o Módulo 2 não foi carregado, atualize apenas a interface do usuário
-                    // Você pode adicionar a lógica de atualização da interface do usuário aqui
-                }
-            });
-        });
-    }
-}
-
-function verificarConclusaoModulo1(callback) {
-    // Envie uma solicitação AJAX para verificar a conclusão do Módulo 1 no servidor
-    jQuery.post(kanban_ajax.ajax_url, {
-        action: "verificar_conclusao_modulo_1"
-    }, function (response) {
-        if (response.success) {
-            callback(response.message); // Chame o retorno de chamada com a mensagem
-        } else {
-            // Trate erros aqui, se necessário
-        }
-    });
-}
-
-function carregarTarefasModulo2(callback) {
-    // Envie uma solicitação AJAX para carregar as tarefas do Módulo 2 no servidor
-    jQuery.post(kanban_ajax.ajax_url, {
-        action: "carregar_tarefas_modulo_2"
-    }, function (response) {
-        if (response.success) {
-            callback(); // Chame o retorno de chamada quando as tarefas do Módulo 2 forem carregadas
-        } else {
-            // Trate erros aqui, se necessário
-        }
-    });
-}
+// Restante do código...

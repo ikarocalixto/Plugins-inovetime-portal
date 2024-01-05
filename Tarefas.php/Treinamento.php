@@ -119,6 +119,8 @@ function adicionar_tarefa_kanban() {
     
         // Coluna 'Concluído'
         $html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
+        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Concluir Módulo</button>
+
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
         foreach ($tarefas as $tarefa) {
@@ -540,4 +542,31 @@ function ajax_carregar_tarefas_modulo_2($user_id, $table_name) {
 
     wp_send_json_success(['message' => 'Tarefas do Módulo 2 adicionadas com sucesso.']);
 }
+
+function ajax_concluir_modulo_atual() {
+    global $wpdb;
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+    $moduloAtual = isset($_POST['modulo']) ? intval($_POST['modulo']) : 1; // Assumindo Módulo 1 como padrão
+
+    $table_name = $wpdb->prefix . 'kanban_tarefas';
+
+    // Verifica se todas as tarefas do módulo atual estão concluídas para o usuário logado
+    $tarefas_pendentes = $wpdb->get_var($wpdb->prepare(
+        "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND modulo = %d AND status != 'done'",
+        $user_id, $moduloAtual
+    ));
+
+    if ($tarefas_pendentes == 0) {
+        // Todos as tarefas do módulo para o usuário foram concluídas
+        wp_send_json_success(['message' => 'Módulo concluído. Carregando próximo módulo...']);
+    } else {
+        // Ainda existem tarefas pendentes
+        wp_send_json_error(['message' => 'Algumas tarefas ainda não foram concluídas.']);
+    }
+
+    wp_die();
+}
+add_action('wp_ajax_concluir_modulo_atual', 'ajax_concluir_modulo_atual');
+
+add_action('wp_ajax_nopriv_concluir_modulo_atual', 'ajax_concluir_modulo_atual'); // se necessário
 
