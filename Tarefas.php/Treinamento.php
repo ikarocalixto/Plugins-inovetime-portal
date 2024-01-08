@@ -44,7 +44,7 @@ add_action('wp_enqueue_scripts', 'kanban_enqueue_scripts');
     
 function adicionar_tarefa_kanban() {
     global $wpdb;
-
+ 
     // Obtenha o ID do usuário atual
     $user_id = get_current_user_id();
 
@@ -52,7 +52,8 @@ function adicionar_tarefa_kanban() {
     $nome_tarefa = isset($_POST['task_name']) ? sanitize_text_field($_POST['task_name']) : '';
     $descricao = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
     $prazo = isset($_POST['due_date']) ? sanitize_text_field($_POST['due_date']) : ''; // Certifique-se de que este seja um formato de data válido
-
+    $subtarefas = isset($_POST['subtasks']) ? sanitize_text_field($_POST['subtasks']) : '';
+    $responsaveis = isset($_POST['responsibles']) ? sanitize_text_field($_POST['responsibles']) : '';
     $table_name = $wpdb->prefix . 'kanban_tarefas';
 
     // Insira a nova tarefa com o ID do usuário
@@ -60,7 +61,9 @@ function adicionar_tarefa_kanban() {
         'nome_tarefa' => $nome_tarefa,
         'descricao' => $descricao,
         'prazo' => $prazo,
-        'user_id' => $user_id // Adiciona o ID do usuário
+        'user_id' => $user_id, // Adiciona o ID do usuário
+        'subtarefas' => $subtarefas,
+        'responsaveis' => $responsaveis
     ));
 
     // Retorna o ID da nova tarefa para uso no front-end
@@ -76,6 +79,10 @@ function adicionar_tarefa_kanban() {
                     <input type="text" name="task_name" placeholder="Nome da Tarefa" required>
                     <textarea name="description" placeholder="Descrição da Tarefa"></textarea>
                     <input type="date" name="due_date" placeholder="Prazo">
+                    <label for="subtasks">Subtarefas:</label>
+<textarea name="subtasks"></textarea>
+<label for="responsibles">Responsáveis:</label>
+<input type="text" name="responsibles">
                     <input type="submit" value="Adicionar Tarefa">
                  </form>';
         return $html;
@@ -121,6 +128,24 @@ function adicionar_tarefa_kanban() {
     }
     
 
+    // Função para atualizar o status da subtarefa
+function atualizar_subtarefa() {
+    global $wpdb;
+    $subtarefa_id = $_POST['subtarefa_id'];
+    $concluida = $_POST['concluida'];
+
+    $wpdb->update(
+        'kanban_subtarefas',
+        array('concluida' => $concluida),
+        array('id' => $subtarefa_id)
+    );
+
+    // Enviar resposta
+    wp_send_json_success();
+}
+add_action('wp_ajax_atualizar_subtarefa', 'atualizar_subtarefa');
+
+
     function mostrar_quadro_kanban() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'kanban_tarefas';
@@ -141,10 +166,26 @@ foreach ($tarefas as $tarefa) {
 if ($tarefa->status == 'todo') {
     $prazo_formatado = calcular_prazo($tarefa->prazo);
     $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-      data-descricao="' . esc_attr($tarefa->descricao) . '" 
-      data-prazo="' . esc_attr($tarefa->prazo) . '">
-      <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+    data-descricao="' . esc_attr($tarefa->descricao) . '" 
+    data-prazo="' . esc_attr($tarefa->prazo) . '"
+    data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
+    data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
+    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
 }
+ // Buscar subtarefas da tarefa atual
+ $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
+ if ($subtarefas) {
+     $html .= '<ul class="subtarefas">';
+     foreach ($subtarefas as $subtarefa) {
+         $checked = $subtarefa->concluida ? 'checked' : '';
+         $html .= '<li>';
+         $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
+         $html .= esc_html($subtarefa->descricao);
+         $html .= '</li>';
+     }
+     $html .= '</ul>';
+ }
+
 }
 $html .= '</div></div>';
 
@@ -157,10 +198,26 @@ $html .= '</div></div>';
                         if ($tarefa->status == 'doing') {
                             $prazo_formatado = calcular_prazo($tarefa->prazo);
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-                              data-descricao="' . esc_attr($tarefa->descricao) . '" 
-                              data-prazo="' . esc_attr($tarefa->prazo) . '">
-                              <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+                            data-descricao="' . esc_attr($tarefa->descricao) . '" 
+                            data-prazo="' . esc_attr($tarefa->prazo) . '"
+                            data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
+                            data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
+                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
                         }
+                         // Buscar subtarefas da tarefa atual
+        $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
+        if ($subtarefas) {
+            $html .= '<ul class="subtarefas">';
+            foreach ($subtarefas as $subtarefa) {
+                $checked = $subtarefa->concluida ? 'checked' : '';
+                $html .= '<li>';
+                $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
+                $html .= esc_html($subtarefa->descricao);
+                $html .= '</li>';
+            }
+            $html .= '</ul>';
+        }
+                        
         }
         $html .= '</div></div>';
     
@@ -174,10 +231,26 @@ $html .= '</div></div>';
                         if ($tarefa->status == 'done') {
                             $prazo_formatado = calcular_prazo($tarefa->prazo);
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-                              data-descricao="' . esc_attr($tarefa->descricao) . '" 
-                              data-prazo="' . esc_attr($tarefa->prazo) . '">
-                              <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
-                        }
+    data-descricao="' . esc_attr($tarefa->descricao) . '" 
+    data-prazo="' . esc_attr($tarefa->prazo) . '"
+    data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
+    data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
+    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+}
+ // Buscar subtarefas da tarefa atual
+ $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
+ if ($subtarefas) {
+     $html .= '<ul class="subtarefas">';
+     foreach ($subtarefas as $subtarefa) {
+         $checked = $subtarefa->concluida ? 'checked' : '';
+         $html .= '<li>';
+         $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
+         $html .= esc_html($subtarefa->descricao);
+         $html .= '</li>';
+     }
+     $html .= '</ul>';
+ }
+
         }
         $html .= '</div></div>';
     
@@ -231,6 +304,8 @@ $html .= '</div></div>';
         $nome_tarefa = sanitize_text_field($_POST['task_name']);
         $descricao = sanitize_text_field($_POST['description']);
         $prazo = sanitize_text_field($_POST['due_date']); // Valide o formato da data, se necessário
+        $subtarefas = sanitize_text_field($_POST['subtasks']);
+        $responsaveis = sanitize_text_field($_POST['responsibles']);
     
         // Calcular o prazo formatado
         $prazo_formatado = calcular_prazo($prazo);
@@ -242,7 +317,9 @@ $html .= '</div></div>';
                 'nome_tarefa' => $nome_tarefa, 
                 'descricao' => $descricao, 
                 'prazo' => $prazo, // Salva a data do prazo
-                'prazo_formatado' => $prazo_formatado // Salva o prazo formatado
+                'prazo_formatado' => $prazo_formatado, // Salva o prazo formatado
+                'subtarefas' => $subtarefas,
+                'responsaveis' => $responsaveis
             ), 
             array('id' => $id_tarefa)
         );
@@ -313,12 +390,17 @@ $html .= '</div></div>';
         $descricao = sanitize_text_field($_POST['description']);
         $prazo = sanitize_text_field($_POST['due_date']);
         $user_id = get_current_user_id(); // Obtenha o ID do usuário atual
+        $subtarefas = sanitize_text_field($_POST['subtasks']);
+        $responsaveis = sanitize_text_field($_POST['responsibles']);
+    
     
         $wpdb->insert($table_name, array(
             'nome_tarefa' => $nome_tarefa,
             'descricao' => $descricao,
             'prazo' => $prazo,
-            'user_id' => $user_id // Adicione o ID do usuário
+            'user_id' => $user_id, // Adicione o ID do usuário
+            'subtarefas' => $subtarefas,
+                'responsaveis' => $responsaveis
         ));
     
         // Outros códigos, como enviar uma resposta AJAX
