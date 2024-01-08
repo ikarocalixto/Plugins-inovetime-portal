@@ -40,7 +40,7 @@
     background-color: #fff;
     padding: 15px 20px;
     border-radius: 8px;
-   
+    
     margin-bottom: 15px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -186,3 +186,5 @@
 .kanban-done .task {
     border-left: 4px solid green;
 }
+
+

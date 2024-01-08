@@ -97,6 +97,28 @@ function adicionar_tarefa_kanban() {
             return 'Hoje';
         }
     }
+
+    function atualizar_prazos_se_necessario() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'kanban_tarefas';
+    
+        // Obtenha a última data de atualização
+        $ultima_atualizacao = get_option('ultima_atualizacao_prazos', null);
+        $data_atual = date('Y-m-d');
+    
+        // Verifica se a última atualização foi hoje
+        if ($ultima_atualizacao !== $data_atual) {
+            // Atualiza todos os prazos
+            $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
+            foreach ($tarefas as $tarefa) {
+                $prazo_formatado = calcular_prazo($tarefa->prazo);
+                // Aqui, você deve atualizar o prazo formatado na base de dados, se necessário
+            }
+    
+            // Atualize a última data de atualização
+            update_option('ultima_atualizacao_prazos', $data_atual);
+        }
+    }
     
 
     function mostrar_quadro_kanban() {
@@ -112,13 +134,13 @@ function adicionar_tarefa_kanban() {
         $html = '<div id="kanban-board">';
     
      // Coluna 'Para Fazer'
-$html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="todo">
+$html .= '<div class="kanban-column kanban-todo" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="todo">
 <h3>Para Fazer</h3>
 <div class="kanban-tasks" data-status="todo">';
 foreach ($tarefas as $tarefa) {
 if ($tarefa->status == 'todo') {
-$prazo_formatado = calcular_prazo($tarefa->prazo);
-$html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+    $prazo_formatado = calcular_prazo($tarefa->prazo);
+    $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
       data-descricao="' . esc_attr($tarefa->descricao) . '" 
       data-prazo="' . esc_attr($tarefa->prazo) . '">
       <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
@@ -128,13 +150,13 @@ $html .= '</div></div>';
 
     
         // Coluna 'Em Andamento'
-        $html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="doing">
+        $html .= '<div class="kanban-column kanban-doing" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="doing">
                     <h3>Em Andamento</h3>
                     <div class="kanban-tasks" data-status="doing">';
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'doing') {
-                        $prazo_formatado = calcular_prazo($tarefa->prazo);
-                        $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+                            $prazo_formatado = calcular_prazo($tarefa->prazo);
+                            $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
                               data-descricao="' . esc_attr($tarefa->descricao) . '" 
                               data-prazo="' . esc_attr($tarefa->prazo) . '">
                               <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
@@ -143,15 +165,15 @@ $html .= '</div></div>';
         $html .= '</div></div>';
     
         // Coluna 'Concluído'
-        $html .= '<div class="kanban-column" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
+        $html .= '<div class="kanban-column kanban-done" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
         <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Concluir Módulo</button>
 
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'done') {
-                        $prazo_formatado = calcular_prazo($tarefa->prazo);
-                        $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+                            $prazo_formatado = calcular_prazo($tarefa->prazo);
+                            $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
                               data-descricao="' . esc_attr($tarefa->descricao) . '" 
                               data-prazo="' . esc_attr($tarefa->prazo) . '">
                               <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
@@ -210,10 +232,18 @@ $html .= '</div></div>';
         $descricao = sanitize_text_field($_POST['description']);
         $prazo = sanitize_text_field($_POST['due_date']); // Valide o formato da data, se necessário
     
+        // Calcular o prazo formatado
+        $prazo_formatado = calcular_prazo($prazo);
+    
         // Atualizar a tarefa no banco de dados
         $resultado = $wpdb->update(
             $table_name, 
-            array('nome_tarefa' => $nome_tarefa, 'descricao' => $descricao, 'prazo' => $prazo), 
+            array(
+                'nome_tarefa' => $nome_tarefa, 
+                'descricao' => $descricao, 
+                'prazo' => $prazo, // Salva a data do prazo
+                'prazo_formatado' => $prazo_formatado // Salva o prazo formatado
+            ), 
             array('id' => $id_tarefa)
         );
     
@@ -226,6 +256,7 @@ $html .= '</div></div>';
     
         wp_die();
     }
+    
     
     add_action('wp_ajax_editar_tarefa_kanban', 'editar_tarefa_kanban');
     add_action('wp_ajax_nopriv_editar_tarefa_kanban', 'editar_tarefa_kanban');
