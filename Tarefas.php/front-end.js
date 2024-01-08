@@ -266,4 +266,3 @@ function carregarTarefasProximoModulo(moduloAtual, userId) {
     });
 }
 
-// Restante do código...

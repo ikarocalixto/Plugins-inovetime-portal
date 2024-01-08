@@ -40,7 +40,7 @@
     background-color: #fff;
     padding: 15px 20px;
     border-radius: 8px;
-    border-left: 4px solid #830f0f; /* Borda esquerda colorida */
+   
     margin-bottom: 15px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -169,4 +169,20 @@
 
 #popup-close-pp:hover {
     color: #0079bf;
+}
+  
+/* Vermelho para tarefas em 'Para Fazer' */
+.kanban-todo .task {
+    border-left: 4px solid #830f0f; /* Borda esquerda colorida */
+    /* Outros estilos conforme necessário */
+}
+
+/* Azul para tarefas em 'Em Andamento' */
+.kanban-doing .task {
+    border-left: 4px solid blue;
+}
+
+/* Verde para tarefas em 'Concluído' */
+.kanban-done .task {
+    border-left: 4px solid green;
 }
