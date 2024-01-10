@@ -47,6 +47,7 @@ function adicionar_tarefa_kanban() {
  
     // Obtenha o ID do usuário atual
     $user_id = get_current_user_id();
+    
 
     // Valide e limpe os dados de entrada
     $nome_tarefa = isset($_POST['task_name']) ? sanitize_text_field($_POST['task_name']) : '';
@@ -75,58 +76,106 @@ function adicionar_tarefa_kanban() {
     add_action('wp_ajax_nopriv_adicionar_tarefa_kanban', 'adicionar_tarefa_kanban');
     
     function adicionar_tarefa_kanban_form() {
-        $html = '<form id="kanban-add-task">
-                    <input type="text" name="task_name" placeholder="Nome da Tarefa" required>
-                    <textarea name="description" placeholder="Descrição da Tarefa"></textarea>
-                    <input type="date" name="due_date" placeholder="Prazo">
-                    <label for="subtasks">Subtarefas:</label>
-<textarea name="subtasks"></textarea>
-<label for="responsibles">Responsáveis:</label>
-<input type="text" name="responsibles">
-                    <input type="submit" value="Adicionar Tarefa">
+        $html = '<form id="kanban-add-task" class="kanban-form">
+                    <div class="form-group">
+                        <label for="task_name">Nome da Tarefa:</label>
+                        <input type="text" name="task_name" placeholder="Nome da Tarefa" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descrição da Tarefa:</label>
+                        <textarea name="description" placeholder="Descrição da Tarefa"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="due_date">Prazo:</label>
+                        <input type="date" name="due_date" placeholder="Prazo">
+                    </div>
+                    <div class="form-group">
+                        <label for="subtasks">Subtarefas:</label>
+                        <textarea name="subtasks" placeholder="Adicione suas subtarefas aqui"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="responsibles">Responsáveis:</label>
+                        <input type="text" name="responsibles" placeholder="Responsáveis">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Adicionar Tarefa" class="green-button">
+                    </div>
                  </form>';
         return $html;
     }
     add_shortcode('adicionar_tarefa', 'adicionar_tarefa_kanban_form');
+    
     
     function calcular_prazo($data_prazo) {
         $data_atual = new DateTime();
         $prazo = new DateTime($data_prazo);
         $intervalo = $data_atual->diff($prazo);
     
-        if ($intervalo->m >= 1) {
-            return $intervalo->m . ' mês(es)';
-        } elseif ($intervalo->d >= 7) {
-            return floor($intervalo->d / 7) . ' semana(s)';
-        } elseif ($intervalo->d > 0) {
-            return $intervalo->d . ' dia(s)';
-        } else {
-            return 'Hoje';
-        }
-    }
-
-    function atualizar_prazos_se_necessario() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . 'kanban_tarefas';
-    
-        // Obtenha a última data de atualização
-        $ultima_atualizacao = get_option('ultima_atualizacao_prazos', null);
-        $data_atual = date('Y-m-d');
-    
-        // Verifica se a última atualização foi hoje
-        if ($ultima_atualizacao !== $data_atual) {
-            // Atualiza todos os prazos
-            $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
-            foreach ($tarefas as $tarefa) {
-                $prazo_formatado = calcular_prazo($tarefa->prazo);
-                // Aqui, você deve atualizar o prazo formatado na base de dados, se necessário
+        if ($data_atual > $prazo) {
+            // Se a data atual for maior que a data do prazo, então há um atraso
+            if ($intervalo->m >= 1) {
+                return 'Atraso de ' . $intervalo->m . ' mês(es)';
+            } elseif ($intervalo->d >= 7) {
+                return 'Atraso de ' . floor($intervalo->d / 7) . ' semana(s)';
+            } elseif ($intervalo->d > 0) {
+                return 'Atraso de ' . $intervalo->d . ' dia(s)';
+            } else {
+                return 'Atraso de hoje';
             }
-    
-            // Atualize a última data de atualização
-            update_option('ultima_atualizacao_prazos', $data_atual);
+        } else {
+            // Se a data do prazo ainda não passou
+            if ($intervalo->m >= 1) {
+                return $intervalo->m . ' mês(es)';
+            } elseif ($intervalo->d >= 7) {
+                return floor($intervalo->d / 7) . ' semana(s)';
+            } elseif ($intervalo->d > 0) {
+                return $intervalo->d . ' dia(s)';
+            } else {
+                return 'Hoje';
+            }
         }
     }
     
+
+    function atualizar_prazos_e_enviar_notificacoes() {
+        global $wpdb;
+
+    $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
+
+    foreach ($tarefas as $tarefa) {
+        $prazo = new DateTime($tarefa->prazo);
+        $data_atual = new DateTime();
+        $intervalo = $data_atual->diff($prazo);
+
+        // Verifica se a tarefa está atrasada ou se falta um dia para o prazo
+        if ($intervalo->invert == 1 || ($intervalo->invert == 0 && $intervalo->days <= 1)) {
+            $mensagem = $intervalo->invert == 1 ?
+                "A tarefa '{$tarefa->nome_tarefa}' está atrasada!" :
+                ($intervalo->days == 1 ? "A tarefa '{$tarefa->nome_tarefa}' vence em 1 dia!" : "A tarefa '{$tarefa->nome_tarefa}' deve ser feita hoje!");
+
+            // Enviar notificação para o dono da tarefa
+            $user_id = $tarefa->user_id; // Supondo que cada tarefa tenha um 'user_id' associado
+
+            $wpdb->insert(
+                $meu_plugin_notificacoes,
+                array(
+                    'user_id' => $user_id,
+                    'mensagem' => $mensagem,
+                    'imagem' => '',
+                    'url_redirecionamento' => 'https://inovetime.com.br/tarefa-1/',
+                    'data_envio' => current_time('mysql'),
+                    'lida' => 0
+                ),
+                array('%d', '%s', '%s', '%s', '%s', '%d')
+            );
+        }
+
+        // Atualize a última data de atualização
+        update_option('ultima_atualizacao_prazos', $data_atual->format('Y-m-d H:i:s'));
+    }
+}
+    
+
 
     // Função para atualizar o status da subtarefa
 function atualizar_subtarefa() {
@@ -229,13 +278,13 @@ $html .= '</div></div>';
                     <div class="kanban-tasks" data-status="done">';
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'done') {
-                            $prazo_formatado = calcular_prazo($tarefa->prazo);
+                            
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
     data-descricao="' . esc_attr($tarefa->descricao) . '" 
     data-prazo="' . esc_attr($tarefa->prazo) . '"
     data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
     data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
-    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> </div>';
 }
  // Buscar subtarefas da tarefa atual
  $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
@@ -259,14 +308,16 @@ $html .= '</div></div>';
         $html .= '
         <!-- Fundo escurecido para o popup -->
         <div id="popup-background" style="display:none;"></div>
-        <span id="popup-close-pp">&times;</span>
+        
     <div  id="popup-info" style="display:none;">
    
     <!-- Restante do conteúdo do popup -->
 </div>
 
         <!-- Popup para exibir informações da tarefa -->
+        <span id="popup-close-pp">&times;</span>
         <div id="popup-info" style="display:none;">
+        
         
         <span id="popup-close-pp" style="cursor: pointer; position: absolute; top: 10px; right: 15px; font-size: 20px;">&times;</span>
             <h2>Detalhes da Tarefa</h2>
@@ -296,19 +347,27 @@ $html .= '</div></div>';
     function editar_tarefa_kanban() {
         global $wpdb;
     
-        // Verifique o nonce aqui (nonce deve ser enviado na solicitação AJAX)
+
+        
+        // Registrar os dados recebidos
+        error_log('Recebendo dados de edição da tarefa: ' . print_r($_POST, true));
+    
+        // Verifique o nonce aqui (adicione o código de verificação do nonce)
     
         $table_name = $wpdb->prefix . 'kanban_tarefas';
     
+        // Aqui você captura os dados do POST
         $id_tarefa = sanitize_text_field($_POST['task_id']);
         $nome_tarefa = sanitize_text_field($_POST['task_name']);
         $descricao = sanitize_text_field($_POST['description']);
-        $prazo = sanitize_text_field($_POST['due_date']); // Valide o formato da data, se necessário
+        $prazo = sanitize_text_field($_POST['due_date']); 
         $subtarefas = sanitize_text_field($_POST['subtasks']);
         $responsaveis = sanitize_text_field($_POST['responsibles']);
     
-        // Calcular o prazo formatado
-        $prazo_formatado = calcular_prazo($prazo);
+        // Registrar os dados após a sanitização
+        error_log('Dados da tarefa após a sanitização: ID: ' . $id_tarefa . ', Nome: ' . $nome_tarefa . ', Descrição: ' . $descricao . ', Prazo: ' . $prazo);
+    
+        
     
         // Atualizar a tarefa no banco de dados
         $resultado = $wpdb->update(
@@ -316,23 +375,25 @@ $html .= '</div></div>';
             array(
                 'nome_tarefa' => $nome_tarefa, 
                 'descricao' => $descricao, 
-                'prazo' => $prazo, // Salva a data do prazo
-                'prazo_formatado' => $prazo_formatado, // Salva o prazo formatado
-                'subtarefas' => $subtarefas,
+                'prazo' => $prazo, 
+                                'subtarefas' => $subtarefas,
                 'responsaveis' => $responsaveis
             ), 
             array('id' => $id_tarefa)
         );
     
-        // Verifique se a atualização foi bem-sucedida
+        // Verificar o resultado da atualização
         if ($resultado !== false) {
+            error_log('Tarefa atualizada com sucesso. ID: ' . $id_tarefa);
             wp_send_json(array('message' => 'Sucesso'));
         } else {
+            error_log('Erro ao atualizar a tarefa. ID: ' . $id_tarefa . ' Erro: ' . $wpdb->last_error);
             wp_send_json_error(array('message' => 'Erro ao atualizar a tarefa'));
         }
     
         wp_die();
     }
+    
     
     
     add_action('wp_ajax_editar_tarefa_kanban', 'editar_tarefa_kanban');
@@ -360,6 +421,32 @@ $html .= '</div></div>';
     add_action('wp_ajax_mover_tarefa_kanban', 'mover_tarefa_kanban');
     add_action('wp_ajax_nopriv_mover_tarefa_kanban', 'mover_tarefa_kanban'); // Se desejar permitir acesso não autenticado
     
+    function excluir_subtarefa_kanban() {
+        global $wpdb;
+    
+        // Validação e sanitização
+        $subtarefa_id = intval($_POST['subtarefa_id']);
+    
+        // Verifique se a subtarefa pertence ao usuário autenticado ou a outra lógica de verificação necessária
+    
+        // Aqui você deve adicionar a lógica real para excluir a subtarefa do banco de dados
+        $table_name = $wpdb->prefix . 'kanban_tarefas';
+        
+        $wpdb->delete($table_name, array('id' => $subtarefa_id), array('%d'));
+    
+        // Verifique se a exclusão foi bem-sucedida
+        if ($wpdb->last_error) {
+            wp_send_json_error(array('message' => 'Erro ao excluir a subtarefa'));
+        } else {
+            wp_send_json_success(array('message' => 'Subtarefa excluída com sucesso'));
+        }
+        wp_die();
+    }
+    
+    add_action('wp_ajax_excluir_subtarefa_kanban', 'excluir_subtarefa_kanban');
+    add_action('wp_ajax_nopriv_excluir_subtarefa_kanban', 'excluir_subtarefa_kanban');
+    
+
 
     function excluir_tarefa_kanban() {
         global $wpdb;
