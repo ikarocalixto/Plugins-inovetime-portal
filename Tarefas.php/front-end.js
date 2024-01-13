@@ -1,23 +1,30 @@
 jQuery(document).ready(function($) {
-    // Enviar dados do formulário de nova tarefa via AJAX
+      // Evento de clique para o botão 'Adicionar Tarefa'
+      $('#mostrar-form-tarefa').click(function() {
+        // Alterna a visibilidade do formulário
+        $('#kanban-add-task').toggle();
+    });
+
+    // Código existente para enviar dados do formulário via AJAX
     $('#kanban-add-task').submit(function(e) {
         e.preventDefault();
-        var taskId;
+
+        
+        var formData = $(this).serialize(); // Isso irá capturar os dados do formulário
+
+      
         var descricao = $(this).data('descricao');
         var prazo = $(this).data('prazo');
         var nomeTarefa = $(this).text().trim();
+        var responsaveis = $(this).data('responsaveis');
        // Obtenha e processe as subtarefas
- // Obter a nova subtarefa inserida
- var novaSubtarefa = $(this).find('input[name="new_subtask"]').val().trim();
- if (novaSubtarefa) {
-     subtarefasArray.push(novaSubtarefa); // Adiciona a nova subtarefa ao array
- }
+
 
        var subtarefasBrutas = $(this).find('textarea[name="subtasks"]').val();
        var subtarefasArray = subtarefasBrutas.split('\n');
        var subtarefasFormatadas = subtarefasArray.map((subtarefa, index) => (index + 1) + subtarefa).join(', ');
       
-    var responsaveis = $(this).data('responsaveis');
+   
 
         var taskData = {
             action: 'adicionar_tarefa_kanban',
@@ -25,8 +32,11 @@ jQuery(document).ready(function($) {
             description: $(this).find('textarea[name="description"]').val(),
             due_date: $(this).find('input[name="due_date"]').val(),
             subtasks: subtarefasFormatadas,
-            responsibles: $(this).find('input[name="responsibles"]').val()
+            responsibles: $(this).find('select[name="responsibles"]').val() 
         };
+
+        
+
 
         
 
@@ -35,13 +45,11 @@ jQuery(document).ready(function($) {
             url: kanban_ajax.ajax_url,
             data: taskData,
             success: function(response) {
-                var uniqueId = 'task-' + response;
-                var taskHtml = '<div class="task" data-descricao="' + descricao + '" data-prazo="' + prazo + '" data-subtarefas="' +  subtarefasFormatadas + '" data-responsaveis="' + responsaveis + '">' + nomeTarefa + '</div>';
-                // Adicionar taskHtml ao quadro Kanban
-                
-                $('.kanban-tasks[data-status="todo"]').append(taskHtml);
-                
-
+                alert('Nova tarefa adicionada com sucesso!'); // Exibir mensagem de sucesso
+                location.reload(); // Recarregar a página para exibir a nova tarefa
+            },
+            error: function() {
+                console.error('Erro ao adicionar tarefa.');
             }
         });
     });
@@ -114,43 +122,57 @@ jQuery(document).ready(function($) {
     
     
     
-    $(document).on('click', '.task', function() {
-        var taskId = $(this).attr('id').split('-')[1];
-        var descricao = $(this).data('descricao');
-        var prazo = $(this).data('prazo');
-        var nomeTarefa = $(this).text().trim();
-        var subtarefas = $(this).data('subtarefas').split(','); // Divide a string de subtarefas em um array
-        var responsaveis = $(this).data('responsaveis');
-        console.log('Subtarefas:', subtarefas);
-        console.log('Responsáveis:', responsaveis);
+$(document).on('click', '.task', function() {
+    var taskId = $(this).attr('id').split('-')[1];
+    var descricao = $(this).data('descricao');
+    var prazo = $(this).data('prazo');
+    var subtarefas = $(this).find('.subtarefas-data').val().split('; ');
+    console.log('Texto da tarefa:', $(this).text());
+    var nomeTarefa = $(this).text().split('-')[0].trim();
     
-        var subtarefasHtml = '';
-        subtarefas.forEach(function(subtarefa, index) {
-            subtarefasHtml += '<div><input type="checkbox" id="subtask-' + index + '" name="subtasks[]" value="' + subtarefa.trim() + '">' +
-                              '<label for="subtask-' + index + '">' + subtarefa.trim() + '</label></div>';
-        });
-        
-        var formHtml = '<form id="form-editar-tarefa">' +
-                       '<input type="hidden" name="task_id" value="' + taskId + '">' +
-                       '<label for="task_name">Nome da Tarefa</label>' +
-                       '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
-                       '<label for="description">Descrição</label>' +
-                       '<textarea name="description">' + descricao + '</textarea>' +
-                       '<label for="due_date">Prazo</label>' +
-                       '<input type="date" name="due_date" value="' + prazo + '">' +
-                       '<label for="subtasks">Subtarefas</label>' +
-                       '<div>' + subtarefasHtml + '</div>' +
-                       '<input type="text" name="new_subtask" placeholder="Adicionar nova subtarefa">' + // Campo para nova subtarefa
-                       '<button type="button" id="btn-add-subtask">Adicionar Subtarefa</button>' + // Botão para adicionar subtarefa
-                       '<label for="responsibles">Responsáveis</label>' +
-                       '<input type="text" name="responsibles" value="' + responsaveis + '">' +
-                       '<button type="submit">Salvar</button>' +
-                       '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
-                       '</form>';
+    var subtarefasHtml = '';
+    
+    // Iterar sobre as subtarefas para criar o HTML
+subtarefas.forEach(function(subtarefa) {
+    if (subtarefa && subtarefa.trim() !== '')  {
+        subtarefasHtml += '<div class="subtarefa-item">' +
+                          '<input type="checkbox" class="subtarefa-checkbox">' +
+                          '<span class="subtarefa-nome">' + subtarefa.trim() + '</span>' +
+                          '</div>';
+    }
+});
+
+    
+
+    var responsaveis = $(this).data('responsaveis');
+    console.log('Subtarefas:', subtarefasHtml);
+    console.log('Responsáveis:', responsaveis);
+
+    var formHtml = '<form id="form-editar-tarefa">' +
+                   '<input type="hidden" name="task_id" value="' + taskId + '">' +
+                   '<label for="task_name">Nome da Tarefa</label>' +
+                   '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
+                   '<label for="description">Descrição</label>' +
+                   '<textarea name="description">' + descricao + '</textarea>' +
+                   '<label for="due_date">Prazo</label>' +
+                   '<input type="date" name="due_date" value="' + prazo + '">' +
+                   '<label for="subtasks">Subtarefas</label>' +
+                   '<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
+                   '<label for="responsibles">Responsáveis</label>' +
+                   '<input type="text" name="responsibles" value="' + responsaveis + '">' +
+                   '<button type="submit">Salvar</button>' +
+                   '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
+                   '</form>';
+
+
+
         
     
         $('#popup-info').html(formHtml).show();
     });
+    
+   
+    
     
     
 
@@ -182,63 +204,28 @@ jQuery(document).ready(function($) {
     $(document).on('submit', '#form-editar-tarefa', function(e) {
         e.preventDefault();
 
+         // Capturar os dados das subtarefas
+    var subtarefasData = [];
+    $('.subtarefa-item').each(function() {
+        var nomeSubtarefa = $(this).find('.subtarefa-nome').text();
+        var statusSubtarefa = $(this).find('.subtarefa-checkbox').is(':checked') ? 'concluída' : 'pendente';
+
+        subtarefasData.push({ nome: nomeSubtarefa, status: statusSubtarefa });
+    });
+
         var taskData = {
             action: 'editar_tarefa_kanban',
             task_id: $(this).find('input[name="task_id"]').val(),
             task_name: $(this).find('input[name="task_name"]').val(),
             description: $(this).find('textarea[name="description"]').val(),
             due_date: $(this).find('input[name="due_date"]').val(),
-            subtasks: [],
+            subtasks: subtarefasData,
             responsibles: $(this).find('input[name="responsibles"]').val()
         };
         console.log('Dados do formulário:', taskData);
 
         
-     // Coletar as subtarefas existentes e novas subtarefas
-     $('#form-editar-tarefa div').each(function() {
-        var textoSubtarefa = $(this).find('label').text().trim();
-        var concluida = $(this).find('input[type="checkbox"]').is(':checked');
-        if (textoSubtarefa) {
-            taskData.subtasks.push({
-                texto: textoSubtarefa,
-                concluida: concluida
-            });
-        }
-    });
-
-
-
-    // Adicionar a nova subtarefa inserida, se houver
-    var novaSubtarefa = $('#form-editar-tarefa').find('input[name="new_subtask"]').val().trim();
-    if (novaSubtarefa) {
-        taskData.subtasks.push({
-            texto: novaSubtarefa,
-            concluida: false // Nova subtarefa ainda não concluída
-        });
-    }
-
-    // Converter subtasks em uma string
-var subtarefasString = taskData.subtasks.map(function(subtarefa) {
-    return subtarefa.texto; // Apenas o texto da subtarefa
-}).join(', '); // Separa cada subtarefa por vírgula
-
-// Adicionar a string formatada ao objeto taskData
-taskData.subtasks = subtarefasString;
-
-
-$(document).on('change', '#form-editar-tarefa input[type="checkbox"]', function() {
-    var checkbox = $(this);
-    var label = checkbox.siblings('label');
-
-    if (checkbox.is(':checked')) {
-        label.addClass('subtarefa-concluida');
-    } else {
-        label.removeClass('subtarefa-concluida');
-    }
-});
-
-
-
+        
       
         $.ajax({
             type: "POST",
@@ -282,26 +269,7 @@ $(document).on('change', '#form-editar-tarefa input[type="checkbox"]', function(
 });
 
 
-jQuery(document).ready(function($) {
-    $('#kanban-add-task').on('submit', function(e) {
-        e.preventDefault();
-        var formData = $(this).serialize(); // Isso irá capturar os dados do formulário
 
-        $.ajax({
-            type: "POST",
-            url: ajaxurl, // URL para o manipulador AJAX do WordPress
-            data: formData + '&action=adicionar_tarefa_kanban',
-            success: function(response) {
-                // Tratar a resposta do sucesso
-                console.log(response);
-            },
-            error: function() {
-                // Tratar erro
-                console.error('Erro ao adicionar tarefa.');
-            }
-        });
-    });
-});
 jQuery(document).ready(function($) {    
     // Iniciar o treinamento
     $('#treinamento-trainee-form').on('submit', function(e) {
@@ -389,3 +357,39 @@ function carregarTarefasProximoModulo(moduloAtual, userId) {
 }
 
 
+
+$(document).on('change', '.subtarefa-checkbox', function() {
+    var isChecked = $(this).is(':checked');
+    var descricaoSubtarefa = $(this).siblings('.subtarefa-nome').text();
+    var idTarefa = $(this).closest('.task').data('task-id'); // Supondo que cada tarefa tenha um ID único
+
+    // Alterar a visualização para riscado, se necessário
+    $(this).siblings('.subtarefa-nome').css('text-decoration', isChecked ? 'line-through' : 'none');
+
+    // Preparar dados para enviar
+    var data = {
+        action: 'atualizar_status_subtarefa',
+        id_tarefa: idTarefa,
+        descricao: descricaoSubtarefa, // Mudança aqui para 'descricao'
+        status: isChecked ? 'concluído' : 'pendente'
+    };
+
+    // Enviar para o servidor via AJAX
+    $.ajax({
+        type: 'POST',
+        url: kanban_ajax.ajax_url, // Substitua pela URL correta
+        data: data,
+        success: function(response) {
+            console.log('Subtarefa atualizada com sucesso:', response);
+        },
+        error: function(error) {
+            console.error('Erro ao atualizar a subtarefa:', error);
+        }
+    });
+});
+
+jQuery(document).ready(function($) {
+    $('#mostrar-form-tarefa').click(function() {
+        $('#kanban-add-task').toggle(); // Alterna a visibilidade do formulário
+    });
+});

@@ -48,11 +48,14 @@ function adicionar_tarefa_kanban() {
     // Obtenha o ID do usuário atual
     $user_id = get_current_user_id();
     
+    
+
+
 
     // Valide e limpe os dados de entrada
     $nome_tarefa = isset($_POST['task_name']) ? sanitize_text_field($_POST['task_name']) : '';
     $descricao = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
-    $prazo = isset($_POST['due_date']) ? sanitize_text_field($_POST['due_date']) : ''; // Certifique-se de que este seja um formato de data válido
+    $prazo = isset($_POST['due_date']) ? sanitize_text_field($_POST['due_date']) : '';
     $subtarefas = isset($_POST['subtasks']) ? sanitize_text_field($_POST['subtasks']) : '';
     $responsaveis = isset($_POST['responsibles']) ? sanitize_text_field($_POST['responsibles']) : '';
     $table_name = $wpdb->prefix . 'kanban_tarefas';
@@ -62,21 +65,54 @@ function adicionar_tarefa_kanban() {
         'nome_tarefa' => $nome_tarefa,
         'descricao' => $descricao,
         'prazo' => $prazo,
-        'user_id' => $user_id, // Adiciona o ID do usuário
-        'subtarefas' => $subtarefas,
+        'user_id' => $user_id,
         'responsaveis' => $responsaveis
     ));
 
-    // Retorna o ID da nova tarefa para uso no front-end
+    if ($wpdb->last_error) {
+        error_log('Erro ao inserir tarefa principal: ' . $wpdb->last_error);
+        return; // Encerra a função se houver um erro
+    }
+
+    $id_tarefa = $wpdb->insert_id;
+
+    // Processar e salvar as subtarefas
+    if (!empty($subtarefas)) {
+        $lista_subtarefas = explode(',', $subtarefas);
+
+        foreach ($lista_subtarefas as $descricao_subtarefa) {
+            $descricao_subtarefa = trim($descricao_subtarefa);
+            if (!empty($descricao_subtarefa)) {
+                $wpdb->insert('kanban_subtarefas', array(
+                    'id_tarefa' => $id_tarefa,
+                    'descricao' => $descricao_subtarefa,
+                    'status' => 'pendente'
+                ));
+
+                if ($wpdb->last_error) {
+                    error_log('Erro ao inserir subtarefa: ' . $wpdb->last_error);
+                }
+            }
+        }
+    }
+
     echo $wpdb->insert_id;
     wp_die();
 }
+
 
     add_action('wp_ajax_adicionar_tarefa_kanban', 'adicionar_tarefa_kanban');
     add_action('wp_ajax_nopriv_adicionar_tarefa_kanban', 'adicionar_tarefa_kanban');
     
     function adicionar_tarefa_kanban_form() {
-        $html = '<form id="kanban-add-task" class="kanban-form">
+        // Recuperar todos os usuários
+        $users = get_users(array('fields' => array('ID', 'display_name')));
+    
+        // Botão para mostrar o formulário
+        $html = '<button id="mostrar-form-tarefa" class="mostrar-form-button">Adicionar Tarefa</button>';
+    
+        // Início do formulário - note o uso de '.=' para adicionar ao conteúdo existente
+        $html .= '<form id="kanban-add-task" class="kanban-form" style="display:none;">
                     <div class="form-group">
                         <label for="task_name">Nome da Tarefa:</label>
                         <input type="text" name="task_name" placeholder="Nome da Tarefa" required>
@@ -95,15 +131,27 @@ function adicionar_tarefa_kanban() {
                     </div>
                     <div class="form-group">
                         <label for="responsibles">Responsáveis:</label>
-                        <input type="text" name="responsibles" placeholder="Responsáveis">
+                        <select name="responsibles">';
+    
+        // Adicionar cada usuário como uma opção no dropdown
+        foreach ($users as $user) {
+            $html .= '<option value="' . esc_attr($user->ID) . '">' . esc_html($user->display_name) . '</option>';
+        }
+    
+        // Fechar select e continuar o formulário
+        $html .= '</select>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Adicionar Tarefa" class="green-button">
                     </div>
                  </form>';
+    
         return $html;
     }
+    
     add_shortcode('adicionar_tarefa', 'adicionar_tarefa_kanban_form');
+    
+    
     
     
     function calcular_prazo($data_prazo) {
@@ -137,106 +185,73 @@ function adicionar_tarefa_kanban() {
     }
     
 
-    function atualizar_prazos_e_enviar_notificacoes() {
-        global $wpdb;
-
-    $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
-
-    foreach ($tarefas as $tarefa) {
-        $prazo = new DateTime($tarefa->prazo);
-        $data_atual = new DateTime();
-        $intervalo = $data_atual->diff($prazo);
-
-        // Verifica se a tarefa está atrasada ou se falta um dia para o prazo
-        if ($intervalo->invert == 1 || ($intervalo->invert == 0 && $intervalo->days <= 1)) {
-            $mensagem = $intervalo->invert == 1 ?
-                "A tarefa '{$tarefa->nome_tarefa}' está atrasada!" :
-                ($intervalo->days == 1 ? "A tarefa '{$tarefa->nome_tarefa}' vence em 1 dia!" : "A tarefa '{$tarefa->nome_tarefa}' deve ser feita hoje!");
-
-            // Enviar notificação para o dono da tarefa
-            $user_id = $tarefa->user_id; // Supondo que cada tarefa tenha um 'user_id' associado
-
-            $wpdb->insert(
-                $meu_plugin_notificacoes,
-                array(
-                    'user_id' => $user_id,
-                    'mensagem' => $mensagem,
-                    'imagem' => '',
-                    'url_redirecionamento' => 'https://inovetime.com.br/tarefa-1/',
-                    'data_envio' => current_time('mysql'),
-                    'lida' => 0
-                ),
-                array('%d', '%s', '%s', '%s', '%s', '%d')
-            );
-        }
-
-        // Atualize a última data de atualização
-        update_option('ultima_atualizacao_prazos', $data_atual->format('Y-m-d H:i:s'));
-    }
-}
-    
-
-
-    // Função para atualizar o status da subtarefa
-function atualizar_subtarefa() {
-    global $wpdb;
-    $subtarefa_id = $_POST['subtarefa_id'];
-    $concluida = $_POST['concluida'];
-
-    $wpdb->update(
-        'kanban_subtarefas',
-        array('concluida' => $concluida),
-        array('id' => $subtarefa_id)
-    );
-
-    // Enviar resposta
-    wp_send_json_success();
-}
-add_action('wp_ajax_atualizar_subtarefa', 'atualizar_subtarefa');
-
 
     function mostrar_quadro_kanban() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'kanban_tarefas';
+        
+     // Nome da tabela sem o prefixo padrão do WordPress
+        $table_name_subtarefas = 'kanban_subtarefas'; 
         $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
         $user_id = get_current_user_id(); // Pega o ID do usuário atual
+          // Data de 30 dias atrás
+    $data_limite = date('Y-m-d', strtotime('-30 days'));
 
         // Busca apenas as tarefas que pertencem ao usuário atual
         $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id");
-    
+
+      
     
         $html = '<div id="kanban-board">';
     
-     // Coluna 'Para Fazer'
+   // Coluna 'Para Fazer'
 $html .= '<div class="kanban-column kanban-todo" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="todo">
 <h3>Para Fazer</h3>
 <div class="kanban-tasks" data-status="todo">';
-foreach ($tarefas as $tarefa) {
-if ($tarefa->status == 'todo') {
-    $prazo_formatado = calcular_prazo($tarefa->prazo);
-    $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-    data-descricao="' . esc_attr($tarefa->descricao) . '" 
-    data-prazo="' . esc_attr($tarefa->prazo) . '"
-    data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
-    data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
-    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
-}
- // Buscar subtarefas da tarefa atual
- $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
- if ($subtarefas) {
-     $html .= '<ul class="subtarefas">';
-     foreach ($subtarefas as $subtarefa) {
-         $checked = $subtarefa->concluida ? 'checked' : '';
-         $html .= '<li>';
-         $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
-         $html .= esc_html($subtarefa->descricao);
-         $html .= '</li>';
-     }
-     $html .= '</ul>';
- }
 
+
+
+foreach ($tarefas as $tarefa) {
+    if ($tarefa->status == 'todo') {
+
+         // Obter a URL do avatar do responsável e do dono
+         $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
+         $avatar_dono_url = get_avatar_url($tarefa->user_id);
+        // Buscar subtarefas relacionadas à tarefa atual
+        $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
+        $prazo_formatado = calcular_prazo($tarefa->prazo);
+
+        // Iniciar a div da tarefa
+        $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+        data-descricao="' . esc_attr($tarefa->descricao) . '" 
+        data-prazo="' . esc_attr($tarefa->prazo) . '"
+        subtarefa="'. esc_html($subtarefa->descricao) .'"
+        data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
+
+        <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado;
+         // Adicionar as imagens dos avatares
+         $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
+         $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
+
+       // Concatenar as subtarefas em uma string e armazenar de forma oculta
+       $subtarefasString = "";
+       foreach ($subtarefas as $subtarefa) {
+           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
+       }
+
+       // Campo oculto para armazenar as subtarefas
+       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+        
+
+        // Fechar a div da tarefa
+        $html .= '</div>';
+    }
 }
-$html .= '</div></div>';
+
+
+
+$html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
+
 
     
         // Coluna 'Em Andamento'
@@ -245,63 +260,93 @@ $html .= '</div></div>';
                     <div class="kanban-tasks" data-status="doing">';
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'doing') {
+                             // Obter a URL do avatar do responsável e do dono
+         $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
+         $avatar_dono_url = get_avatar_url($tarefa->user_id);
+                            // Buscar subtarefas relacionadas à tarefa atual
+                            $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
                             $prazo_formatado = calcular_prazo($tarefa->prazo);
+                    
+                            // Iniciar a div da tarefa
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
                             data-descricao="' . esc_attr($tarefa->descricao) . '" 
                             data-prazo="' . esc_attr($tarefa->prazo) . '"
-                            data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
+                            subtarefa="'. esc_html($subtarefa->descricao) .'"
                             data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
-                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado . '</div>';
+                    
+                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado;
+                              // Adicionar as imagens dos avatares
+         $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
+         $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
+                    
+                          // Concatenar as subtarefas em uma string e armazenar de forma oculta
+       $subtarefasString = "";
+       foreach ($subtarefas as $subtarefa) {
+           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
+       }
+
+       // Campo oculto para armazenar as subtarefas
+       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+                            // Fechar a div da tarefa
+                            $html .= '</div>';
                         }
-                         // Buscar subtarefas da tarefa atual
-        $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
-        if ($subtarefas) {
-            $html .= '<ul class="subtarefas">';
-            foreach ($subtarefas as $subtarefa) {
-                $checked = $subtarefa->concluida ? 'checked' : '';
-                $html .= '<li>';
-                $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
-                $html .= esc_html($subtarefa->descricao);
-                $html .= '</li>';
-            }
-            $html .= '</ul>';
-        }
-                        
-        }
+                    }
         $html .= '</div></div>';
     
+        
         // Coluna 'Concluído'
         $html .= '<div class="kanban-column kanban-done" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
-        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Concluir Módulo</button>
+        <center>
+        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Concluir Módulo</button></center>
 
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
+
+                
+
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'done') {
-                            
-                            $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-    data-descricao="' . esc_attr($tarefa->descricao) . '" 
-    data-prazo="' . esc_attr($tarefa->prazo) . '"
-    data-subtarefas="' . esc_attr($tarefa->subtarefas) . '"
-    data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
-    <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> </div>';
-}
- // Buscar subtarefas da tarefa atual
- $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE tarefa_id = {$tarefa->id}");
- if ($subtarefas) {
-     $html .= '<ul class="subtarefas">';
-     foreach ($subtarefas as $subtarefa) {
-         $checked = $subtarefa->concluida ? 'checked' : '';
-         $html .= '<li>';
-         $html .= '<input type="checkbox" class="subtarefa-checkbox" data-subtarefa-id="' . $subtarefa->id . '" ' . $checked . '>';
-         $html .= esc_html($subtarefa->descricao);
-         $html .= '</li>';
-     }
-     $html .= '</ul>';
- }
+                            // Pega as datas do formulário
+$data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : date('Y-m-d', strtotime('-30 days'));
+$data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d');
 
-        }
+// Consulta para filtrar tarefas com base nas datas
+$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id AND data_criacao BETWEEN '$data_inicio' AND '$data_fim'");
+
+
+                             // Obter a URL do avatar do responsável e do dono
+         $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
+         $avatar_dono_url = get_avatar_url($tarefa->user_id);
+                            // Buscar subtarefas relacionadas à tarefa atual
+                            $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
+                            $prazo_formatado = calcular_prazo($tarefa->prazo);
+                    
+                            // Iniciar a div da tarefa
+                            $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
+                            data-descricao="' . esc_attr($tarefa->descricao) . '" 
+                            data-prazo="' . esc_attr($tarefa->prazo) . '"
+                            subtarefa="'. esc_html($subtarefa->descricao) .'"
+                            data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
+                    
+                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado;
+                              // Adicionar as imagens dos avatares
+         $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
+         $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
+                    
+                          // Concatenar as subtarefas em uma string e armazenar de forma oculta
+       $subtarefasString = "";
+       foreach ($subtarefas as $subtarefa) {
+           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
+       }
+
+       // Campo oculto para armazenar as subtarefas
+       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+                            // Fechar a div da tarefa
+                            $html .= '</div>';
+                        }
+                    }
         $html .= '</div></div>';
+    
     
         $html .= '</div>'; // Fecha o #kanban-board
     
@@ -346,27 +391,31 @@ $html .= '</div></div>';
 
     function editar_tarefa_kanban() {
         global $wpdb;
-    
+        
 
         
         // Registrar os dados recebidos
         error_log('Recebendo dados de edição da tarefa: ' . print_r($_POST, true));
-    
-        // Verifique o nonce aqui (adicione o código de verificação do nonce)
-    
+        
+        // Verifique o nonce aqui
+     $table_name_subtarefas = $wpdb->prefix . 'kanban_subtarefas';
         $table_name = $wpdb->prefix . 'kanban_tarefas';
-    
+        
         // Aqui você captura os dados do POST
         $id_tarefa = sanitize_text_field($_POST['task_id']);
         $nome_tarefa = sanitize_text_field($_POST['task_name']);
         $descricao = sanitize_text_field($_POST['description']);
-        $prazo = sanitize_text_field($_POST['due_date']); 
-        $subtarefas = sanitize_text_field($_POST['subtasks']);
+        $prazo = sanitize_text_field($_POST['due_date']);
+        $subtarefas = isset($_POST['subtasks']) ? $_POST['subtasks'] : ''; // Aqui as subtarefas devem ser um array ou string JSON
         $responsaveis = sanitize_text_field($_POST['responsibles']);
-    
+        
         // Registrar os dados após a sanitização
         error_log('Dados da tarefa após a sanitização: ID: ' . $id_tarefa . ', Nome: ' . $nome_tarefa . ', Descrição: ' . $descricao . ', Prazo: ' . $prazo);
     
+    
+        
+    
+        
         
     
         // Atualizar a tarefa no banco de dados
@@ -376,7 +425,7 @@ $html .= '</div></div>';
                 'nome_tarefa' => $nome_tarefa, 
                 'descricao' => $descricao, 
                 'prazo' => $prazo, 
-                                'subtarefas' => $subtarefas,
+                           
                 'responsaveis' => $responsaveis
             ), 
             array('id' => $id_tarefa)
@@ -385,13 +434,47 @@ $html .= '</div></div>';
         // Verificar o resultado da atualização
         if ($resultado !== false) {
             error_log('Tarefa atualizada com sucesso. ID: ' . $id_tarefa);
-            wp_send_json(array('message' => 'Sucesso'));
-        } else {
-            error_log('Erro ao atualizar a tarefa. ID: ' . $id_tarefa . ' Erro: ' . $wpdb->last_error);
-            wp_send_json_error(array('message' => 'Erro ao atualizar a tarefa'));
-        }
     
-        wp_die();
+            $subtarefas = isset($_POST['subtasks']) ? explode(',', $_POST['subtasks']) : array();
+    
+            foreach ($subtarefas as $descricao_subtarefa) {
+                $descricao_subtarefa = trim($descricao_subtarefa);
+                if (!empty($descricao_subtarefa)) {
+                    // Verifica se a subtarefa contém um ID
+                    if (strpos($descricao_subtarefa, ':') !== false) {
+                        // Subtarefa existente
+                        list($id_subtarefa, $descricao) = explode(':', $descricao_subtarefa, 2);
+        
+                        if (is_numeric($id_subtarefa)) {
+                            // Atualizar subtarefa existente
+                            $wpdb->update(
+                                $table_name_subtarefas,
+                                array('descricao' => trim($descricao)),
+                                array('id' => intval($id_subtarefa))
+                            );
+                        }
+                    } else {
+                        // Nova subtarefa
+                        $wpdb->insert(
+                            $table_name_subtarefas,
+                            array(
+                                'id_tarefa' => $id_tarefa,
+                                'descricao' => $descricao_subtarefa,
+                                'status' => 'pendente'
+                            )
+                        );
+                    }
+                }
+            }
+        
+            if ($resultado !== false) {
+                wp_send_json(array('message' => 'Sucesso'));
+            } else {
+                wp_send_json_error(array('message' => 'Erro ao atualizar a tarefa'));
+            }
+        
+            wp_die();
+        }
     }
     
     

@@ -179,7 +179,7 @@
 
 /* Azul para tarefas em 'Em Andamento' */
 .kanban-doing .task {
-    border-left: 4px solid blue;
+    border-left: 4px solid rgb(240, 236, 0);
 }
 
 /* Verde para tarefas em 'Concluído' */
@@ -237,5 +237,39 @@
 .subtarefa-concluida label {
     text-decoration: line-through;
 }
+.subtarefas-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 10px;
+  }
 
+  .subtarefa {
+    margin-bottom: 5px;
+  }
+
+  .avatar-responsavel, .avatar-dono {
+    width: 30px;      /* Tamanho do avatar */
+    height: 30px;     /* Altura igual à largura para manter a proporção */
+  
+    object-fit: cover; /* Garante que a imagem cubra toda a área sem distorcer */
+    margin-right: 5px; /* Espaço entre os avatares */
+    border: 2px solid #fff; /* Borda branca ao redor do avatar */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra suave para destacar */
+    margin: 10px;
+}
+
+/* Contêiner para os avatares, se necessário */
+.avatar-container {
+    display: flex; /* Organiza os avatares lado a lado */
+    align-items: center; /* Alinha verticalmente */
+}
+
+img.avatar-dono {
+    margin: -15px;
+}
+.elementor img {
+ 
+     border-radius: 50px !important;
+    
+}
 
