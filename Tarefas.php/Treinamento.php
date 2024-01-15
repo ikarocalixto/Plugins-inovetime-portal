@@ -194,12 +194,13 @@ function adicionar_tarefa_kanban() {
         $table_name_subtarefas = 'kanban_subtarefas'; 
         $tarefas = $wpdb->get_results("SELECT * FROM $table_name");
         $user_id = get_current_user_id(); // Pega o ID do usuário atual
+
+
           // Data de 30 dias atrás
     $data_limite = date('Y-m-d', strtotime('-30 days'));
 
-        // Busca apenas as tarefas que pertencem ao usuário atual
-        $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id");
-
+       // Modifique a consulta para buscar tarefas onde o usuário é o criador ou está listado como responsável
+$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id OR FIND_IN_SET('$user_id', responsaveis)");
       
     
         $html = '<div id="kanban-board">';
@@ -213,6 +214,7 @@ $html .= '<div class="kanban-column kanban-todo" ondrop="window.drop(event)" ond
 
 foreach ($tarefas as $tarefa) {
     if ($tarefa->status == 'todo') {
+        
 
          // Obter a URL do avatar do responsável e do dono
          $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
