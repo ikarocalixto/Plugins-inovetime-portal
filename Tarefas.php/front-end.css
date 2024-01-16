@@ -67,7 +67,9 @@
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    overflow-y: auto; /* Para conteúdo grande */
+    overflow-y: scroll; /* Para conteúdo grande */
+    height: 750px;
+   
 }
 
 #popup-info h2 {
@@ -273,3 +275,7 @@ img.avatar-dono {
     
 }
 
+textarea#descri {
+    max-width: 100%;
+    height: 200px;
+}

@@ -54,7 +54,7 @@ function adicionar_tarefa_kanban() {
 
     // Valide e limpe os dados de entrada
     $nome_tarefa = isset($_POST['task_name']) ? sanitize_text_field($_POST['task_name']) : '';
-    $descricao = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
+    $descricao = isset($_POST['description']) ? wp_kses_post($_POST['description']) : ''; // Alterado para permitir HTML seguro
     $prazo = isset($_POST['due_date']) ? sanitize_text_field($_POST['due_date']) : '';
     $subtarefas = isset($_POST['subtasks']) ? sanitize_text_field($_POST['subtasks']) : '';
     $responsaveis = isset($_POST['responsibles']) ? sanitize_text_field($_POST['responsibles']) : '';
@@ -275,8 +275,6 @@ function adicionar_tarefa_kanban() {
         $user_id = get_current_user_id(); // Pega o ID do usuário atual
 
 
-          // Data de 30 dias atrás
-    $data_limite = date('Y-m-d', strtotime('-30 days'));
 
        // Modifique a consulta para buscar tarefas onde o usuário é o criador ou está listado como responsável
 $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id OR FIND_IN_SET('$user_id', responsaveis)");
@@ -357,7 +355,8 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
                     
                             // Iniciar a div da tarefa
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
-                            data-descricao="' . esc_attr($tarefa->descricao) . '" 
+                         data-descricao="' . esc_attr($tarefa->descricao) . '" 
+ 
                             data-prazo="' . esc_attr($tarefa->prazo) . '"
                             subtarefa="'. esc_html($subtarefa->descricao) .'"
                             data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
@@ -394,12 +393,15 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
 
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'done') {
+
+                                // Data de 30 dias atrás
+    $data_limite = date('Y-m-d', strtotime('-30 days'));
                             // Pega as datas do formulário
 $data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : date('Y-m-d', strtotime('-30 days'));
 $data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d');
 
-// Consulta para filtrar tarefas com base nas datas
-$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id AND data_criacao BETWEEN '$data_inicio' AND '$data_fim'");
+$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id AND status = 'done' AND data_criacao >= '$data_limite'");
+
 
 
                              // Obter a URL do avatar do responsável e do dono
@@ -466,6 +468,11 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
                 <div class="popup-section-title">Prazo</div>
                 <p id="popup-prazo">Data do Prazo</p>
             </div>
+            <div class="popup-section">
+            <div class="popup-section-title">Avatares</div>
+            <img id="popup-avatar-responsavel" src="" alt="Avatar Responsável">
+            <img id="popup-avatar-dono" src="" alt="Avatar Dono">
+        </div>
             <!-- Botão para fechar o popup -->
             <button id="popup-close-pp">Fechar</button>
         </div>
@@ -492,7 +499,7 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
         // Aqui você captura os dados do POST
         $id_tarefa = sanitize_text_field($_POST['task_id']);
         $nome_tarefa = sanitize_text_field($_POST['task_name']);
-        $descricao = sanitize_text_field($_POST['description']);
+        $descricao = isset($_POST['description']) ? wp_kses_post($_POST['description']) : ''; // Alterado para permitir HTML seguro
         $prazo = sanitize_text_field($_POST['due_date']);
         $subtarefas = isset($_POST['subtasks']) ? $_POST['subtasks'] : ''; // Aqui as subtarefas devem ser um array ou string JSON
         $responsaveis = sanitize_text_field($_POST['responsibles']);
@@ -720,12 +727,19 @@ function ajax_iniciar_treinamento_trainee() {
 
     $tarefas_treinamento = [
         // Módulo 1
-        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '...', 'modulo' => 1],
-        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '...', 'modulo' => 1],
-        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => '...', 'modulo' => 1],
-        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
+        aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
+
+            ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
+            
+        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
+
+        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => 'Familiarize-se com os detalhes da nossa parceria. Leia atentamente o briefing e o contrato para entender suas responsabilidades e benefícios como franqueado da Lady Griffe. Se tiver dúvidas, não hesite em entrar em contato conosco.', 'modulo' => 1],
+        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => 'Com o seu domín
+        io registrado, é hora de apontá-lo para a sua loja online. Este passo é crucial para garantir que seus clientes encontrem sua loja na internet. Siga as instruções detalhadas para configurar o apontamento do domínio e garantir que sua loja esteja acessível online.', 'modulo' => 1],
     
         // Módulo 2
+        ['nome' => 'Introdução - Modulo 2', 'descricao' => '<iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
         ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
         ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
         ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
@@ -781,7 +795,8 @@ function ajax_carregar_mais_tarefas() {
 
     $tarefas_treinamento = [
         // Módulo 1
-        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '...', 'modulo' => 1],
+        ['nome' => 'introdução - Modulo 1', 'descricao' => ' Assista o video <iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>...', 'modulo' => 1],
+        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => ' ...', 'modulo' => 1],
         ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '...', 'modulo' => 1],
         ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => '...', 'modulo' => 1],
         ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 1],

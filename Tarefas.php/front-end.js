@@ -130,6 +130,7 @@ $(document).on('click', '.task', function() {
     console.log('Texto da tarefa:', $(this).text());
     var nomeTarefa = $(this).text().split('-')[0].trim();
     
+    
     var subtarefasHtml = '';
     
     // Iterar sobre as subtarefas para criar o HTML
@@ -141,25 +142,41 @@ subtarefas.forEach(function(subtarefa) {
                           '</div>';
     }
 });
-
+ 
     
 
     var responsaveis = $(this).data('responsaveis');
     console.log('Subtarefas:', subtarefasHtml);
     console.log('Responsáveis:', responsaveis);
+    console.log(descricao); 
+
+    // Extrair o código do iframe usando regex
+    var iframeRegex = /<iframe[^>]*src=["']([^"']*)["'][^>]*>(.*?)<\/iframe>/g;
+    var iframeMatch = iframeRegex.exec(descricao);
+    var iframeHtml = iframeMatch ? iframeMatch[0] : '';
+    
+    // Remover o iframe da descrição para exibir apenas o texto na textarea
+var descricaoSemIframe = descricao.replace(iframeRegex, '').trim();
+
+
+// Área para visualizar o vídeo do YouTube
+var visualizacaoHtml = iframeHtml ? '<div class="descricao-visualizacao">' + iframeHtml + '</div>' : '';
+
 
     var formHtml = '<form id="form-editar-tarefa">' +
                    '<input type="hidden" name="task_id" value="' + taskId + '">' +
                    '<label for="task_name">Nome da Tarefa</label>' +
                    '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
+                   
                    '<label for="description">Descrição</label>' +
-                   '<textarea name="description">' + descricao + '</textarea>' +
+                   '<textarea  id="descri" name="description">' + descricaoSemIframe + '</textarea>' +
                    '<label for="due_date">Prazo</label>' +
                    '<input type="date" name="due_date" value="' + prazo + '">' +
                    '<label for="subtasks">Subtarefas</label>' +
                    '<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
                    '<label for="responsibles">Responsáveis</label>' +
                    '<input type="text" name="responsibles" value="' + responsaveis + '">' +
+                 
                    '<button type="submit">Salvar</button>' +
                    '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
                    '</form>';
@@ -168,9 +185,9 @@ subtarefas.forEach(function(subtarefa) {
 
         
     
-        $('#popup-info').html(formHtml).show();
-    });
-    
+     // Mostra a visualização do HTML e o formulário
+    $('#popup-info').html(visualizacaoHtml + formHtml).show();
+});
    
     
     
