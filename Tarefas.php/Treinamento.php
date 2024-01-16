@@ -152,37 +152,116 @@ function adicionar_tarefa_kanban() {
     add_shortcode('adicionar_tarefa', 'adicionar_tarefa_kanban_form');
     
     
-    
-    
     function calcular_prazo($data_prazo) {
+        global $wpdb;
         $data_atual = new DateTime();
         $prazo = new DateTime($data_prazo);
-        $intervalo = $data_atual->diff($prazo);
     
-        if ($data_atual > $prazo) {
-            // Se a data atual for maior que a data do prazo, então há um atraso
-            if ($intervalo->m >= 1) {
-                return 'Atraso de ' . $intervalo->m . ' mês(es)';
-            } elseif ($intervalo->d >= 7) {
-                return 'Atraso de ' . floor($intervalo->d / 7) . ' semana(s)';
-            } elseif ($intervalo->d > 0) {
-                return 'Atraso de ' . $intervalo->d . ' dia(s)';
-            } else {
-                return 'Atraso de hoje';
+        $table_name = $wpdb->prefix . 'kanban_tarefas';
+        $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE status != 'done'");
+    
+        foreach ($tarefas as $tarefa) {
+            $data_prazo_tarefa = new DateTime($tarefa->prazo);
+            $intervalo_tarefa = $data_atual->diff($data_prazo_tarefa);
+    
+            // Verifica se a tarefa está prestes a vencer e a notificação ainda não foi enviada
+            if ($intervalo_tarefa->days == 1 && $data_atual < $data_prazo_tarefa && !$tarefa->notificacao_prazo_proximo_enviada) {
+                $mensagem = "A tarefa '{$tarefa->nome_tarefa}' está prestes a vencer.";
+                enviar_notificacao($wpdb, $tarefa->user_id, $mensagem, $tarefa->id, 'prazo_proximo');
             }
-        } else {
-            // Se a data do prazo ainda não passou
-            if ($intervalo->m >= 1) {
-                return $intervalo->m . ' mês(es)';
-            } elseif ($intervalo->d >= 7) {
-                return floor($intervalo->d / 7) . ' semana(s)';
-            } elseif ($intervalo->d > 0) {
-                return $intervalo->d . ' dia(s)';
-            } else {
-                return 'Hoje';
+    
+            // Verifica se a tarefa está atrasada e a notificação ainda não foi enviada
+            if ($intervalo_tarefa->days == 1 && $data_atual > $data_prazo_tarefa && !$tarefa->notificacao_prazo_ultrapassado_enviada) {
+                $mensagem = "A tarefa '{$tarefa->nome_tarefa}' está atrasada.";
+                enviar_notificacao($wpdb, $tarefa->user_id, $mensagem, $tarefa->id, 'prazo_ultrapassado');
             }
         }
+    
+        update_option('ultima_execucao_calcular_prazo', $data_atual->format('Y-m-d H:i:s'));
+    
+        // Retorna mensagem baseada no status do prazo
+        return mensagem_status_prazo($data_atual->diff($prazo), $data_atual, $prazo);
     }
+    
+    
+    function gerar_mensagem_prazo($intervalo, $nome_tarefa, $data_atual, $data_prazo) {
+        if ($intervalo->days == 1) {
+            if ($data_atual < $data_prazo) {
+                return "A tarefa '{$nome_tarefa}' está prestes a vencer. Verifique o prazo!";
+            } else {
+                return "A tarefa '{$nome_tarefa}' está atrasada. Atualize o status!";
+            }
+        }
+        return '';
+    }
+
+
+    function enviar_notificacao($wpdb, $user_id, $mensagem, $id_tarefa, $tipo_notificacao) {
+        // Nome da tabela de tarefas
+        $table_name_tarefas = $wpdb->prefix . 'kanban_tarefas';
+    
+        // Determinar o nome da coluna com base no tipo de notificação
+        $coluna_notificacao = $tipo_notificacao == 'prazo_proximo' ? 'notificacao_prazo_proximo_enviada' : 'notificacao_prazo_ultrapassado_enviada';
+    
+        // Verificar se a notificação já foi enviada
+        $notificacao_enviada = $wpdb->get_var($wpdb->prepare(
+            "SELECT $coluna_notificacao FROM $table_name_tarefas WHERE id = %d",
+            $id_tarefa
+        ));
+    
+        // Se a notificação ainda não foi enviada, enviar e atualizar o banco de dados
+        if ($notificacao_enviada == 0) {
+            $wpdb->insert(
+                "{$wpdb->prefix}meu_plugin_notificacoes",
+                array(
+                    'user_id' => $user_id,
+                    'mensagem' => $mensagem,
+                    'imagem' => '',
+                    'url_redirecionamento' => '#',
+                    'data_envio' => current_time('mysql'),
+                    'lida' => 0
+                ),
+                array('%d', '%s', '%s', '%s', '%s', '%d')
+            );
+    
+            // Atualizar a flag na tabela de tarefas
+            $wpdb->
+    update(
+    $table_name_tarefas,
+    array($coluna_notificacao => 1),
+    array('id' => $id_tarefa),
+    array('%d'),
+    array('%d')
+    );
+    }
+    }
+ 
+    function mensagem_status_prazo($intervalo, $data_atual, $prazo) {
+        if ($data_atual > $prazo) {
+            if ($intervalo
+    ->m >= 1) {
+    return 'Atraso de ' . $intervalo->m . ' mês(es)';
+    } elseif ($intervalo->d >= 7) {
+    return 'Atraso de ' . floor($intervalo->d / 7) . ' semana(s)';
+    } elseif ($intervalo->d > 0) {
+    return 'Atraso de ' . $intervalo->d . ' dia(s)';
+    } else {
+    return 'Atraso de hoje';
+    }
+    } else {
+    if ($intervalo->m >= 1) {
+    return $intervalo->m . ' mês(es) restantes';
+    } elseif ($intervalo->d >= 7) {
+    return floor($intervalo->d / 7) . ' semana(s) restantes';
+    } elseif ($intervalo->d > 0) {
+    return $intervalo->d . ' dia(s) restantes';
+    } else {
+    return 'Hoje';
+    }
+    }
+    }
+   
+    
     
 
 
@@ -201,6 +280,9 @@ function adicionar_tarefa_kanban() {
 
        // Modifique a consulta para buscar tarefas onde o usuário é o criador ou está listado como responsável
 $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id OR FIND_IN_SET('$user_id', responsaveis)");
+
+
+
       
     
         $html = '<div id="kanban-board">';
@@ -213,8 +295,10 @@ $html .= '<div class="kanban-column kanban-todo" ondrop="window.drop(event)" ond
 
 
 foreach ($tarefas as $tarefa) {
+       
     if ($tarefa->status == 'todo') {
         
+      
 
          // Obter a URL do avatar do responsável e do dono
          $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
@@ -243,6 +327,8 @@ foreach ($tarefas as $tarefa) {
 
        // Campo oculto para armazenar as subtarefas
        $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+
+       
         
 
         // Fechar a div da tarefa
@@ -410,6 +496,7 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
         $prazo = sanitize_text_field($_POST['due_date']);
         $subtarefas = isset($_POST['subtasks']) ? $_POST['subtasks'] : ''; // Aqui as subtarefas devem ser um array ou string JSON
         $responsaveis = sanitize_text_field($_POST['responsibles']);
+        
         
         // Registrar os dados após a sanitização
         error_log('Dados da tarefa após a sanitização: ID: ' . $id_tarefa . ', Nome: ' . $nome_tarefa . ', Descrição: ' . $descricao . ', Prazo: ' . $prazo);
