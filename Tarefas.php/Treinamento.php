@@ -730,20 +730,24 @@ function ajax_iniciar_treinamento_trainee() {
         ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
         aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
 
-            ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
+            ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link: <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Registre seu domínio</button>  e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
             
         ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
 
-        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => 'Familiarize-se com os detalhes da nossa parceria. Leia atentamente o briefing e o contrato para entender suas responsabilidades e benefícios como franqueado da Lady Griffe. Se tiver dúvidas, não hesite em entrar em contato conosco.', 'modulo' => 1],
-        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => 'Com o seu domín
-        io registrado, é hora de apontá-lo para a sua loja online. Este passo é crucial para garantir que seus clientes encontrem sua loja na internet. Siga as instruções detalhadas para configurar o apontamento do domínio e garantir que sua loja esteja acessível online.', 'modulo' => 1],
+        ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => 'O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+
+        Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
+
+      
     
         // Módulo 2
-        ['nome' => 'Introdução - Modulo 2', 'descricao' => '<iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+        ['nome' => 'Introdução - Modulo 1.1', 'descricao' => ' Conhecendo O Portal  Lady Griffe <iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+        ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 2],
         ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
         ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
         ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Definindo Sua Visão, Missão e Valores: A Base do Seu Negócio', 'descricao' => '...', 'modulo' => 2],
+        
     
         // Módulo 3
         ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
@@ -767,6 +771,7 @@ foreach ($tarefas_treinamento as $tarefa) {
             'nome_tarefa' => $tarefa['nome'],
             'descricao' => $tarefa['descricao'],
             'prazo' => date('Y-m-d', strtotime('+1 week')),
+            'responsaveis' => $responsaveis['responsaveis'],
             'user_id' => $user_id,
             'status' => 'todo',
             'modulo' => $tarefa['modulo'] // Adicionando a informação do módulo
@@ -794,25 +799,34 @@ function ajax_carregar_mais_tarefas() {
     $table_name = $wpdb->prefix . 'kanban_tarefas';
 
     $tarefas_treinamento = [
-        // Módulo 1
-        ['nome' => 'introdução - Modulo 1', 'descricao' => ' Assista o video <iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>...', 'modulo' => 1],
-        ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => ' ...', 'modulo' => 1],
-        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '...', 'modulo' => 1],
-        ['nome' => 'Briefing e Contrato: Entendendo a Parceria com a Lady Griffe', 'descricao' => '...', 'modulo' => 1],
-        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 1],
-    
-        // Módulo 2
-        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Definindo Sua Visão, Missão e Valores: A Base do Seu Negócio', 'descricao' => '...', 'modulo' => 2],
-    
-        // Módulo 3
-        ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
-    
+           // Módulo 1
+           ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
+           aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
+   
+               ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
+               
+           ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
+   
+           ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => 'O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+   
+           Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
+   
+         
+       
+           // Módulo 2
+           ['nome' => 'Introdução - Modulo 1.1', 'descricao' => ' Conhecendo O Portal  Lady Griffe <iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+           ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
+           ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 2],
+           ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
+           ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
+           ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+           
+       
+           // Módulo 3
+           ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
+           ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
+           ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
+           ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
         // Módulo 4
         ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
         ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],
@@ -845,6 +859,7 @@ function ajax_carregar_mais_tarefas() {
         $wpdb->insert($table_name, array(
             'nome_tarefa' => $tarefa['nome'],
             'descricao' => $tarefa['descricao'],
+            'responsaveis' => $responsaveis['responsaveis'],
             'prazo' => date('Y-m-d', strtotime('+1 week')),
             'user_id' => $user_id,
             'status' => 'todo',

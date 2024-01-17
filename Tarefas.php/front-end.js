@@ -122,72 +122,88 @@ jQuery(document).ready(function($) {
     
     
     
-$(document).on('click', '.task', function() {
-    var taskId = $(this).attr('id').split('-')[1];
-    var descricao = $(this).data('descricao');
-    var prazo = $(this).data('prazo');
-    var subtarefas = $(this).find('.subtarefas-data').val().split('; ');
-    console.log('Texto da tarefa:', $(this).text());
-    var nomeTarefa = $(this).text().split('-')[0].trim();
-    
-    
-    var subtarefasHtml = '';
-    
-    // Iterar sobre as subtarefas para criar o HTML
-subtarefas.forEach(function(subtarefa) {
-    if (subtarefa && subtarefa.trim() !== '')  {
-        subtarefasHtml += '<div class="subtarefa-item">' +
-                          '<input type="checkbox" class="subtarefa-checkbox">' +
-                          '<span class="subtarefa-nome">' + subtarefa.trim() + '</span>' +
-                          '</div>';
-    }
+$(document).ready(function() {
+    $(document).on('click', '.task', function() {
+        var taskId = $(this).attr('id').split('-')[1];
+        var descricao = $(this).data('descricao');
+        var prazo = $(this).data('prazo');
+        var subtarefas = $(this).find('.subtarefas-data').val().split('; ');
+        var nomeTarefa = $(this).text().split('-')[0].trim();
+
+        var subtarefasHtml = '';
+        subtarefas.forEach(function(subtarefa) {
+            if (subtarefa && subtarefa.trim() !== '')  {
+                subtarefasHtml += '<div class="subtarefa-item">' +
+                                  '<input type="checkbox" class="subtarefa-checkbox">' +
+                                  '<span class="subtarefa-nome">' + subtarefa.trim() + '</span>' +
+                                  '</div>';
+            }
+        });
+
+        var responsaveis = $(this).data('responsaveis');
+
+        // Regex para extrair elementos HTML
+        var iframeRegex = /<iframe[^>]*src=["']([^"']*)["'][^>]*>(.*?)<\/iframe>/g;
+        var buttonRegex = /<button[^>]*>(.*?)<\/button>/g;
+        var linkRegex = /<a[^>]*href=["']([^"']*)["'][^>]*>(.*?)<\/a>/g;
+
+        var iframeMatch = iframeRegex.exec(descricao);
+        var buttonMatch = buttonRegex.exec(descricao);
+        var linkMatch = linkRegex.exec(descricao);
+
+        var iframeHtml = iframeMatch ? iframeMatch[0] : '';
+        var buttonHtml = buttonMatch ? buttonMatch[0] : '';
+        var linkHtml = linkMatch ? linkMatch[0] : '';
+
+        var descricaoSemIframe = descricao.replace(iframeRegex, '').trim();
+        var descricaoSemButton = descricaoSemIframe.replace(buttonRegex, '').trim();
+        var descricaoFinal = descricaoSemButton.replace(linkRegex, '').trim();
+
+        var visualizacaoHtml = '';
+        if (iframeHtml) {
+            visualizacaoHtml += '<div class="descricao-visualizacao">' + iframeHtml + '</div>';
+        }
+        if (buttonHtml) {
+            visualizacaoHtml += '<div class="button-visualizacao">' + buttonHtml + '</div>';
+        }
+        if (linkHtml) {
+            visualizacaoHtml += '<div class="link-visualizacao">' + linkHtml + '</div>';
+        }
+
+        var formHtml = '<form id="form-editar-tarefa">' +
+                       '<input type="hidden" name="task_id" value="' + taskId + '">' +
+                       '<label for="task_name">Nome da Tarefa</label>' +
+                       '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
+                       '<label for="description">Descrição</label>' +
+                       '<textarea id="descri" name="description">' + descricaoFinal + '</textarea>' +
+                       '<label for="due_date">Prazo</label>' +
+                       '<input type="date" name="due_date" value="' + prazo + '">' +
+                       '<label for="subtasks">Subtarefas</label>' +
+                       '<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
+                       '<label for="responsibles">Responsáveis</label>' +
+                       '<input type="text" name="responsibles" value="' + responsaveis + '">' +
+                       '<button type="submit">Salvar</button>' +
+                       '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
+                       '</form>';
+
+                       
+                       $(document).ready(function() {
+                        $(document).on('click', '.link-button', function() {
+                            var url = $(this).data('href');
+                            if (url) {
+                                window.location.href = url;
+                            }
+                        });
+                    });
+                    
+
+
+        $('#popup-info').html(visualizacaoHtml + formHtml).show();
+    });
 });
- 
-    
-
-    var responsaveis = $(this).data('responsaveis');
-    console.log('Subtarefas:', subtarefasHtml);
-    console.log('Responsáveis:', responsaveis);
-    console.log(descricao); 
-
-    // Extrair o código do iframe usando regex
-    var iframeRegex = /<iframe[^>]*src=["']([^"']*)["'][^>]*>(.*?)<\/iframe>/g;
-    var iframeMatch = iframeRegex.exec(descricao);
-    var iframeHtml = iframeMatch ? iframeMatch[0] : '';
-    
-    // Remover o iframe da descrição para exibir apenas o texto na textarea
-var descricaoSemIframe = descricao.replace(iframeRegex, '').trim();
-
-
-// Área para visualizar o vídeo do YouTube
-var visualizacaoHtml = iframeHtml ? '<div class="descricao-visualizacao">' + iframeHtml + '</div>' : '';
-
-
-    var formHtml = '<form id="form-editar-tarefa">' +
-                   '<input type="hidden" name="task_id" value="' + taskId + '">' +
-                   '<label for="task_name">Nome da Tarefa</label>' +
-                   '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
-                   
-                   '<label for="description">Descrição</label>' +
-                   '<textarea  id="descri" name="description">' + descricaoSemIframe + '</textarea>' +
-                   '<label for="due_date">Prazo</label>' +
-                   '<input type="date" name="due_date" value="' + prazo + '">' +
-                   '<label for="subtasks">Subtarefas</label>' +
-                   '<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
-                   '<label for="responsibles">Responsáveis</label>' +
-                   '<input type="text" name="responsibles" value="' + responsaveis + '">' +
-                 
-                   '<button type="submit">Salvar</button>' +
-                   '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
-                   '</form>';
 
 
 
-        
-    
-     // Mostra a visualização do HTML e o formulário
-    $('#popup-info').html(visualizacaoHtml + formHtml).show();
-});
    
     
     
@@ -258,6 +274,8 @@ var visualizacaoHtml = iframeHtml ? '<div class="descricao-visualizacao">' + ifr
                 updatedTask.data('subtarefas', taskData.subtasks);
                 updatedTask.data('responsaveis', taskData.responsibles);
                 $('#popup-info').hide();
+                alert('Sua tarefa foi salva com sucesso!');
+        location.reload(); // Isto irá recarregar a página
             },
             error: function(xhr, status, error) {
                 console.error('Erro na requisição AJAX:', status, error);
