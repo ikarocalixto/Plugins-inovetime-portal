@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Meu Quadro Kanban
  * Description: Um plugin para criar um quadro Kanban interativo.
- * Version: 1.0
- * Author: Seu Nome
+ * Version: 2.7
+ * Author: IKARO CALIXTO- INOVETIME
  */
 
  function meu_kanban_activate() {
@@ -409,7 +409,7 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
          $avatar_dono_url = get_avatar_url($tarefa->user_id);
                             // Buscar subtarefas relacionadas à tarefa atual
                             $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
-                            $prazo_formatado = calcular_prazo($tarefa->prazo);
+                        
                     
                             // Iniciar a div da tarefa
                             $html .= '<div id="task-' . $tarefa->id . '" class="task" draggable="true" ondragstart="window.drag(event)" 
@@ -418,7 +418,7 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
                             subtarefa="'. esc_html($subtarefa->descricao) .'"
                             data-responsaveis="' . esc_attr($tarefa->responsaveis) . '">
                     
-                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> - Prazo: ' . $prazo_formatado;
+                            <strong>' . esc_html($tarefa->nome_tarefa) . '</strong> ' ;
                               // Adicionar as imagens dos avatares
          $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
          $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
@@ -450,31 +450,14 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
 </div>
 
         <!-- Popup para exibir informações da tarefa -->
-        <span id="popup-close-pp">&times;</span>
-        <div id="popup-info" style="display:none;">
+       
+   
         
         
-        <span id="popup-close-pp" style="cursor: pointer; position: absolute; top: 10px; right: 15px; font-size: 20px;">&times;</span>
-            <h2>Detalhes da Tarefa</h2>
-            <div class="popup-section">
-                <div class="popup-section-title">Título</div>
-                <p id="popup-titulo">Nome da Tarefa</p>
-            </div>
-            <div class="popup-section">
-                <div class="popup-section-title">Descrição</div>
-                <p id="popup-descricao">Descrição da Tarefa</p>
-            </div>
-            <div class="popup-section">
-                <div class="popup-section-title">Prazo</div>
-                <p id="popup-prazo">Data do Prazo</p>
-            </div>
-            <div class="popup-section">
-            <div class="popup-section-title">Avatares</div>
-            <img id="popup-avatar-responsavel" src="" alt="Avatar Responsável">
-            <img id="popup-avatar-dono" src="" alt="Avatar Dono">
+   
+          
         </div>
-            <!-- Botão para fechar o popup -->
-            <button id="popup-close-pp">Fechar</button>
+           
         </div>
     ';
     
@@ -730,23 +713,38 @@ function ajax_iniciar_treinamento_trainee() {
         ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
         aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
 
-            ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link: <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Registre seu domínio</button>  e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
+            ['nome' => 'Definição do Nome da Sua Loja ', 'descricao' => ' <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Defina o nome da sua Loja</button> O nome da sua loja é uma das coisas mais importantes que você pode fazer para o seu negócio. Ao escolher um nome para sua loja franqueada Lady Griffe, lembre-se dos seguintes pontos:
+                Reflita sua marca: O nome da sua loja deve refletir os valores e a personalidade da sua marca. Deve ser algo que os clientes lembrem e que represente o que sua loja oferece.
+                Atraia seus clientes-alvo: Pense no tipo de cliente que você deseja atrair. 
+                Seja fácil de lembrar: O nome da sua loja deve ser fácil de lembrar e pronunciar. Isso facilitará para os clientes encontrarem sua loja e lembrarem dela. 
+                clique no botão acima e nomeie sua loja com personalidade e criatividade!
+                Nos envie suas ideias e receba um feedback de aprovação ou sugestões em até 72 horas. "', 'modulo' => 1],
             
-        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
+        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '  <button class="link-button" data-href="https://registro.br/">Registre seu domínio</button> Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
 
-        ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => 'O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+        ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/qsm_quiz/briefing-para-design-de-marca-branding/">Preencha o Briefing</button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
 
         Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
 
       
     
         // Módulo 2
-        ['nome' => 'Introdução - Modulo 1.1', 'descricao' => ' Conhecendo O Portal  Lady Griffe <iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
-        ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
-        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Introdução - Modulo 1.1 - Conhecendo seu Portal', 'descricao' => ' Explore o incrível Portal de Franqueados Lady Griffe! Neste vídeo, oferecemos um tour completo pelas funcionalidades que tornarão sua experiência como franqueado ainda mais bem-sucedida. Descubra como acessar suporte, gerenciar sua loja, aproveitar promoções exclusivas e muito mais. Este é o seu guia essencial para alcançar o sucesso na franquia Lady Griffe.  <iframe width="853" height="480" src="https://www.youtube.com/embed/htR6acwLbjQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+        ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => 'Em breve, iniciaremos o processo de formalização da nossa parceria através da assinatura do contrato. Para facilitar esse procedimento, adotamos um sistema totalmente digital. Você receberá um link por meio do qual poderá acessar o contrato. Pedimos que o revise cuidadosamente para se familiarizar com todos os termos e condições acordados.
+
+        Após a revisão, é essencial que você prossiga com a assinatura do documento para concretizar a parceria. Para isso, solicitamos que abra um chamado conosco, por meio do qual enviaremos o contrato diretamente para o seu e-mail. Este e-mail incluirá instruções detalhadas sobre como proceder com a assinatura eletrônica, um processo rápido e seguro.
+        
+        Ressaltamos a importância desta etapa, pois a assinatura do contrato é um passo obrigatório e fundamental para a efetivação da nossa colaboração. Estamos à disposição para esclarecer quaisquer dúvidas ou oferecer assistência durante este processo, garantindo que ele ocorra de forma clara e eficiente.', 'modulo' => 2],
+        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
+        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => 'A importância do logotipo profissional para a marca!
+        Um logotipo ajuda a criar uma identidade visual consistente para a sua empresa, o que é essencial para uma marca forte.
+        Um logotipo é a identidade visual da sua empresa. 
+        Ele é a primeira coisa que as pessoas veem quando se deparam com a sua marca, por isso é importante que ele seja bem projetado e transmita a mensagem certa. Não deixe que o seu logotipo seja um obstáculo para o sucesso da sua empresa. Garanta o logotipo perfeito para a sua marca e comece a colher os benefícios hoje mesmo! 
+        
+        Clique aqui e aproveite esta oportunidade e garanta o logotipo perfeito para a sua empresa', 'modulo' => 2],
+        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/produto/logotipo-criacao-de-redes-sociais/">Adquira agora seu Logo </button> 
+        <iframe width="848" height="480" src="https://www.youtube.com/embed/2vlHrsUHBlI" title="Criação do Logo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
+        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => 'Você pode complementar sua presença online com o WhatsApp Business. Para isso, basta adquirir um novo chip de celular e não é necessário comprar outro celular. Após adquirir o chip, envie o nome do seu Instagram  e o seu novo numero, através de um chamado para nossa equipe. Iremos ajudá-lo a incorporar essas informações ao seu site para uma presença online completa', 'modulo' => 2],
         
     
         // Módulo 3
@@ -814,12 +812,18 @@ function ajax_carregar_mais_tarefas() {
          
        
            // Módulo 2
-           ['nome' => 'Introdução - Modulo 1.1', 'descricao' => ' Conhecendo O Portal  Lady Griffe <iframe width="917" height="516" src="https://www.youtube.com/embed/xTXISVpUMCI" title="Metodologia Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
-           ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
-           ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '...', 'modulo' => 2],
-           ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'responsaveis'=>'27', 'descricao' => '...', 'modulo' => 2],
-           ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '...', 'modulo' => 2],
-           ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => '...', 'modulo' => 2],
+        ['nome' => 'Introdução - Modulo 1.1 - Conhecendo seu Portal', 'descricao' => ' Explore o incrível Portal de Franqueados Lady Griffe! Neste vídeo, oferecemos um tour completo pelas funcionalidades que tornarão sua experiência como franqueado ainda mais bem-sucedida. Descubra como acessar suporte, gerenciar sua loja, aproveitar promoções exclusivas e muito mais. Este é o seu guia essencial para alcançar o sucesso na franquia Lady Griffe.  <iframe width="853" height="480" src="https://www.youtube.com/embed/htR6acwLbjQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+            ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => 'Em breve, iniciaremos o processo de formalização da nossa parceria através da assinatura do contrato. Para facilitar esse procedimento, adotamos um sistema totalmente digital. Você receberá um link por meio do qual poderá acessar o contrato. Pedimos que o revise cuidadosamente para se familiarizar com todos os termos e condições acordados.
+    
+            Após a revisão, é essencial que você prossiga com a assinatura do documento para concretizar a parceria. Para isso, solicitamos que abra um chamado conosco, por meio do qual enviaremos o contrato diretamente para o seu e-mail. Este e-mail incluirá instruções detalhadas sobre como proceder com a assinatura eletrônica, um processo rápido e seguro.
+            
+            Ressaltamos a importância desta etapa, pois a assinatura do contrato é um passo obrigatório e fundamental para a efetivação da nossa colaboração. Estamos à disposição para esclarecer quaisquer dúvidas ou oferecer assistência durante este processo, garantindo que ele ocorra de forma clara e eficiente.', 'modulo' => 2],
+            ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
+            ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/produto/logotipo/">Adquira agora seu Logo </button> 
+            <iframe width="848" height="480" src="https://www.youtube.com/embed/2vlHrsUHBlI" title="Criação do Logo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
+            ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '  Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
+            ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => 'Você pode complementar sua presença online com o WhatsApp Business. Para isso, basta adquirir um novo chip de celular e não é necessário comprar outro celular. Após adquirir o chip, envie o nome do seu Instagram  e o seu novo numero, através de um chamado para nossa equipe. Iremos ajudá-lo a incorporar essas informações ao seu site para uma presença online completa', 'modulo' => 2],
+            
            
        
            // Módulo 3
@@ -827,6 +831,8 @@ function ajax_carregar_mais_tarefas() {
            ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
            ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
            ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
+
+
         // Módulo 4
         ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
         ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],

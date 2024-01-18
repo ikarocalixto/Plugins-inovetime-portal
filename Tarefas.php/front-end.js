@@ -1,3 +1,6 @@
+
+
+
 jQuery(document).ready(function($) {
       // Evento de clique para o botão 'Adicionar Tarefa'
       $('#mostrar-form-tarefa').click(function() {
@@ -124,6 +127,7 @@ jQuery(document).ready(function($) {
     
 $(document).ready(function() {
     $(document).on('click', '.task', function() {
+        
         var taskId = $(this).attr('id').split('-')[1];
         var descricao = $(this).data('descricao');
         var prazo = $(this).data('prazo');
@@ -171,6 +175,8 @@ $(document).ready(function() {
         }
 
         var formHtml = '<form id="form-editar-tarefa">' +
+        ' <span id="popup-close-pp">&times;</span>' +  
+
                        '<input type="hidden" name="task_id" value="' + taskId + '">' +
                        '<label for="task_name">Nome da Tarefa</label>' +
                        '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
@@ -186,15 +192,18 @@ $(document).ready(function() {
                        '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
                        '</form>';
 
+
                        
-                       $(document).ready(function() {
-                        $(document).on('click', '.link-button', function() {
-                            var url = $(this).data('href');
-                            if (url) {
-                                window.location.href = url;
-                            }
-                        });
-                    });
+                    $(document).ready(function() {
+    $(document).on('click', '.link-button', function() {
+        var url = $(this).data('href');
+        if (url) {
+            window.open(url, '_blank');
+        }
+    });
+});
+
+
                     
 
 
@@ -288,12 +297,11 @@ $(document).ready(function() {
     });
 
 
-    $(document).ready(function() {
-        // Fechar o popup ao clicar no botão 'X'
-        $('#popup-close-pp').click(function() {
-            $('#popup-info').hide();
-            $('#popup-background').hide(); // Não esqueça de esconder o fundo escurecido
-        });
+    $(document).on('click', '#popup-close-pp', function() {
+        console.log('Clicado!');
+        $('#popup-info').hide();
+        $('#popup-background').hide();
+    });
     
         // Outros eventos do popup
         // ...
@@ -301,7 +309,7 @@ $(document).ready(function() {
     
 
     
-});
+
 
 
 
@@ -342,6 +350,7 @@ jQuery(document).ready(function($) {
                 if(response.success) {
                     alert(response.data.message);
                     carregarTarefasProximoModulo(moduloAtual, userId);
+                    location.reload();
                 } else {
                     alert('Algumas tarefas ainda não foram concluídas.');
                 }
