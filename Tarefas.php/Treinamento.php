@@ -384,7 +384,7 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
         // Coluna 'Concluído'
         $html .= '<div class="kanban-column kanban-done" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
         <center>
-        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Concluir Módulo</button></center>
+        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Próximas Tarefas</button></center>
 
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
@@ -805,7 +805,7 @@ function ajax_carregar_mais_tarefas() {
                
            ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
    
-           ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => 'O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+           ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/qsm/briefing-para-design-de-marca-branding/">Preencha o Briefing </button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
    
            Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
    
@@ -813,13 +813,13 @@ function ajax_carregar_mais_tarefas() {
        
            // Módulo 2
         ['nome' => 'Introdução - Modulo 1.1 - Conhecendo seu Portal', 'descricao' => ' Explore o incrível Portal de Franqueados Lady Griffe! Neste vídeo, oferecemos um tour completo pelas funcionalidades que tornarão sua experiência como franqueado ainda mais bem-sucedida. Descubra como acessar suporte, gerenciar sua loja, aproveitar promoções exclusivas e muito mais. Este é o seu guia essencial para alcançar o sucesso na franquia Lady Griffe.  <iframe width="853" height="480" src="https://www.youtube.com/embed/htR6acwLbjQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
-            ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => 'Em breve, iniciaremos o processo de formalização da nossa parceria através da assinatura do contrato. Para facilitar esse procedimento, adotamos um sistema totalmente digital. Você receberá um link por meio do qual poderá acessar o contrato. Pedimos que o revise cuidadosamente para se familiarizar com todos os termos e condições acordados.
+            ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Contrato-de-Franquia-Empresarial-Lady-Griffe-2024.pdf">Ver o Contrato </button>     Em breve, iniciaremos o processo de formalização da nossa parceria através da assinatura do contrato. Para facilitar esse procedimento, adotamos um sistema totalmente digital. Você receberá um link por meio do qual poderá acessar o contrato. Pedimos que o revise cuidadosamente para se familiarizar com todos os termos e condições acordados.
     
             Após a revisão, é essencial que você prossiga com a assinatura do documento para concretizar a parceria. Para isso, solicitamos que abra um chamado conosco, por meio do qual enviaremos o contrato diretamente para o seu e-mail. Este e-mail incluirá instruções detalhadas sobre como proceder com a assinatura eletrônica, um processo rápido e seguro.
             
             Ressaltamos a importância desta etapa, pois a assinatura do contrato é um passo obrigatório e fundamental para a efetivação da nossa colaboração. Estamos à disposição para esclarecer quaisquer dúvidas ou oferecer assistência durante este processo, garantindo que ele ocorra de forma clara e eficiente.', 'modulo' => 2],
             ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
-            ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/produto/logotipo/">Adquira agora seu Logo </button> 
+            ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => ' Para adquirir um logotipo, acesse o link acima e efetue o pagamento. Se sua marca já possui um logotipo, abra um chamado e anexe o arquivo. A equipe analisará se a imagem atende aos requisitos mínimos para ser inserida no site e fornecerá um feedback. <button class="link-button" data-href="https://inovetime.com.br/produto/logotipo/">Adquira agora seu Logo </button> 
             <iframe width="848" height="480" src="https://www.youtube.com/embed/2vlHrsUHBlI" title="Criação do Logo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
             ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '  Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
             ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => 'Você pode complementar sua presença online com o WhatsApp Business. Para isso, basta adquirir um novo chip de celular e não é necessário comprar outro celular. Após adquirir o chip, envie o nome do seu Instagram  e o seu novo numero, através de um chamado para nossa equipe. Iremos ajudá-lo a incorporar essas informações ao seu site para uma presença online completa', 'modulo' => 2],
@@ -827,10 +827,66 @@ function ajax_carregar_mais_tarefas() {
            
        
            // Módulo 3
-           ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
-           ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
-           ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
-           ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
+           ['nome' => 'Introdução - Metodologia 2', 'descricao' => '  Parabéns, Franqueado, por ter alcançado esta etapa crucial! Neste módulo, vamos explorar aspectos fundamentais sobre a operação de sua loja e o dinamismo das vendas online. Estes conteúdos são essenciais para aprofundar seu entendimento sobre o marketing digital. Durante esta fase de desenvolvimento da sua loja, nosso objetivo é capacitá-lo com conhecimentos abrangentes, para que, quando sua loja estiver pronta, você esteja equipado para iniciar suas atividades com eficácia.
+           <iframe width="848" height="480" src="https://www.youtube.com/embed/NjKTQ2SjpKA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 3],
+           ['nome' => 'Conhecendo o painel de controle ', 'descricao' => '  
+                 
+           
+           
+          
+           Este tour pelo painel de controle da sua loja é uma etapa crucial para que você se familiarize com todas as ferramentas e funcionalidades à sua disposição. Nosso objetivo é proporcionar uma visão clara e resumida do que você pode realizar através deste painel, assegurando que você tenha o conhecimento necessário para gerenciar sua loja com eficiência.
+           
+           O que você vai aprender:
+           
+           Visão Geral das Funcionalidades: Descubra as várias funcionalidades que o seu painel de controle oferece, desde a gestão de inventário até análises de vendas.
+           
+           Gerenciamento de Produtos: Entenda como adicionar, editar e organizar produtos, além de gerenciar o estoque com facilidade.
+           
+           Análises e Relatórios: Aprenda a acessar relatórios detalhados que podem ajudar na tomada de decisões estratégicas para o crescimento da sua loja.
+           
+           Marketing e Promoções: Explore ferramentas que lhe permitirão criar e gerenciar campanhas promocionais, cupons de desconto e estratégias de marketing por e-mail.
+           
+           Configurações de Loja: Familiarize-se com as configurações gerais da sua loja, incluindo personalizações, configurações de pagamento e opções de envio.
+           
+           Suporte ao Cliente: Saiba como gerenciar consultas de clientes, resolver problemas e manter um alto nível de satisfação do cliente.   <iframe width="853" height="480" src="https://www.youtube.com/embed/KAr6h3pQabs" title="Painel de Controle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 3],
+           ['nome' => 'Faça as primeiras postagens ', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/postagens/">Fazer O Download De Posts </button>  Estamos nos aproximando de um momento empolgante – a inauguração de suas lojas! Para garantir um lançamento bem-sucedido, é crucial começar a criar expectativa e interesse em sua rede de contatos. Aqui está o que você pode fazer:
+
+           Engajamento nas Redes Sociais: Comece a se comunicar com seu público nas redes sociais. Utilize as contas que você criou e comece a compartilhar conteúdo que ressoa com seu círculo de relacionamentos. Isso pode incluir amigos, familiares e conhecidos profissionais.
+           
+           Conteúdo Estratégico: Acesse o nosso portal para encontrar postagens prontas que você pode usar. Estes posts são projetados para gerar curiosidade e entusiasmo sobre o que está por vir.
+           
+           Personalize com a Nossa IA: Para tornar suas postagens ainda mais atraentes, utilize nossa ferramenta de inteligência artificial para ajudar na criação de descrições cativantes. Esta tecnologia pode ajudá-lo a criar conteúdo que se conecta de forma mais eficaz com o seu público.
+           
+           Foco na Construção de Expectativa: O objetivo dessas postagens é informar as pessoas sobre a iminente abertura da sua loja. Crie um senso de antecipação e deixe-os ansiosos para ver o que você tem a oferecer.
+           
+           Interaja com seu Público: Não se limite apenas a postar; interaja com quem comentar ou mostrar interesse. Construa relacionamentos e prepare o terreno para uma comunidade leal de clientes.
+           
+           Essa estratégia inicial é fundamental para estabelecer uma base sólida para o seu negócio. Vamos começar a criar uma onda de entusiasmo que culminará na grande inauguração da sua loja!', 'modulo' => 3],
+           ['nome' => 'Alcançar os Primeiros 50 Seguidores nas Redes Sociais', 'descricao' => 'Objetivo: Este é o seu primeiro marco significativo no mundo digital – conseguir os primeiros 50 seguidores em sua conta de rede social. Este objetivo inicial é crucial para estabelecer a presença online da sua franquia e começar a construir uma comunidade engajada.
+
+           Descrição da Tarefa:
+           
+           Crie Conteúdo Atraente: Compartilhe posts que reflitam a identidade da sua marca e que sejam relevantes para o seu público-alvo. Isso pode incluir informações sobre produtos, dicas úteis, histórias por trás da marca ou até mesmo teasers sobre a inauguração da loja.
+           
+           Engajamento Ativo: Siga contas relevantes, comente em posts de outros usuários e responda a todos os comentários em suas postagens. O engajamento é uma via de mão dupla – quanto mais você interage, mais visibilidade ganha.
+           
+           Use Hashtags Estrategicamente: Inclua hashtags relevantes para aumentar o alcance das suas publicações e atrair seguidores interessados no seu nicho de mercado.
+           
+           Promova sua Conta: Compartilhe o link da sua conta de rede social com amigos, familiares e contatos profissionais. Peça-lhes para seguir sua página e compartilhar com suas redes.
+           
+           Monitore Seu Progresso: Fique atento ao número de seguidores e ao engajamento das suas postagens. Use esses insights para ajustar sua estratégia conforme necessário.', 'modulo' => 3],
+           ['nome' => 'Solicitação de E-mail Corporativo ', 'descricao' => 'Objetivo: Obter seu e-mail corporativo oficial, que será essencial para realizar as próximas tarefas e comunicações profissionais relacionadas à sua franquia.
+
+           Descrição da Tarefa:
+           Para iniciar formalmente suas atividades como franqueado e manter a comunicação profissional com clientes e a equipe de suporte, é essencial que você tenha um e-mail corporativo. Este e-mail não só fortalece sua identidade profissional, mas também é necessário para as próximas etapas do desenvolvimento da sua franquia.
+           
+           Abrir um Chamado: A primeira ação é abrir um chamado em nosso sistema. Isso pode ser feito acessando nossa plataforma de suporte e selecionando a opção correspondente para solicitar um e-mail corporativo.
+           
+           Fornecer Informações Necessárias: No chamado, você deverá fornecer informações básicas como seu nome completo, o nome da sua franquia e qualquer outra informação relevante solicitada pela equipe de suporte.
+           
+           Aguardar a Criação do E-mail: Após a abertura do chamado, nossa equipe técnica processará sua solicitação e criará seu e-mail corporativo. Este processo pode levar alguns dias, então pedimos paciência.
+           
+           Recebimento e Configuração: Uma vez que seu e-mail corporativo estiver pronto, você receberá as credenciais e instruções para configurá-lo em seu dispositivo.', 'modulo' => 3],
 
 
         // Módulo 4
@@ -865,7 +921,7 @@ function ajax_carregar_mais_tarefas() {
         $wpdb->insert($table_name, array(
             'nome_tarefa' => $tarefa['nome'],
             'descricao' => $tarefa['descricao'],
-            'responsaveis' => $responsaveis['responsaveis'],
+            'responsaveis' => $tarefa['responsaveis'],
             'prazo' => date('Y-m-d', strtotime('+1 week')),
             'user_id' => $user_id,
             'status' => 'todo',

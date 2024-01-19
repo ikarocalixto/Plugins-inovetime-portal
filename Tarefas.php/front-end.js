@@ -437,3 +437,5 @@ jQuery(document).ready(function($) {
         $('#kanban-add-task').toggle(); // Alterna a visibilidade do formulário
     });
 });
+
+

@@ -279,3 +279,11 @@ textarea#descri {
     max-width: 100%;
     height: 200px;
 }
+
+#loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Certifique-se de que está sobre outros elementos */
+}
