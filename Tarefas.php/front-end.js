@@ -308,7 +308,26 @@ $(document).ready(function() {
     });
     
 
-    
+    jQuery(document).ready(function($) {    
+        // Iniciar o treinamento
+        $('#marketplace-form').on('submit', function(e) {
+            e.preventDefault();
+            var userId = $(this).find('select[name="user_id"]').val();
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    'action': 'marketplace',
+                    'user_id': userId
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.data.message); // Ou atualize a interface do usuário conforme necessário
+                }
+            }
+            });
+        });
+    });
 
 
 
@@ -439,3 +458,14 @@ jQuery(document).ready(function($) {
 });
 
 
+function toggleFiltro() {
+    var form = document.getElementById('formulario-filtro');
+    var btn = document.getElementById('toggle-filtro');
+    if (form.style.display === "none") {
+        form.style.display = "block";
+        btn.textContent = "Ocultar Filtro";
+    } else {
+        form.style.display = "none";
+        btn.textContent = "Mostrar Filtro";
+    }
+}

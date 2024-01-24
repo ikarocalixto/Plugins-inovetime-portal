@@ -262,6 +262,40 @@ function adicionar_tarefa_kanban() {
     }
    
     
+    function concluir_modulo_shortcode() {
+        $user_id = get_current_user_id();
+        return '<button id="concluir-modulo" data-user-id="' . esc_attr($user_id) . '">Próximas Tarefas</button>';
+    }
+    
+    add_shortcode('concluir_modulo', 'concluir_modulo_shortcode');
+
+    function buscar_franqueados() {
+        $users = get_users();
+        echo '<div class="form-busca-franqueados">';
+        echo '<form action="" method="get">';
+        echo '<select name="selected_user" onchange="this.form.submit()">';
+        echo '<option value="">Selecione um Usuário</option>';
+        foreach ($users as $user) {
+            $selected = isset($_GET['selected_user']) && $_GET['selected_user'] == $user->ID ? 'selected' : '';
+            echo '<option value="' . esc_attr($user->ID) . '" ' . $selected . '>' . esc_html($user->display_name) . '</option>';
+        }
+        echo '</select>';
+        echo '<input type="submit" value="Ver Tarefas">';
+        echo '</form>';
+    
+        if (isset($_GET['selected_user']) && !empty($_GET['selected_user'])) {
+            $selected_user_id = intval($_GET['selected_user']);
+            $user_info = get_userdata($selected_user_id);
+            echo '<div class="user-info">';
+            echo get_avatar($selected_user_id);
+            echo '<span>' . esc_html($user_info->display_name) . '</span>';
+            echo '</div>';
+        }
+    
+        echo '</div>';
+    }
+    add_shortcode('buscar_franqueados', 'buscar_franqueados');
+    
     
 
 
@@ -275,10 +309,24 @@ function adicionar_tarefa_kanban() {
         $user_id = get_current_user_id(); // Pega o ID do usuário atual
 
 
+ // Data de 30 dias atrás como padrão para a coluna 'Concluído'
+ $data_limite = date('Y-m-d', strtotime('-30 days'));
 
-       // Modifique a consulta para buscar tarefas onde o usuário é o criador ou está listado como responsável
-$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id OR FIND_IN_SET('$user_id', responsaveis)");
+ // Verifica se um usuário foi selecionado no formulário
+if (isset($_GET['selected_user']) && !empty($_GET['selected_user'])) {
+    $user_id = intval($_GET['selected_user']);
+}
 
+ // Pega as datas do formulário, se fornecidas
+ $data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : $data_limite;
+ $data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d');
+
+// Consulta SQL
+$tarefas = $wpdb->get_results(
+    "SELECT * FROM $table_name 
+    WHERE (user_id = $user_id OR FIND_IN_SET('$user_id', responsaveis))
+    AND (status != 'done' OR (status = 'done' AND data_criacao BETWEEN '$data_inicio' AND '$data_fim'))"
+);
 
 
       
@@ -384,7 +432,23 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
         // Coluna 'Concluído'
         $html .= '<div class="kanban-column kanban-done" ondrop="window.drop(event)" ondragover="window.allowDrop(event)" data-status="done">
         <center>
-        <button id="concluir-modulo" data-user-id="<?php echo get_current_user_id(); ?>">Próximas Tarefas</button></center>
+       
+        
+        <!-- Botão para mostrar/ocultar o filtro -->
+        <button id="toggle-filtro" onclick="toggleFiltro()">Mostrar Filtro</button>
+        
+        <!-- Seu formulário de filtro -->
+        <form id="formulario-filtro" action="" method="get" style="display: none;">
+            <label for="data_inicio">Data de Início:</label>
+            <input type="date" id="data_inicio" name="data_inicio">
+            
+            <label for="data_fim">Data de Fim:</label>
+            <input type="date" id="data_fim" name="data_fim">
+            
+            <input type="submit" value="Filtrar">
+        </form>
+        </center>
+
 
                     <h3>Concluído</h3>
                     <div class="kanban-tasks" data-status="done">';
@@ -393,14 +457,24 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
 
                     foreach ($tarefas as $tarefa) {
                         if ($tarefa->status == 'done') {
+// Pega as datas do formulário e converte para o formato do banco de dados
+$data_inicio = isset($_GET['data_inicio']) && $_GET['data_inicio'] ? converterFormatoData($_GET['data_inicio']) : date('Y-m-d', strtotime('-30 days'));
+$data_fim = isset($_GET['data_fim']) && $_GET['data_fim'] ? converterFormatoData($_GET['data_fim']) : date('Y-m-d');
 
-                                // Data de 30 dias atrás
-    $data_limite = date('Y-m-d', strtotime('-30 days'));
-                            // Pega as datas do formulário
-$data_inicio = isset($_GET['data_inicio']) ? $_GET['data_inicio'] : date('Y-m-d', strtotime('-30 days'));
-$data_fim = isset($_GET['data_fim']) ? $_GET['data_fim'] : date('Y-m-d');
+// Se as datas são nulas (ou seja, a conversão falhou), usa um valor padrão
+$data_inicio = $data_inicio ?: date('Y-m-d', strtotime('-30 days'));
+$data_fim = $data_fim ?: date('Y-m-d');
 
-$tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_id AND status = 'done' AND data_criacao >= '$data_limite'");
+// Ajusta a data final para incluir o final do dia
+$data_fim = $data_fim . ' 23:59:59';
+
+// Consulta para obter as tarefas concluídas no intervalo especificado
+$tarefas = $wpdb->get_results(
+    "SELECT * FROM $table_name 
+    WHERE user_id = $user_id 
+    AND status = 'done' 
+    AND data_criacao BETWEEN '$data_inicio' AND '$data_fim'"
+);
 
 
 
@@ -466,6 +540,14 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
     }
     
     add_shortcode('quadro_kanban', 'mostrar_quadro_kanban');
+
+
+// Função para converter a data do formato DD-MM-YYYY para YYYY-MM-DD
+function converterFormatoData($data) {
+    $dataFormatada = DateTime::createFromFormat('d-m-Y', $data);
+    return $dataFormatada ? $dataFormatada->format('Y-m-d') : null;
+}
+
 
     function editar_tarefa_kanban() {
         global $wpdb;
@@ -696,11 +778,98 @@ $tarefas = $wpdb->get_results("SELECT * FROM $table_name WHERE user_id = $user_i
         return ob_get_clean();
     }
     add_shortcode('treinamento_trainee', 'treinamento_trainee_shortcode');
+
+
+    function marketplace_shortcode() {
+        global $wpdb;
+        $mensagem = '';
+        if (isset($_POST['marketplace']) && !empty($_POST['user_id'])) {
+            $user_id = intval($_POST['user_id']);
+            $table_name = $wpdb->prefix . 'kanban_tarefas';
+    
+           
+    
+            // Mensagem de confirmação
+            $mensagem = 'Treinamento iniciado para o usuário com ID ' . $user_id . '. Primeira tarefa adicionada.';
+        }
+    
+        ob_start();
+    
+        // Formulário para escolher um usuário para treinamento
+        $html = '<form id="marketplace-form" action="" method="post">
+                    <select name="user_id" required>';
+        
+        $users = get_users();
+        foreach ($users as $user) {
+            $html .= '<option value="' . esc_attr($user->ID) . '">' . esc_html($user->display_name) . '</option>';
+        }
+    
+        $html .= '</select>
+                  <input type="submit" name="marketplace" value="Começar no marketplace">
+                 </form>';
+    
+        if (!empty($mensagem)) {
+            $html .= '<div class="mensagem">' . esc_html($mensagem) . '</div>';
+        }
+    
+        echo $html;
+        return ob_get_clean();
+    }
+    add_shortcode('marketplace', 'marketplace_shortcode');
     
 
 
+    function ajax_marketplace() {
+        global $wpdb;
+    
+        $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+        $table_name = $wpdb->prefix . 'kanban_tarefas';
+    
+        $tarefas_treinamento = [
+            // Módulo 1
+            ['nome' => 'Introdução Marketplace', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Guia-do-marketplace.pdf">Guia do Marketplace</button>  Olá, franqueados! Hoje, vamos mergulhar no mundo dos marketplaces e explorar como iniciar seu negócio nesse ambiente. A primeira pergunta que surge é: "Por onde começar e qual marketplace escolher?". É crucial compreender que cada marketplace tem seu público específico. Por exemplo, a Shopee tende a atrair vendas de produtos com ticket médio mais baixo, então produtos mais caros podem não ser a melhor estratégia aqui. Por outro lado, Americanas, Mercado Livre e Amazon são plataformas onde produtos de ticket médio mais alto são vendidos em grande escala. O segredo é estudar bem cada marketplace antes de se aventurar nele. Aconselhamos sempre começar focando em um marketplace, e após consolidar sua presença nele, expandir para outros.
 
+            ', 'modulo' => 55],
+    
+                ['nome' => 'Criar CNPJ ', 'descricao' => ' ... "', 'modulo' => 55],
 
+                ['nome' => 'Certificado A1', 'descricao' => ' ... "', 'modulo' => 55],
+                
+            ['nome' => 'participar da promoção', 'descricao' => ' Aprenda como participar das promoções do marketplace <iframe width="853" height="480" src="https://www.youtube.com/embed/WnykTgirCzA" title="Participar da Promocoes Marketplace" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>..', 'modulo' => 55],
+    
+            ['nome' => 'Fazer avaliação do produto ', 'descricao' => '<iframe width="853" height="480" src="https://www.youtube.com/embed/SBz_Xq4F-I0" title="Avaliando o Produto Apresentacao com video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 55],
+
+            ['nome' => 'Fiz minha primeira venda, e agora? ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/YwAXwxP9HhI" title="fiz minha primeira venda e agora" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 55],
+    
+        ];
+
+        // Insere apenas as 4 primeiras tarefas do Módulo 1 no banco de dados
+    $contador = 0;
+    foreach ($tarefas_treinamento as $tarefa) {
+        if ($contador < 6 && $tarefa['modulo'] ==55) { // Garantindo que apenas as tarefas do Módulo 1 sejam adicionadas
+            $wpdb->insert($table_name, array(
+                'nome_tarefa' => $tarefa['nome'],
+                'descricao' => $tarefa['descricao'],
+                'prazo' => date('Y-m-d', strtotime('+1 week')),
+                'responsaveis' => $responsaveis['responsaveis'],
+                'user_id' => $user_id,
+                'status' => 'todo',
+                'modulo' => $tarefa['modulo'] // Adicionando a informação do módulo
+            ));
+            $contador++;
+        } else {
+            break;
+        }
+    }
+    
+    
+        wp_send_json_success(['message' => 'Treinamento iniciado. Primeira tarefa adicionada.']);
+    }
+    
+    add_action('wp_ajax_marketplace', 'ajax_marketplace');
+    add_action('wp_ajax_nopriv_marketplace', 'ajax_marketplace');
+
+    
 
 function ajax_iniciar_treinamento_trainee() {
     global $wpdb;
@@ -818,13 +987,24 @@ function ajax_carregar_mais_tarefas() {
             Após a revisão, é essencial que você prossiga com a assinatura do documento para concretizar a parceria. Para isso, solicitamos que abra um chamado conosco, por meio do qual enviaremos o contrato diretamente para o seu e-mail. Este e-mail incluirá instruções detalhadas sobre como proceder com a assinatura eletrônica, um processo rápido e seguro.
             
             Ressaltamos a importância desta etapa, pois a assinatura do contrato é um passo obrigatório e fundamental para a efetivação da nossa colaboração. Estamos à disposição para esclarecer quaisquer dúvidas ou oferecer assistência durante este processo, garantindo que ele ocorra de forma clara e eficiente.', 'modulo' => 2],
-            ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
+           
             ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => ' Para adquirir um logotipo, acesse o link acima e efetue o pagamento. Se sua marca já possui um logotipo, abra um chamado e anexe o arquivo. A equipe analisará se a imagem atende aos requisitos mínimos para ser inserida no site e fornecerá um feedback. <button class="link-button" data-href="https://inovetime.com.br/produto/logotipo/">Adquira agora seu Logo </button> 
             <iframe width="848" height="480" src="https://www.youtube.com/embed/2vlHrsUHBlI" title="Criação do Logo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
-            ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '  Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
+            ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/produto/criacao-das-redes-sociais/">Veja Como podemos te Ajudar!</button>   <iframe width="848" height="480" src="https://www.youtube.com/embed/34IC_WaghBo" title="Como Criar Conta no Instagram e Facebook" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
             ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => 'Você pode complementar sua presença online com o WhatsApp Business. Para isso, basta adquirir um novo chip de celular e não é necessário comprar outro celular. Após adquirir o chip, envie o nome do seu Instagram  e o seu novo numero, através de um chamado para nossa equipe. Iremos ajudá-lo a incorporar essas informações ao seu site para uma presença online completa', 'modulo' => 2],
+            ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
+            ['nome' => 'Solicitação de E-mail Corporativo ', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/suporte/">Abra Um Chamado </button>   Objetivo: Obter seu e-mail corporativo oficial, que será essencial para realizar as próximas tarefas e comunicações profissionais relacionadas à sua franquia.
+
+            Descrição da Tarefa:
+            Para iniciar formalmente suas atividades como franqueado e manter a comunicação profissional com clientes e a equipe de suporte, é essencial que você tenha um e-mail corporativo. Este e-mail não só fortalece sua identidade profissional, mas também é necessário para as próximas etapas do desenvolvimento da sua franquia.
             
-           
+            Abrir um Chamado: A primeira ação é abrir um chamado em nosso sistema. Isso pode ser feito acessando nossa plataforma de suporte e selecionando a opção correspondente para solicitar um e-mail corporativo.
+            
+            Fornecer Informações Necessárias: No chamado, você deverá fornecer informações básicas como seu nome completo, o nome da sua franquia e qualquer outra informação relevante solicitada pela equipe de suporte.
+            
+            Aguardar a Criação do E-mail: Após a abertura do chamado, nossa equipe técnica processará sua solicitação e criará seu e-mail corporativo. Este processo pode levar alguns dias, então pedimos paciência.
+            
+            Recebimento e Configuração: Uma vez que seu e-mail corporativo estiver pronto, você receberá as credenciais e instruções para configurá-lo em seu dispositivo.', 'modulo' => 2],
        
            // Módulo 3
            ['nome' => 'Introdução - Metodologia 2', 'descricao' => '  Parabéns, Franqueado, por ter alcançado esta etapa crucial! Neste módulo, vamos explorar aspectos fundamentais sobre a operação de sua loja e o dinamismo das vendas online. Estes conteúdos são essenciais para aprofundar seu entendimento sobre o marketing digital. Durante esta fase de desenvolvimento da sua loja, nosso objetivo é capacitá-lo com conhecimentos abrangentes, para que, quando sua loja estiver pronta, você esteja equipado para iniciar suas atividades com eficácia.
@@ -875,7 +1055,7 @@ function ajax_carregar_mais_tarefas() {
            Promova sua Conta: Compartilhe o link da sua conta de rede social com amigos, familiares e contatos profissionais. Peça-lhes para seguir sua página e compartilhar com suas redes.
            
            Monitore Seu Progresso: Fique atento ao número de seguidores e ao engajamento das suas postagens. Use esses insights para ajustar sua estratégia conforme necessário.', 'modulo' => 3],
-           ['nome' => 'Solicitação de E-mail Corporativo ', 'descricao' => 'Objetivo: Obter seu e-mail corporativo oficial, que será essencial para realizar as próximas tarefas e comunicações profissionais relacionadas à sua franquia.
+           ['nome' => 'Solicitação de E-mail Corporativo ', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/suporte/">Abra Um Chamado </button>   Objetivo: Obter seu e-mail corporativo oficial, que será essencial para realizar as próximas tarefas e comunicações profissionais relacionadas à sua franquia.
 
            Descrição da Tarefa:
            Para iniciar formalmente suas atividades como franqueado e manter a comunicação profissional com clientes e a equipe de suporte, é essencial que você tenha um e-mail corporativo. Este e-mail não só fortalece sua identidade profissional, mas também é necessário para as próximas etapas do desenvolvimento da sua franquia.
@@ -890,12 +1070,20 @@ function ajax_carregar_mais_tarefas() {
 
 
         // Módulo 4
-        ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Alinhamento Estratégico: Preparando-se para a Inauguração e o Plano de Ação', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Conhecendo os Perfumes', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Conhecendo a Maquiagens', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Conhecendo as Bolsas', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Conhecendo os Blazers', 'descricao' => '...', 'modulo' => 4],
         // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
-    ];
+
+  // Módulo 5
+  ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 5],
+  ['nome' => 'Testando funcionalidade da loja: Pedido Teste', 'descricao' => '...', 'modulo' => 5],
+  ['nome' => 'Saiba como cadastrar um produto', 'descricao' => ' Cadastre 15 Produtos para entender a dinâmica', 'modulo' => 5],
+  ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 5],
+  ['nome' => 'Melhor Envio', 'descricao' => '...', 'modulo' => 5],
+  ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração"', 'descricao' => '...', 'modulo' => 5],
+];
 
     // Descobrir qual módulo carregar
     $modulo_atual = $wpdb->get_var($wpdb->prepare(
