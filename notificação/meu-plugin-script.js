@@ -112,10 +112,13 @@ $marcarTudoComoLidoBtn.on('click', function() {
                     if (notificacao.url_redirecionamento) {
                         notificacaoHTML += '</a>';
                     }
+
+                    notificacaoHTML += '<button class="marcar-como-lido-btn" data-id="' + notificacao.id + '">Marcar como lido</button>';
                     if (notificacao.imagem) {
                         notificacaoHTML += '<img src="' + notificacao.imagem + '" alt="Notificação" />';
                     }
                     notificacaoHTML += '</div>';
+                   
                     $popupNotificacoes.append(notificacaoHTML);
                 });
             }
@@ -138,6 +141,36 @@ $marcarTudoComoLidoBtn.on('click', function() {
                     $('#meu-plugin-popup-notificacoes').hide();
                 }
             });
+
+            $popupNotificacoes.on('click', '.marcar-como-lido-btn', function() {
+                var notificacaoId = $(this).data('id');
+    var $thisButton = $(this);
+    $thisButton.closest('.notificacao').fadeOut(); 
+                $.ajax({
+                    url: meu_plugin_ajax.ajax_url,
+                    type: 'POST',
+                    data: { 
+                        action: 'meu_plugin_marcar_notificacao_como_lida',
+                        id: notificacaoId
+                    },
+                    success: function(response) {
+                        var res = JSON.parse(response);
+                        if (res.status === 'success') {
+                            // Esconder a notificação específica
+                            $thisButton.closest('.notificacao').hide();
+                        } else {
+                            console.error(res.message);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("Erro na requisição AJAX:", textStatus, errorThrown);
+                    }
+                });
+            });
+            
+            
+
+
 
             $popupNotificacoes.on('click', '.notificacao-link', function(e) {
                 e.preventDefault();

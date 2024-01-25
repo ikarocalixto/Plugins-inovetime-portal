@@ -894,40 +894,9 @@ function ajax_iniciar_treinamento_trainee() {
         ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/qsm_quiz/briefing-para-design-de-marca-branding/">Preencha o Briefing</button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
 
         Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
-
+//
       
     
-        // Módulo 2
-        ['nome' => 'Introdução - Modulo 1.1 - Conhecendo seu Portal', 'descricao' => ' Explore o incrível Portal de Franqueados Lady Griffe! Neste vídeo, oferecemos um tour completo pelas funcionalidades que tornarão sua experiência como franqueado ainda mais bem-sucedida. Descubra como acessar suporte, gerenciar sua loja, aproveitar promoções exclusivas e muito mais. Este é o seu guia essencial para alcançar o sucesso na franquia Lady Griffe.  <iframe width="853" height="480" src="https://www.youtube.com/embed/htR6acwLbjQ" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 2],
-        ['nome' => 'Contrato: Entendendo a Parceria com a Lady Griffe','responsaveis'=>'27', 'descricao' => 'Em breve, iniciaremos o processo de formalização da nossa parceria através da assinatura do contrato. Para facilitar esse procedimento, adotamos um sistema totalmente digital. Você receberá um link por meio do qual poderá acessar o contrato. Pedimos que o revise cuidadosamente para se familiarizar com todos os termos e condições acordados.
-
-        Após a revisão, é essencial que você prossiga com a assinatura do documento para concretizar a parceria. Para isso, solicitamos que abra um chamado conosco, por meio do qual enviaremos o contrato diretamente para o seu e-mail. Este e-mail incluirá instruções detalhadas sobre como proceder com a assinatura eletrônica, um processo rápido e seguro.
-        
-        Ressaltamos a importância desta etapa, pois a assinatura do contrato é um passo obrigatório e fundamental para a efetivação da nossa colaboração. Estamos à disposição para esclarecer quaisquer dúvidas ou oferecer assistência durante este processo, garantindo que ele ocorra de forma clara e eficiente.', 'modulo' => 2],
-        ['nome' => 'Configuração do Apontamento do Domínio para a Sua Loja Online', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Cadastro-de-DNS-no-registro.br_.pdf.pdf">Saiba como Fazer o apontamento DNS </button>  Para começar, abra um chamado de suporte técnico solicitando a adição do seu domínio recém-adquirido ao sistema. Por favor, informe o nome do seu domínio. Após a confirmação da nossa equipe de suporte, você poderá prosseguir com o passo a passo indicado no botão acima. Estamos aqui para ajudá-lo a configurar seu domínio com facilidade e eficiência!', 'modulo' => 2],
-        ['nome' => 'Criação e Aprovação do Logo da Sua Marca', 'descricao' => 'A importância do logotipo profissional para a marca!
-        Um logotipo ajuda a criar uma identidade visual consistente para a sua empresa, o que é essencial para uma marca forte.
-        Um logotipo é a identidade visual da sua empresa. 
-        Ele é a primeira coisa que as pessoas veem quando se deparam com a sua marca, por isso é importante que ele seja bem projetado e transmita a mensagem certa. Não deixe que o seu logotipo seja um obstáculo para o sucesso da sua empresa. Garanta o logotipo perfeito para a sua marca e comece a colher os benefícios hoje mesmo! 
-        
-        Clique aqui e aproveite esta oportunidade e garanta o logotipo perfeito para a sua empresa', 'modulo' => 2],
-        ['nome' => 'Criar as redes sociais para Estabelecer uma Presença online', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/produto/logotipo-criacao-de-redes-sociais/">Adquira agora seu Logo </button> 
-        <iframe width="848" height="480" src="https://www.youtube.com/embed/2vlHrsUHBlI" title="Criação do Logo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Neste vídeo, vamos guiá-lo através do processo de criação de perfis profissionais no Instagram e no Facebook para a sua empresa. Ter presença nessas plataformas é essencial para expandir a sua marca, alcançar novos clientes e aumentar a visibilidade do seu negócio.', 'modulo' => 2],
-        ['nome' => 'Configuração do WhatsApp Business para uma Comunicação Eficiente', 'descricao' => 'Você pode complementar sua presença online com o WhatsApp Business. Para isso, basta adquirir um novo chip de celular e não é necessário comprar outro celular. Após adquirir o chip, envie o nome do seu Instagram  e o seu novo numero, através de um chamado para nossa equipe. Iremos ajudá-lo a incorporar essas informações ao seu site para uma presença online completa', 'modulo' => 2],
-        
-    
-        // Módulo 3
-        ['nome' => 'Lista VIP: Criando um Grupo no WhatsApp para Clientes Exclusivos', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Meta Inicial: Construindo Sua Primeira Audiência com 30 Pessoas do Seu Círculo', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Elaboração do Plano de Ação para o Sucesso da Sua Franquia', 'descricao' => '...', 'modulo' => 3],
-        ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 3],
-    
-        // Módulo 4
-        ['nome' => 'Testando as Funcionalidades da Loja: Pedido de Teste', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Alinhamento Estratégico: Preparando-se para a Inauguração e o Plano de Ação', 'descricao' => '...', 'modulo' => 4],
-        // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
     ];
 
     // Insere apenas as 4 primeiras tarefas do Módulo 1 no banco de dados
@@ -1070,10 +1039,12 @@ function ajax_carregar_mais_tarefas() {
 
 
         // Módulo 4
-        ['nome' => 'Conhecendo os Perfumes', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Conhecendo a Maquiagens', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Conhecendo as Bolsas', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Conhecendo os Blazers', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Conhecendo os Produtos', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/New-Collection-Lady-2.pdf">Veja nossa Revista!</button>  Embarque em uma viagem de estilo e sofisticação com a Lady Griffe, onde a beleza e a elegância se encontram em cada produto. <iframe width="848" height="480" src="https://www.youtube.com/embed/G7IYiKl44JQ" title="Apresentação de Produtos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
+        ['nome' => 'Como funciona o dropshipping?', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/2022/07/Manual-Dropshipping.pdf">Saiba mais</button> Dropshipping é um modelo de negócios de varejo onde a loja não mantém os produtos que vende em estoque. Em vez disso, quando uma loja vende um produto usando o modelo de dropshipping, ela compra o item de um terceiro e o envia diretamente ao cliente. Assim, o vendedor não precisa lidar diretamente com o produto.
+
+        A principal vantagem do dropshipping é a redução dos custos operacionais, já que não é necessário investir em grandes estoques ou em um espaço de armazenamento. Isso torna o dropshipping uma opção atraente para empreendedores iniciantes ou para empresas que desejam expandir suas ofertas de produtos sem aumentar significativamente os custos.', 'modulo' => 4],
+        ['nome' => 'Como funciona reserva de estoque?', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Como funciona a compra no atacado?', 'descricao' => '...', 'modulo' => 4],
         // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
 
   // Módulo 5
@@ -1084,6 +1055,17 @@ function ajax_carregar_mais_tarefas() {
   ['nome' => 'Melhor Envio', 'descricao' => '...', 'modulo' => 5],
   ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração"', 'descricao' => '...', 'modulo' => 5],
 ];
+
+  // Verifique se todas as tarefas do módulo atual estão concluídas
+  $tarefas_nao_concluidas = $wpdb->get_var($wpdb->prepare(
+    "SELECT COUNT(*) FROM $table_name WHERE user_id = %d AND status != 'done'",
+    $user_id
+));
+
+if ($tarefas_nao_concluidas > 0) {
+    wp_send_json_error(['message' => 'Não conseguimos prosseguir para o próximo módulo neste momento. Verificamos que ainda há tarefas pendentes no módulo atual que precisam ser concluídas. Por favor, complete todas as tarefas pendentes para continuar avançando no treinamento.']);
+    return;
+}
 
     // Descobrir qual módulo carregar
     $modulo_atual = $wpdb->get_var($wpdb->prepare(

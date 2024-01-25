@@ -352,6 +352,8 @@ jQuery(document).ready(function($) {
         });
     });
 });
+
+
 jQuery(document).ready(function($) {
     $('#concluir-modulo').click(function() {
         var userId = $(this).data('user-id');
@@ -371,7 +373,12 @@ jQuery(document).ready(function($) {
                     carregarTarefasProximoModulo(moduloAtual, userId);
                     location.reload();
                 } else {
-                    alert('Algumas tarefas ainda não foram concluídas.');
+                    // Verificar se a resposta inclui um indicativo de tarefas pendentes
+                    if (response.data && response.data.tarefasPendentes) {
+                        alert('Algumas tarefas ainda não foram concluídas.');
+                    } else {
+                        alert('Não foi possível concluir o módulo porque Algumas tarefas ainda não foram concluídas..');
+                    }
                 }
             },
             error: function() {
@@ -381,10 +388,8 @@ jQuery(document).ready(function($) {
     });
 });
 
-function carregarTarefasProximoModulo(moduloAtual, userId) {
-    // Lógica para carregar tarefas do próximo módulo
-    // ...
-}
+
+
 
 
 
@@ -414,10 +419,16 @@ function carregarTarefasProximoModulo(moduloAtual, userId) {
         if (response.success) {
             alert(response.data.message);
         } else {
-            console.error('Erro ao carregar tarefas do próximo módulo.');
+            // Se o servidor retornar um erro, exibir a mensagem de erro
+            alert(response.data.message);
         }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        // Se houver um erro na chamada AJAX, exibir este erro
+        console.error("Erro na chamada AJAX: ", textStatus, errorThrown);
+        alert("Ocorreu um erro ao tentar carregar tarefas do próximo módulo.");
     });
 }
+
 
 
 
