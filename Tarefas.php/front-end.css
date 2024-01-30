@@ -8,7 +8,7 @@
 }
 
 .kanban-column {
-    width: 470px;
+    width: 370px;
     background: linear-gradient(to bottom, #f9fafb, #eaecef); /* Gradiente de fundo */
     margin: 0 15px;
     border-radius: 10px;
@@ -63,12 +63,13 @@
   
     max-width: 100%; /* Ajuste para um tamanho adequado */
     background-color: #ffffff;
-    padding: 40px;
+    padding: 10px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     overflow-y: scroll; /* Para conteúdo grande */
-    height: 500px;
+    height: 600px;
+    width: 650px;
    
 }
 
@@ -144,33 +145,81 @@
     margin: 10px 0;
 }
 
-#form-editar-tarefa label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #333;
+#form-editar-tarefa {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: auto;
+    padding: 20px;
+    background: #0000000a;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#form-editar-tarefa input, #form-editar-tarefa textarea {
+#form-editar-tarefa label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+#form-editar-tarefa input[type="text"],
+#form-editar-tarefa input[type="date"],
+#form-editar-tarefa textarea {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
-    box-sizing: border-box;
+    border: 1px solid #ccc;
     border-radius: 4px;
-    border: 1px solid #ddd;
+    box-sizing: border-box;
+}
+
+#form-editar-tarefa .subtarefas-container {
+    margin-top: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+}
+
+#form-editar-tarefa button {
+    padding: 10px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#form-editar-tarefa button[type="submit"] {
+    background-color: #256727;
+    color: white;
+}
+
+#form-editar-tarefa button[type="button"] {
+    background-color: #8a1106;
+    color: white;
+}
+
+#form-editar-tarefa button:hover {
+    opacity: 0.9;
 }
 
 #popup-close-pp {
+    float: right;
     cursor: pointer;
-    position: absolute;
+}
+
+
+#popup-close-pp {
+    cursor: pointer;
+    position: fixed;
     top: 15px;
     right: 20px;
-    font-size: 25px;
-    color: #080808;
+    font-size: 30px;
+    color: #0a2cb1;
 }
 
 #popup-close-pp:hover {
-    color: #0079bf;
+    color: #830606;
 }
   
 /* Vermelho para tarefas em 'Para Fazer' */
@@ -380,4 +429,99 @@ textarea#descri {
 
 .user-info span {
     font-size: 1.2em;
+}
+/* Estilização do container das subtarefas */
+.subtarefas-container {
+    margin: 10px 0;
+    padding-left: 0; /* Remove a indentação padrão da lista */
+}
+
+/* Estilo para cada item da lista de subtarefas */
+.subtarefa-item {
+    display: flex;
+    align-items: center; /* Alinha o checkbox e o texto verticalmente */
+    margin-bottom: 8px;
+    background-color: #f9f9f9; /* Fundo claro para cada subtarefa */
+    border-radius: 5px; /* Bordas arredondadas */
+    padding: 8px; /* Espaçamento interno */
+    transition: background-color 0.3s; /* Transição suave ao mudar o fundo */
+    flex-wrap: wrap;
+}
+
+/* Estilo personalizado para o checkbox */
+.subtarefa-checkbox {
+    appearance: none; /* Remove a aparência padrão */
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    border: 2px solid #007bff; /* Borda azul */
+    border-radius: 3px; /* Borda levemente arredondada */
+    position: relative;
+    cursor: pointer;
+}
+
+/* Quando o checkbox estiver marcado */
+.subtarefa-checkbox:checked {
+    background-color: #007bff; /* Cor de fundo ao marcar */
+}
+
+/* Adicionando um indicador de 'check' ao checkbox marcado */
+.subtarefa-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Estilo para o texto das subtarefas */
+.subtarefa-nome {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    margin: 0; /* Remove a margem padrão */
+    font-size: 12px;
+}
+
+/* Quando a subtarefa estiver concluída */
+.subtarefa-item.concluido .subtarefa-nome,
+.subtarefa-item .subtarefa-checkbox:checked + .subtarefa-nome {
+    text-decoration: line-through;
+    color: #6c757d; /* Texto cinza para indicar conclusão */
+}
+
+/* Efeito ao passar o mouse sobre o item da subtarefa */
+.subtarefa-item:hover {
+    background-color: #f2f2f2; /* Muda o fundo ao passar o mouse */
+}
+
+#popup-info.popup-todo {
+    border-top: solid #830f0f; /* Cor para tarefas em TODO */
+    border-left: solid #830f0f;
+}
+#popup-info.popup-doing {
+    border-top:  solid orange; /* Cor para tarefas em DOING */
+    border-left:  solid orange;
+}
+#popup-info.popup-done {
+    border-top:  solid green; /* Cor para tarefas em DONE */
+    border-left:  solid green;
+}
+
+/* Estilizando a barra de rolagem (thumb) */
+::-webkit-scrollbar-thumb {
+    background-color: darkgrey; /* Cor do thumb */
+    border-radius: 10px; /* Borda arredondada */
+}
+
+/* Estilizando o trilho do scrollbar (track) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Cor do trilho */
+}
+
+/* Estilizando a barra de rolagem */
+::-webkit-scrollbar {
+    width: 10px; /* Largura do scrollbar */
 }

@@ -1,12 +1,18 @@
+jQuery.noConflict();
+(function($) {
 
+    jQuery(document).ready(function($){
 
-
-jQuery(document).ready(function($) {
+    
+    $(document).on('click', '#mostrar-form-tarefa', function()  {
       // Evento de clique para o botão 'Adicionar Tarefa'
       $('#mostrar-form-tarefa').click(function() {
+        console.log('botão foi clicado');
         // Alterna a visibilidade do formulário
         $('#kanban-add-task').toggle();
     });
+});
+    
 
     // Código existente para enviar dados do formulário via AJAX
     $('#kanban-add-task').submit(function(e) {
@@ -122,8 +128,7 @@ jQuery(document).ready(function($) {
     }
 });
 
-    
-    
+
     
 $(document).ready(function() {
     $(document).on('click', '.task', function() {
@@ -135,14 +140,22 @@ $(document).ready(function() {
         var nomeTarefa = $(this).text().split('-')[0].trim();
 
         var subtarefasHtml = '';
-        subtarefas.forEach(function(subtarefa) {
-            if (subtarefa && subtarefa.trim() !== '')  {
-                subtarefasHtml += '<div class="subtarefa-item">' +
-                                  '<input type="checkbox" class="subtarefa-checkbox">' +
-                                  '<span class="subtarefa-nome">' + subtarefa.trim() + '</span>' +
-                                  '</div>';
-            }
-        });
+subtarefas.forEach(function(subtarefa, index) {
+    if (subtarefa && subtarefa.trim() !== '') {
+        subtarefasHtml += '<div class="subtarefa-item" data-id="' + index + '">' +
+                          '<input type="checkbox" class="subtarefa-checkbox">' +
+                          '<span class="subtarefa-nome" contenteditable="true">' + subtarefa.trim() + '</span>' +
+                          '</div>';
+    }
+});
+
+// Adicionar campo para nova subtarefa
+subtarefasHtml += '<div class="subtarefa-item">' +
+                  '<input type="checkbox" class="subtarefa-checkbox" disabled>' +
+                  '<span class="subtarefa-nome" contenteditable="true" placeholder="Adicionar nova subtarefa"></span>' +
+                  '</div>';
+        
+        
 
         var responsaveis = $(this).data('responsaveis');
 
@@ -246,14 +259,35 @@ $(document).ready(function() {
     $(document).on('submit', '#form-editar-tarefa', function(e) {
         e.preventDefault();
 
-         // Capturar os dados das subtarefas
-    var subtarefasData = [];
-    $('.subtarefa-item').each(function() {
-        var nomeSubtarefa = $(this).find('.subtarefa-nome').text();
-        var statusSubtarefa = $(this).find('.subtarefa-checkbox').is(':checked') ? 'concluída' : 'pendente';
-
-        subtarefasData.push({ nome: nomeSubtarefa, status: statusSubtarefa });
-    });
+        
+        var subtasks = [];
+        $('.subtarefa-item').each(function() {
+            var idSubtarefa = $(this).data('id');
+            var descricaoSubtarefa = $(this).find('.subtarefa-nome').text().trim();
+            var statusSubtarefa = $(this).find('.subtarefa-checkbox').is(':checked') ? 'concluído' : 'pendente';
+        
+            // Log para verificar o ID da subtarefa
+            console.log('ID da subtarefa:', idSubtarefa);
+        
+            if (idSubtarefa) {
+                subtasks.push({
+                    id_subtarefa: idSubtarefa,
+                    descricao: descricaoSubtarefa,
+                    status: statusSubtarefa
+                });
+            } else {
+                console.error('Erro: ID da subtarefa não encontrado');
+                subtasks.push({
+                    descricao: descricaoSubtarefa,
+                    status: statusSubtarefa
+                });
+            }
+        });
+        
+        
+        
+        
+        
 
         var taskData = {
             action: 'editar_tarefa_kanban',
@@ -261,7 +295,7 @@ $(document).ready(function() {
             task_name: $(this).find('input[name="task_name"]').val(),
             description: $(this).find('textarea[name="description"]').val(),
             due_date: $(this).find('input[name="due_date"]').val(),
-            subtasks: subtarefasData,
+            subtasks: subtasks,
             responsibles: $(this).find('input[name="responsibles"]').val()
         };
         console.log('Dados do formulário:', taskData);
@@ -429,13 +463,14 @@ function carregarTarefasProximoModulo(moduloAtual, userId) {
     });
 }
 
-
-
-
 $(document).on('change', '.subtarefa-checkbox', function() {
     var isChecked = $(this).is(':checked');
-    var descricaoSubtarefa = $(this).siblings('.subtarefa-nome').text();
-    var idTarefa = $(this).closest('.task').data('task-id'); // Supondo que cada tarefa tenha um ID único
+    var $subtarefaItem = $(this).closest('.subtarefa-item');
+    var descricaoTarefa = $subtarefaItem.find('.subtarefa-nome').text();
+    
+    // Supondo que cada subtarefa está dentro de um form com o id_tarefa correspondente
+    var idTarefa = $(this).closest('form').find('input[name="task_id"]').val();
+
 
     // Alterar a visualização para riscado, se necessário
     $(this).siblings('.subtarefa-nome').css('text-decoration', isChecked ? 'line-through' : 'none');
@@ -444,14 +479,14 @@ $(document).on('change', '.subtarefa-checkbox', function() {
     var data = {
         action: 'atualizar_status_subtarefa',
         id_tarefa: idTarefa,
-        descricao: descricaoSubtarefa, // Mudança aqui para 'descricao'
+        descricao: descricaoTarefa,
         status: isChecked ? 'concluído' : 'pendente'
     };
 
     // Enviar para o servidor via AJAX
     $.ajax({
         type: 'POST',
-        url: kanban_ajax.ajax_url, // Substitua pela URL correta
+        url: kanban_ajax.ajax_url,
         data: data,
         success: function(response) {
             console.log('Subtarefa atualizada com sucesso:', response);
@@ -462,14 +497,20 @@ $(document).on('change', '.subtarefa-checkbox', function() {
     });
 });
 
+
+
+
+
+
 jQuery(document).ready(function($) {
     $('#mostrar-form-tarefa').click(function() {
         $('#kanban-add-task').toggle(); // Alterna a visibilidade do formulário
     });
 });
 
-
+document.getElementById('toggle-filtro').addEventListener('click', toggleFiltro);
 function toggleFiltro() {
+  
     var form = document.getElementById('formulario-filtro');
     var btn = document.getElementById('toggle-filtro');
     if (form.style.display === "none") {
@@ -480,3 +521,21 @@ function toggleFiltro() {
         btn.textContent = "Mostrar Filtro";
     }
 }
+})(jQuery);
+
+document.querySelectorAll('.kanban-todo, .kanban-doing, .kanban-done').forEach(column => {
+    column.addEventListener('click', function() {
+        // Aqui você identifica em qual coluna o clique ocorreu
+        let popupClass = 'popup-todo'; // valor padrão
+        if (this.classList.contains('kanban-doing')) {
+            popupClass = 'popup-doing';
+        } else if (this.classList.contains('kanban-done')) {
+            popupClass = 'popup-done';
+        }
+
+        // Adiciona a classe ao popup
+        const popup = document.getElementById('popup-info');
+        popup.className = ''; // remove outras classes de cor
+        popup.classList.add(popupClass);
+    });
+});

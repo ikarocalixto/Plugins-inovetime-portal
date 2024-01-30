@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Meu Quadro Kanban
  * Description: Um plugin para criar um quadro Kanban interativo.
- * Version: 2.7
+ * Version: 3.0
  * Author: IKARO CALIXTO- INOVETIME
  */
 
@@ -96,7 +96,29 @@ function adicionar_tarefa_kanban() {
         }
     }
 
-    echo $wpdb->insert_id;
+     // Enviar notificações aos responsáveis
+     if (!empty($responsaveis)) {
+        $ids_responsaveis = explode(',', $responsaveis);
+        foreach ($ids_responsaveis as $id_responsavel) {
+            $id_responsavel = trim($id_responsavel);
+            if (is_numeric($id_responsavel)) {
+                $wpdb->insert(
+                    "{$wpdb->prefix}meu_plugin_notificacoes",
+                    array(
+                        'user_id' => $id_responsavel,
+                        'mensagem' => 'Você tem uma nova tarefa atribuída.',
+                        'imagem' => '',
+                        'url_redirecionamento' => '#', // Link para a tarefa
+                        'data_envio' => current_time('mysql'),
+                        'lida' => 0
+                    ),
+                    array('%d', '%s', '%s', '%s', '%s', '%d')
+                );
+            }
+        }
+    }
+
+    echo $id_tarefa;
     wp_die();
 }
 
@@ -246,7 +268,7 @@ function adicionar_tarefa_kanban() {
     } elseif ($intervalo->d > 0) {
     return 'Atraso de ' . $intervalo->d . ' dia(s)';
     } else {
-    return 'Atraso de hoje';
+    return 'hoje';
     }
     } else {
     if ($intervalo->m >= 1) {
@@ -256,7 +278,7 @@ function adicionar_tarefa_kanban() {
     } elseif ($intervalo->d > 0) {
     return $intervalo->d . ' dia(s) restantes';
     } else {
-    return 'Hoje';
+    return '1 dia restante';
     }
     }
     }
@@ -310,7 +332,7 @@ function adicionar_tarefa_kanban() {
 
 
  // Data de 30 dias atrás como padrão para a coluna 'Concluído'
- $data_limite = date('Y-m-d', strtotime('-30 days'));
+ $data_limite = date('Y-m-d', strtotime('-7 days'));
 
  // Verifica se um usuário foi selecionado no formulário
 if (isset($_GET['selected_user']) && !empty($_GET['selected_user'])) {
@@ -365,16 +387,25 @@ foreach ($tarefas as $tarefa) {
          $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
          $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
 
-       // Concatenar as subtarefas em uma string e armazenar de forma oculta
-       $subtarefasString = "";
-       foreach ($subtarefas as $subtarefa) {
-           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
-       }
+         $subtarefas = $wpdb->get_results("SELECT id_subtarefa, descricao, status FROM kanban_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
 
-       // Campo oculto para armazenar as subtarefas
-       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+         $subtarefasHtml = '';
+         foreach ($subtarefas as $subtarefa) {
+             // Verifica se a subtarefa está concluída
+             $styleConcluido = $subtarefa->status === 'concluído' ? ' style="text-decoration: line-through;"' : '';
+             $checked = $subtarefa->status === 'concluído' ? ' checked' : '';
+         
+             $subtarefasHtml .= '<div class="subtarefa-item" data-id="' . esc_attr($subtarefa->id_subtarefa) . '">' . // Aqui foi ajustado para usar o valor do ID
+                                '<input type="checkbox" class="subtarefa-checkbox"' . $checked . '>' .
+                                '<span class="subtarefa-nome"' . $styleConcluido . '>' . esc_html($subtarefa->descricao) . '</span>' .
+                                '</div>';
+         }
 
-       
+     
+
+         // Campo oculto para armazenar as subtarefas
+         $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasHtml) . '">';
+         
         
 
         // Fechar a div da tarefa
@@ -413,15 +444,24 @@ $html .= '</div></div>'; // Fecha a coluna 'Para Fazer'
                               // Adicionar as imagens dos avatares
          $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
          $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
-                    
-                          // Concatenar as subtarefas em uma string e armazenar de forma oculta
-       $subtarefasString = "";
-       foreach ($subtarefas as $subtarefa) {
-           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
-       }
+         $subtarefas = $wpdb->get_results("SELECT id_subtarefa, descricao, status FROM kanban_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
 
-       // Campo oculto para armazenar as subtarefas
-       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+$subtarefasHtml = '';
+foreach ($subtarefas as $subtarefa) {
+    // Verifica se a subtarefa está concluída
+    $styleConcluido = $subtarefa->status === 'concluído' ? ' style="text-decoration: line-through;"' : '';
+    $checked = $subtarefa->status === 'concluído' ? ' checked' : '';
+
+    $subtarefasHtml .= '<div class="subtarefa-item" data-id="' . esc_attr($subtarefa->id_subtarefa) . '">' . // Aqui foi ajustado para usar o valor do ID
+                       '<input type="checkbox" class="subtarefa-checkbox"' . $checked . '>' .
+                       '<span class="subtarefa-nome"' . $styleConcluido . '>' . esc_html($subtarefa->descricao) . '</span>' .
+                       '</div>';
+}
+
+// Campo oculto para armazenar as subtarefas
+$html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasHtml) . '">';
+
+     
                             // Fechar a div da tarefa
                             $html .= '</div>';
                         }
@@ -481,8 +521,8 @@ $tarefas = $wpdb->get_results(
                              // Obter a URL do avatar do responsável e do dono
          $avatar_responsavel_url = get_avatar_url($tarefa->responsaveis);
          $avatar_dono_url = get_avatar_url($tarefa->user_id);
-                            // Buscar subtarefas relacionadas à tarefa atual
-                            $subtarefas = $wpdb->get_results("SELECT * FROM $table_name_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
+         $subtarefas = $wpdb->get_results("SELECT id_subtarefa, descricao, status FROM kanban_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
+
                         
                     
                             // Iniciar a div da tarefa
@@ -497,14 +537,24 @@ $tarefas = $wpdb->get_results(
          $html .= '<img src="' . esc_url($avatar_responsavel_url) . '" alt="Avatar do Responsável" class="avatar-responsavel">';
          $html .= '<img src="' . esc_url($avatar_dono_url) . '" alt="Avatar do Dono" class="avatar-dono">';
                     
-                          // Concatenar as subtarefas em uma string e armazenar de forma oculta
-       $subtarefasString = "";
-       foreach ($subtarefas as $subtarefa) {
-           $subtarefasString .= esc_html($subtarefa->descricao) . '; ';
-       }
+         $subtarefas = $wpdb->get_results("SELECT id_subtarefa, descricao, status FROM kanban_subtarefas WHERE id_tarefa = " . intval($tarefa->id));
 
-       // Campo oculto para armazenar as subtarefas
-       $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasString) . '">';
+         $subtarefasHtml = '';
+         foreach ($subtarefas as $subtarefa) {
+             // Verifica se a subtarefa está concluída
+             $styleConcluido = $subtarefa->status === 'concluído' ? ' style="text-decoration: line-through;"' : '';
+             $checked = $subtarefa->status === 'concluído' ? ' checked' : '';
+         
+             $subtarefasHtml .= '<div class="subtarefa-item" data-id="' . esc_attr($subtarefa->id_subtarefa) . '">' . // Aqui foi ajustado para usar o valor do ID
+                                '<input type="checkbox" class="subtarefa-checkbox"' . $checked . '>' .
+                                '<span class="subtarefa-nome"' . $styleConcluido . '>' . esc_html($subtarefa->descricao) . '</span>' .
+                                '</div>';
+         }
+         
+         // Campo oculto para armazenar as subtarefas
+         $html .= '<input type="hidden" class="subtarefas-data" value="' . esc_attr($subtarefasHtml) . '">';
+         
+     
                             // Fechar a div da tarefa
                             $html .= '</div>';
                         }
@@ -558,7 +608,8 @@ function converterFormatoData($data) {
         error_log('Recebendo dados de edição da tarefa: ' . print_r($_POST, true));
         
         // Verifique o nonce aqui
-     $table_name_subtarefas = $wpdb->prefix . 'kanban_subtarefas';
+        $table_name_subtarefas = 'kanban_subtarefas';
+
         $table_name = $wpdb->prefix . 'kanban_tarefas';
         
         // Aqui você captura os dados do POST
@@ -566,7 +617,7 @@ function converterFormatoData($data) {
         $nome_tarefa = sanitize_text_field($_POST['task_name']);
         $descricao = isset($_POST['description']) ? wp_kses_post($_POST['description']) : ''; // Alterado para permitir HTML seguro
         $prazo = sanitize_text_field($_POST['due_date']);
-        $subtarefas = isset($_POST['subtasks']) ? $_POST['subtasks'] : ''; // Aqui as subtarefas devem ser um array ou string JSON
+        $descricao_subtarefas = sanitize_text_field($_POST['subtasks']);
         $responsaveis = sanitize_text_field($_POST['responsibles']);
         
         
@@ -596,38 +647,8 @@ function converterFormatoData($data) {
         if ($resultado !== false) {
             error_log('Tarefa atualizada com sucesso. ID: ' . $id_tarefa);
     
-            $subtarefas = isset($_POST['subtasks']) ? explode(',', $_POST['subtasks']) : array();
-    
-            foreach ($subtarefas as $descricao_subtarefa) {
-                $descricao_subtarefa = trim($descricao_subtarefa);
-                if (!empty($descricao_subtarefa)) {
-                    // Verifica se a subtarefa contém um ID
-                    if (strpos($descricao_subtarefa, ':') !== false) {
-                        // Subtarefa existente
-                        list($id_subtarefa, $descricao) = explode(':', $descricao_subtarefa, 2);
-        
-                        if (is_numeric($id_subtarefa)) {
-                            // Atualizar subtarefa existente
-                            $wpdb->update(
-                                $table_name_subtarefas,
-                                array('descricao' => trim($descricao)),
-                                array('id' => intval($id_subtarefa))
-                            );
-                        }
-                    } else {
-                        // Nova subtarefa
-                        $wpdb->insert(
-                            $table_name_subtarefas,
-                            array(
-                                'id_tarefa' => $id_tarefa,
-                                'descricao' => $descricao_subtarefa,
-                                'status' => 'pendente'
-                            )
-                        );
-                    }
-                }
-            }
-        
+
+
             if ($resultado !== false) {
                 wp_send_json(array('message' => 'Sucesso'));
             } else {
@@ -1024,27 +1045,30 @@ function ajax_carregar_mais_tarefas() {
            Promova sua Conta: Compartilhe o link da sua conta de rede social com amigos, familiares e contatos profissionais. Peça-lhes para seguir sua página e compartilhar com suas redes.
            
            Monitore Seu Progresso: Fique atento ao número de seguidores e ao engajamento das suas postagens. Use esses insights para ajustar sua estratégia conforme necessário.', 'modulo' => 3],
-           ['nome' => 'Solicitação de E-mail Corporativo ', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/suporte/">Abra Um Chamado </button>   Objetivo: Obter seu e-mail corporativo oficial, que será essencial para realizar as próximas tarefas e comunicações profissionais relacionadas à sua franquia.
-
-           Descrição da Tarefa:
-           Para iniciar formalmente suas atividades como franqueado e manter a comunicação profissional com clientes e a equipe de suporte, é essencial que você tenha um e-mail corporativo. Este e-mail não só fortalece sua identidade profissional, mas também é necessário para as próximas etapas do desenvolvimento da sua franquia.
-           
-           Abrir um Chamado: A primeira ação é abrir um chamado em nosso sistema. Isso pode ser feito acessando nossa plataforma de suporte e selecionando a opção correspondente para solicitar um e-mail corporativo.
-           
-           Fornecer Informações Necessárias: No chamado, você deverá fornecer informações básicas como seu nome completo, o nome da sua franquia e qualquer outra informação relevante solicitada pela equipe de suporte.
-           
-           Aguardar a Criação do E-mail: Após a abertura do chamado, nossa equipe técnica processará sua solicitação e criará seu e-mail corporativo. Este processo pode levar alguns dias, então pedimos paciência.
-           
-           Recebimento e Configuração: Uma vez que seu e-mail corporativo estiver pronto, você receberá as credenciais e instruções para configurá-lo em seu dispositivo.', 'modulo' => 3],
+          
 
 
         // Módulo 4
         ['nome' => 'Conhecendo os Produtos', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/New-Collection-Lady-2.pdf">Veja nossa Revista!</button>  Embarque em uma viagem de estilo e sofisticação com a Lady Griffe, onde a beleza e a elegância se encontram em cada produto. <iframe width="848" height="480" src="https://www.youtube.com/embed/G7IYiKl44JQ" title="Apresentação de Produtos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
-        ['nome' => 'Como funciona o dropshipping?', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/2022/07/Manual-Dropshipping.pdf">Saiba mais</button> Dropshipping é um modelo de negócios de varejo onde a loja não mantém os produtos que vende em estoque. Em vez disso, quando uma loja vende um produto usando o modelo de dropshipping, ela compra o item de um terceiro e o envia diretamente ao cliente. Assim, o vendedor não precisa lidar diretamente com o produto.
+        ['nome' => 'Como funciona o dropshipping?', 'descricao' => ' <iframe width="848" height="480" src="https://www.youtube.com/embed/1WWhl2mpX3c" title="Como funciona o Drop lady Griffe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/2022/07/Manual-Dropshipping.pdf">Saiba mais</button> Dropshipping é um modelo de negócios de varejo onde a loja não mantém os produtos que vende em estoque. Em vez disso, quando uma loja vende um produto usando o modelo de dropshipping, ela compra o item de um terceiro e o envia diretamente ao cliente. Assim, o vendedor não precisa lidar diretamente com o produto.
 
         A principal vantagem do dropshipping é a redução dos custos operacionais, já que não é necessário investir em grandes estoques ou em um espaço de armazenamento. Isso torna o dropshipping uma opção atraente para empreendedores iniciantes ou para empresas que desejam expandir suas ofertas de produtos sem aumentar significativamente os custos.', 'modulo' => 4],
-        ['nome' => 'Como funciona reserva de estoque?', 'descricao' => '...', 'modulo' => 4],
-        ['nome' => 'Como funciona a compra no atacado?', 'descricao' => '...', 'modulo' => 4],
+        ['nome' => 'Como funciona reserva de estoque?', 'descricao' => '  O vídeo apresenta o sistema de reserva de estoque da Lady Griffe, enfatizando como ele transforma as vendas. Inicia-se com uma introdução que destaca a inovação e parceria da marca. Em seguida, é explicado o conceito da reserva de estoque, que não é uma compra, mas uma garantia de disponibilidade dos produtos sem comprometer o capital de giro.
+
+        A flexibilidade do sistema é ressaltada, mostrando a facilidade de troca de produtos que não atendem às expectativas de venda. O processo de reposição e manutenção do estoque é detalhado, explicando como as vendas geram lucro e a necessidade de gerir financeiramente a reposição do estoque.
+        
+        Além disso, o vídeo aborda como manter as reposições em dia melhora o score de crédito e pode aumentar o limite de crédito do franqueado. A integração do modelo de reserva de estoque com operações de marketplace e loja virtual também é discutida, destacando os benefícios de uma gestão operacional mais eficiente e lucratividade maximizada.  <iframe width="848" height="480" src="https://www.youtube.com/embed/KZm3BhWGKlY" title="Reserva de estoque oficial lady" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
+        ['nome' => 'Como funciona a compra no atacado?', 'descricao' => ' Introdução: O vídeo começa apresentando a estratégia de compra no atacado da Lady Griffe, destacando como ela beneficia os franqueados.
+
+        Compra no Atacado: Explica que comprar no atacado significa adquirir produtos a preços reduzidos diretamente dos fornecedores, com o processo facilitado pela equipe da Lady Griffe.
+        
+        Vantagens: As vantagens incluem entrega direta ao franqueado, permitindo estratégias de venda variadas como delivery ou venda de produtos a pronta entrega. Outro ponto positivo é a maior margem de lucro obtida com a compra no atacado.
+        
+        Critérios de Compra: Esclarece que existem critérios específicos para a compra no atacado, como a aquisição de uma quantidade mínima de um mesmo produto, variando de acordo com cada fornecedor.
+        
+        Reserva de Estoque: Aborda a reserva de estoque, onde o franqueado investe um valor sem se preocupar com logística, validade ou danos. Oferece a possibilidade de trocar produtos que não atendam às expectativas de vendas.
+        
+        Diferenças Chave: Destaca as diferenças entre comprar no atacado e reservar estoque. Na compra no atacado, o franqueado lida com a logística e não pode trocar produtos. Na reserva de estoque, a logística é gerida pela Lady Griffe, e há flexibilidade para trocar itens pouco vendidos. <iframe width="848" height="480" src="https://www.youtube.com/embed/D8_3IEBAaWw" title="Compras no Atacado" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
         // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
 
   // Módulo 5
@@ -1098,6 +1122,29 @@ if ($tarefas_nao_concluidas > 0) {
             'modulo' => $modulo_atual // Use $modulo_atual em vez de $modulo
         ));
     }
+
+    // Enviar notificações aos responsáveis
+    if (!empty($tarefa['responsaveis'])) {
+        $ids_responsaveis = explode(',', $tarefa['responsaveis']);
+        foreach ($ids_responsaveis as $id_responsavel) {
+            $id_responsavel = trim($id_responsavel);
+            if (is_numeric($id_responsavel)) {
+                $wpdb->insert(
+                    "{$wpdb->prefix}meu_plugin_notificacoes",
+                    array(
+                        'user_id' => $id_responsavel,
+                        'mensagem' => 'Você tem uma nova tarefa atribuída.',
+                        'imagem' => '',
+                        'url_redirecionamento' => '#', // Link para a tarefa
+                        'data_envio' => current_time('mysql'),
+                        'lida' => 0
+                    ),
+                    array('%d', '%s', '%s', '%s', '%s', '%d')
+                );
+            }
+        }
+    }
+
 
     // Resposta AJAX
     wp_send_json_success(['message' => "Tarefas do Módulo $modulo_atual adicionadas com sucesso."]);
@@ -1269,3 +1316,66 @@ add_action('wp_ajax_concluir_modulo_atual', 'ajax_concluir_modulo_atual');
 add_action('wp_ajax_nopriv_concluir_modulo_atual', 'ajax_concluir_modulo_atual'); // se necessário
 
 
+// Adicione isso ao arquivo functions.php do seu tema ou a um plugin personalizado
+
+function atualizar_status_subtarefa() {
+    global $wpdb;
+
+    $id_tarefa = isset($_POST['id_tarefa']) ? intval($_POST['id_tarefa']) : 0;
+    $descricao = isset($_POST['descricao']) ? sanitize_text_field($_POST['descricao']) : '';
+    $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : '';
+
+    if (!$id_tarefa || !$descricao) {
+        echo 'Dados insuficientes.';
+        wp_die();
+    }
+
+    $table_name = 'kanban_subtarefas'; // Substitua pelo nome da sua tabela
+
+    $result = $wpdb->update(
+        $table_name,
+        array('status' => $status),
+        array(
+            'id_tarefa' => $id_tarefa,
+            'descricao' => $descricao
+        ),
+        array('%s'),
+        array('%d', '%s')
+    );
+
+    if ($result !== false) {
+        echo 'Subtarefa atualizada com sucesso.';
+    } else {
+        echo 'Erro ao atualizar a subtarefa.';
+    }
+
+    wp_die(); // Encerrar adequadamente a execução do AJAX
+}
+
+add_action('wp_ajax_atualizar_status_subtarefa', 'atualizar_status_subtarefa');
+add_action('wp_ajax_nopriv_atualizar_status_subtarefa', 'atualizar_status_subtarefa');
+// Adicione a ação 'wp_ajax_nopriv_' se necessário
+
+function excluir_subtarefa() {
+    global $wpdb;
+
+    $id_subtarefa = isset($_POST['id_subtarefa']) ? intval($_POST['id_subtarefa']) : 0;
+
+    if ($id_subtarefa) {
+        $resultado = $wpdb->delete('kanban_subtarefas', array('id' => $id_subtarefa));
+
+        if ($resultado !== false) {
+            echo 'Subtarefa excluída com sucesso.';
+        } else {
+            echo 'Erro ao excluir a subtarefa.';
+        }
+    } else {
+        echo 'ID da subtarefa inválido.';
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_excluir_subtarefa', 'excluir_subtarefa');
+add_action('wp_ajax_nopriv_excluir_subtarefa', 'excluir_subtarefa');
+// Se necessário, adicione também a ação 'wp_ajax_nopriv_excluir_subtarefa'
