@@ -97,100 +97,152 @@ function user_expense_panel_shortcode() {
 }
 
 
-
-        ob_start();
-        ?>
-
-
-        <style>
-            .progress-bar {
-                background-color: #f3f3f3;
-                border-radius: 13px;
-                height: 20px;
-                width: 100%;
-            }
-            .progress-bar-inner {
-                background-color: #4caf50;
-                border-radius: 13px;
-                height: 100%;
-                width: <?php echo $percentage; ?>%;
-            }
-            body {
-                background: #EEE;
-                /* font-size:0.9em !important; */
-            }
-            .invoice {
-                width: 970px !important;
-                margin: 50px auto;
-            }
-            .invoice-header {
-                padding: 25px 25px 15px;
-            }
-            .invoice-header h1 {
-                margin: 0;
-            }
-            .invoice-header .media .media-body {
-                font-size: 0.9em;
-                margin: 0;
-            }
-            .invoice-body {
-                border-radius: 10px;
-                padding: 25px;
-                background: #FFF;
-            }
-            .invoice-footer {
-                padding: 15px;
-                font-size: 0.9em;
-                text-align: center;
-                color: #999;
-            }
-            .logo {
-                max-height: 70px;
-                border-radius: 10px;
-            }
-            .dl-horizontal {
-                margin: 0;
-            }
-            .dl-horizontal dt {
-                float: left;
-                width: 80px;
-                overflow: hidden;
-                clear: left;
-                text-align: right;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            .dl-horizontal dd {
-                margin-left: 90px;
-            }
-            .rowamount {
-                padding-top: 15px !important;
-            }
-            .rowtotal {
-                font-size: 1.3em;
-            }
-            .colfix {
-                width: 12%;
-            }
-            .mono {
-                font-family: monospace;
-            }
-        </style>
+ob_start();
+?>
+<!DOCTYPE html>
+<html lang="pt">
+<head>
    
-       <div class="user-expense-panel">
-            <form method="post" action="">
-                <div class="progress-bar">
-                    <div class="progress-bar-inner"></div>
-                </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Financeiro Detalhado</title>
+    <link rel="stylesheet" href="financeiro-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+    
 
-                <?php wp_nonce_field('efetuar_pagamento', 'payment_nonce'); ?>
 
-                <div>
-                    Fatura: R$ <?php echo number_format($total_expense, 2, ',', '.'); ?> / R$ <?php echo number_format($expense_limit, 2, ',', '.'); ?>
+.body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+}
+
+
+.main-content {
+   
+    padding: 20px;
+}
+
+.header h1 {
+    color: #30475e;
+}
+
+.info-cards {
+    display: flex;
+    justify-content: space-between;
+   
+    gap: 10px; /* Cria um espaçamento uniforme entre os cards */
+}
+
+.card {
+    background: linear-gradient(145deg, #b3b3b3, #30475e);
+    border-radius: 10px;
+    color: white;
+    padding: 20px;
+    flex: 1;
+    min-width: 350px;
+    margin: 10px; /* Ou use gap no container, conforme sua preferência */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza a transição dos efeitos */
+}
+
+.card:hover {
+    transform: translateY(-10px); /* Move o card um pouco para cima */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para criar profundidade */
+}
+
+
+.card-icon {
+    font-size: 50px;
+    margin-right: 20px;
+}
+
+.card-content h3 {
+    margin: 0;
+    color: #f5f5f5;
+    font-size: 14px;
+}
+
+.card-content p {
+    font-size: 24px;
+    margin: 5px 0 0 0;
+}
+
+.details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Mais estilos aqui */
+}
+
+
+@media (max-width: 768px) {
+    .info-cards {
+        justify-content: center; /* Centraliza os cartões para telas menores */
+        display: flex;
+    flex-wrap: wrap;
+
+    }
+
+    .card {
+        /* Opcional: ajuste o tamanho do cartão para telas menores */
+    }
+}
+
+@media (max-width: 400px) {
+    .card {
+        width: 100%; /* O cartão ocupa a largura total em telas muito pequenas */
+       
+    }
+}
+
+h2 {
+    font-size: 20px;
+}
+  
+        
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <header>
+            <h1></h1>
+        </header>
+        <div class="info-cards">
+            <div class="card">
+                <i class="fas fa-tachometer-alt card-icon"></i> 
+                <div class="card-content">
+                <h3>Crédito de Reserva</h3>
+                    <p>R$ <?php echo number_format($expense_limit, 2, ',', '.'); ?></p>
                 </div>
+            </div>
+            <div class="card">
+                <i class="fas fa-wallet card-icon"></i>
+                <div class="card-content">
+                <h3>Consumo da Reserva</h3>
+                    <p>R$ <?php echo number_format($total_expense, 2, ',', '.'); ?></p>
+                 
+                </div>
+            </div>
+            <div class="card">
+                <i class="fas fa-percent card-icon"></i>
+                <div class="card-content">
+                    <h3>Uso da Reserva</h3>
+                    <p><?php echo number_format($percentage, 2, ',', '.'); ?>%</p>
+                </div>
+            </div>
+        </div>
+        <!-- Outros detalhes do painel financeiro aqui -->
+    </div>
+</body>
+</html>
+
+
                 <?php if ($total_expense >= $expense_limit): ?>
                     <input type="hidden" name="payment_amount" value="<?php echo ($total_expense - $expense_limit); ?>">
-                    <button type="submit" name="efetuar_pagamento" class="payment-button">Efetuar pagamento</button>
+                    <button type="submit" name="efetuar_pagamento" class="payment-button">Pagar Fatura</button>
                 <?php endif; ?>
             </form>
         </div>
@@ -199,7 +251,7 @@ function user_expense_panel_shortcode() {
                       $is_paid = get_post_meta($product_id, '_paid', true);
                       if($is_paid !== 'yes'): ?>
                     <input type="hidden" name="payment_amount" value="<?php echo ($total_expense - $expense_limit); ?>">
-                    <button type="submit" name="efetuar_pagamento" class="payment-button">Efetuar pagamento</button>
+                    <button type="submit" name="efetuar_pagamento" class="payment-button">Pagar Fatura</button>
                 <?php endif; endif; ?>
             </form>
         </div>

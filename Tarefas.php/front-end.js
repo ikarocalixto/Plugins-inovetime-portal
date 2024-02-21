@@ -1,5 +1,6 @@
 jQuery.noConflict();
 (function($) {
+    Dropzone.autoDiscover = false;
 
     jQuery(document).ready(function($){
 
@@ -132,6 +133,7 @@ jQuery.noConflict();
     
 $(document).ready(function() {
     $(document).on('click', '.task', function() {
+
         
         var taskId = $(this).attr('id').split('-')[1];
         var descricao = $(this).data('descricao');
@@ -159,51 +161,102 @@ subtarefasHtml += '<div class="subtarefa-item">' +
 
         var responsaveis = $(this).data('responsaveis');
 
-        // Regex para extrair elementos HTML
-        var iframeRegex = /<iframe[^>]*src=["']([^"']*)["'][^>]*>(.*?)<\/iframe>/g;
-        var buttonRegex = /<button[^>]*>(.*?)<\/button>/g;
-        var linkRegex = /<a[^>]*href=["']([^"']*)["'][^>]*>(.*?)<\/a>/g;
+    // Regex para extrair elementos HTML
+var iframeRegex = /<iframe[^>]*src=["']([^"']*)["'][^>]*>(.*?)<\/iframe>/g;
+var buttonRegex = /<button[^>]*>(.*?)<\/button>/g;
+var linkRegex = /<a[^>]*href=["']([^"']*)["'][^>]*>(.*?)<\/a>/g;
+var audioRegex = /<audio\s+src="([^"]+)"\s+controls>([\s\S]*?)<\/audio>/g;
+var imgRegex = /<img\s+src="([^"]+)"\s+alt="([^"]*)"\s*\/?>/g;
 
-        var iframeMatch = iframeRegex.exec(descricao);
-        var buttonMatch = buttonRegex.exec(descricao);
-        var linkMatch = linkRegex.exec(descricao);
 
-        var iframeHtml = iframeMatch ? iframeMatch[0] : '';
-        var buttonHtml = buttonMatch ? buttonMatch[0] : '';
-        var linkHtml = linkMatch ? linkMatch[0] : '';
 
-        var descricaoSemIframe = descricao.replace(iframeRegex, '').trim();
-        var descricaoSemButton = descricaoSemIframe.replace(buttonRegex, '').trim();
-        var descricaoFinal = descricaoSemButton.replace(linkRegex, '').trim();
 
-        var visualizacaoHtml = '';
-        if (iframeHtml) {
-            visualizacaoHtml += '<div class="descricao-visualizacao">' + iframeHtml + '</div>';
-        }
-        if (buttonHtml) {
-            visualizacaoHtml += '<div class="button-visualizacao">' + buttonHtml + '</div>';
-        }
-        if (linkHtml) {
-            visualizacaoHtml += '<div class="link-visualizacao">' + linkHtml + '</div>';
-        }
 
-        var formHtml = '<form id="form-editar-tarefa">' +
-        ' <span id="popup-close-pp">&times;</span>' +  
 
-                       '<input type="hidden" name="task_id" value="' + taskId + '">' +
-                       '<label for="task_name">Nome da Tarefa</label>' +
-                       '<input type="text" name="task_name" value="' + nomeTarefa + '">' +
-                       '<label for="description">Descrição</label>' +
-                       '<textarea id="descri" name="description">' + descricaoFinal + '</textarea>' +
-                       '<label for="due_date">Prazo</label>' +
-                       '<input type="date" name="due_date" value="' + prazo + '">' +
-                       '<label for="subtasks">Subtarefas</label>' +
-                       '<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
-                       '<label for="responsibles">Responsáveis</label>' +
-                       '<input type="text" name="responsibles" value="' + responsaveis + '">' +
-                       '<button type="submit">Salvar</button>' +
-                       '<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
-                       '</form>';
+
+
+
+
+
+// Execução da regex para extrair elementos HTML
+var iframeMatch = iframeRegex.exec(descricao);
+var buttonMatch = buttonRegex.exec(descricao);
+var linkMatch = linkRegex.exec(descricao);
+var audioMatch = audioRegex.exec(descricao);
+var imgMatch = imgRegex.exec(descricao);
+
+// Extração dos elementos HTML
+var iframeHtml = iframeMatch ? iframeMatch[0] : '';
+var buttonHtml = buttonMatch ? buttonMatch[0] : '';
+var linkHtml = linkMatch ? linkMatch[0] : '';
+var audioHtml = audioMatch ? audioMatch[0] : '';
+var imgHtml = imgMatch ? imgMatch[0] : '';
+
+// Limpeza da descrição
+var descricaoLimpa = descricao.replace(iframeRegex, '')
+                              .replace(buttonRegex, '')
+                              .replace(linkRegex, '')
+                              .replace(audioRegex, '')
+                              .replace(imgRegex, '').trim(); // Remove todos os elementos HTML de uma vez
+
+// Montagem do HTML de visualização
+var visualizacaoHtml = '';
+if (iframeHtml) {
+    visualizacaoHtml += '<div class="descricao-visualizacao">' + iframeHtml + '</div>';
+}
+if (imgHtml) {
+    visualizacaoHtml += '<div class="img-visualizacao">' + imgHtml + '</div>';
+}
+if (linkHtml) {
+    visualizacaoHtml += '<div class="link-visualizacao">' + linkHtml + '</div>';
+}
+if (audioHtml) {
+    visualizacaoHtml += '<div class="audio-visualizacao">' +
+        '<p>Escute o que tem na descrição:</p>' +
+        audioHtml +
+    '</div>';
+}
+if (buttonHtml) {
+    visualizacaoHtml += '<div class="button-visualizacao">' + buttonHtml + '</div>';
+}
+
+// Inserindo no DOM
+$('#elementoParaInserirVisualizacao').html(visualizacaoHtml);
+
+
+
+
+
+console.log(visualizacaoHtml); // Verifique o conteúdo no console
+$('#elementoParaInserirVisualizacao').html(visualizacaoHtml);
+
+
+       // Supondo que as variáveis iframeHtml, buttonHtml, linkHtml, audioHtml, e imgHtml já foram definidas anteriormente
+
+var formHtml = '<form id="form-editar-tarefa">' +
+' <span id="popup-close-pp">&times;</span>' +  
+
+'<input type="hidden" name="task_id" value="' + taskId + '">' +
+'<input type="hidden" name="iframe_html" value="' + encodeURIComponent(iframeHtml) + '">' + // Armazenar iframe como campo oculto
+'<input type="hidden" name="button_html" value="' + encodeURIComponent(buttonHtml) + '">' + // Armazenar button como campo oculto
+'<input type="hidden" name="link_html" value="' + encodeURIComponent(linkHtml) + '">' + // Armazenar link como campo oculto
+'<input type="hidden" name="audio_html" value="' + encodeURIComponent(audioHtml) + '">' + // Armazenar audio como campo oculto
+'<input type="hidden" name="img_html" value="' + encodeURIComponent(imgHtml) + '">' + // Armazenar img como campo oculto
+
+'<label for="task_name">Nome da Tarefa</label>' +
+'<input type="text" name="task_name" value="' + nomeTarefa + '">' +
+'<label for="description">Descrição</label>' +
+'<textarea id="descri" name="description">' + descricaoLimpa + '</textarea>' +
+'<label for="due_date">Prazo</label>' +
+'<input type="date" name="due_date" value="' + prazo + '">' +
+'<label for="subtasks">Subtarefas</label>' +
+'<div class="subtarefas-container">' + subtarefasHtml + '</div>' +
+'<label for="responsibles">Responsáveis</label>' +
+'<input type="text" name="responsibles" value="' + responsaveis + '">' +
+'<button type="submit">Salvar</button>' +
+'<button type="button" id="btn-excluir-tarefa" data-task-id="' + taskId + '">Excluir</button>' +
+'</form>';
+
 
 
                        
@@ -508,19 +561,27 @@ jQuery(document).ready(function($) {
     });
 });
 
-document.getElementById('toggle-filtro').addEventListener('click', toggleFiltro);
+document.addEventListener('DOMContentLoaded', function() {
+    var btnFiltro = document.getElementById('toggle-filtro');
+    if (btnFiltro) {
+        btnFiltro.addEventListener('click', toggleFiltro);
+    }
+});
+
 function toggleFiltro() {
-  
     var form = document.getElementById('formulario-filtro');
     var btn = document.getElementById('toggle-filtro');
-    if (form.style.display === "none") {
-        form.style.display = "block";
-        btn.textContent = "Ocultar Filtro";
-    } else {
-        form.style.display = "none";
-        btn.textContent = "Mostrar Filtro";
+    if (form && btn) { // Verifica se ambos os elementos existem
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            btn.textContent = "Ocultar Filtro";
+        } else {
+            form.style.display = "none";
+            btn.textContent = "Mostrar Filtro";
+        }
     }
 }
+
 })(jQuery);
 
 document.querySelectorAll('.kanban-todo, .kanban-doing, .kanban-done').forEach(column => {

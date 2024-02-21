@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pt">
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Avaliações do Produto
+  </title>
+  <style>
+   body {
+  
+  }
+
+
+  .services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: calc(50% - 20px); /* Ajusta para duas colunas */
+}
+
+.icon {
+  font-size: 2em; /* Tamanho do ícone */
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.description h3, .description p {
+  margin: 0;
+}
+
+.description h3 {
+  font-size: 1em;
+  color: #000;
+}
+
+.description p {
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* Media query para telas menores */
+@media (max-width: 768px) {
+  .services {
+    justify-content: center;
+  }
+
+  .service {
+    width: 100%; /* Ajusta para uma coluna */
+  }
+
+  .icon {
+    margin-right: 10px;
+  }
+}
+
+  .container {
+   
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  } 
+
+  .reviews-summary, .reviews {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .reviews-summary {
+    flex-basis: 35%;
+  }
+
+  .reviews {
+    flex-basis: 60%;
+    max-width: 100%;
+  }
+
+  .review, .rating-overview, .rating-details {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .starsbrbr, .user-rating-starsbr {
+    color: #ffd700;
+    cursor: pointer;
+  }
+
+  .user-comment {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 10px;
+  }
+
+  .user-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .leave-review {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .review-link {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .review-link:hover {
+    background-color: #003d82;
+  }
+
+  /* modalbr */
+  .modalbr {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+
+  .modalbr-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modalbr-content {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalbr-nav {
+  display: flex;
+  align-items: center;
+}
+
+.prev, .next {
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 20px;
+  color: black;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.prev:hover, .next:hover {
+  color: grey;
+}
+
+
+.closeFoto {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 50px;
+  color: #333; /* Cor do ícone */
+  cursor: pointer;
+}
+
+.closeFoto:hover {
+  color: #000; /* Cor do ícone ao passar o mouse */
+}
+.boxCalculoFreteProduto {
+    display: none;
+}
+  </style>
+ </head>
+ <body>
+  <div class="container">
+   <div class="reviews-summary">
+    <!-- Conteúdo do resumo das avaliações -->
+   </div>
+   <div class="reviews">
+    <!-- Avaliação 1 -->
+    <div class="review">
+     <div class="starsbr">
+      ★ ★ ★ ★ ☆
+     </div>
+     <div class="user-comment">
+      <img alt="Imagem do usuário" class="user-image" src="e"/>
+      <p>
+       <span class="username">
+        e
+       </span>
+       -
+       <span class="date">
+        5 abril. 2023
+       </span>
+      </p>
+     </div>
+     <div class="comment">
+      e
+     </div>
+     <!-- Avaliação 2 -->
+     <div class="review">
+      <div class="starsbr">
+       ★ ★ ★ ★ ☆
+      </div>
+      <div class="user-comment">
+       <img alt="Imagem do usuário" class="user-image" src="https://down-br.img.susercontent.com/file/723b37cb7eb330f833e523f33f0f94a9_tn"/>
+       <p>
+        <span class="username">
+         keliribeiroalves
+        </span>
+        -
+        <span class="date">
+         06 setembro. 2023
+        </span>
+       </p>
+      </div>
+      <div class="comment">
+       Custo-benefício: maravilhoso, mto apaixonada
+        Parecido com anúncio: mto
+        Estou apaixonadas por meus perfumes,  vou comprar sempre....
+      </div>
+      <div class="user-photos">
+       <video autoplay="" class="user-video" controls="" loop="" muted="" style="max-width: 20%; height: auto;">
+        <source src="  https://down-tx-br.vod.susercontent.com/c3/98934353/103/A3oxOPWKAJDG-CENEVUGACY.mp4" type="video/mp4">
+         Seu navegador não suporta vídeos.
+        </source>
+       </video>
+       <img alt="Foto do produto" class="user-photo" src="https://down-tx-br.img.susercontent.com/br-11134103-22090-4runh5mybkhv33.webp"/>
+       <img alt="Foto do produto" class="user-photo" src="https://down-tx-br.img.susercontent.com/br-11134103-22090-ioa3tv2ybkhva1.webp"/>
+       <img alt="Foto do produto" class="user-photo" src="https://down-tx-br.img.susercontent.com/br-11134103-22090-73x1z4e1bkhvf5.webp"/>
+      </div>
+     </div>
+     <!-- Avaliação 3 -->
+     <div class="review">
+      <div class="starsbr">
+       ★ ★ ★ ★ ☆
+      </div>
+      <div class="user-comment">
+       <img alt="Imagem do usuário" class="user-image" src="https://down-br.img.susercontent.com/file/d3a90d2f46f8617789259181d484319a_tn"/>
+       <p>
+        <span class="username">
+         clrodrigues70
+        </span>
+        -
+        <span class="date">
+         19 outubro. 2023
+        </span>
+       </p>
+      </div>
+      <div class="comment">
+       Produto maravilhoso!Veio muito rápido, muito parecido com o verdadeiro, muito bem embalado, fixa muito bem na pele. Estou apaixonada, vou comprar outros Parabéns ao vendedor!!!👏👏👏👏👏👏👏👏😘😘😘😘😘😘
+      </div>
+      <div class="user-photos">
+       <video autoplay="" class="user-video" controls="" loop="" muted="" style="max-width: 20%; height: auto;">
+        <source src="   https://down-tx-br.vod.susercontent.com/api/v4/11110103/mms/br_dbc51146-96c5-4762-8b56-954f198c311a_000053.default.mp4" type="video/mp4">
+         Seu navegador não suporta vídeos.
+        </source>
+       </video>
+       <img alt="Foto do produto" class="user-photo" src="https://down-tx-br.img.susercontent.com/br-11134103-22070-zdagcul32nev0e.webp"/>
+       <img alt="Foto do produto" class="user-photo" src="https://down-tx-br.img.susercontent.com/7bcee9250dbee2f1dcf84ef8382f29fb.webp"/>
+      </div>
+     </div>
+     <!-- Seção para deixar uma avaliação -->
+     <div class="leave-review">
+      <a class="review-link" href="#" id="openmodalbr">
+       Faça sua avaliação do produto
+      </a>
+     </div>
+    </div>
+   </div>
+   <!-- modalbr para Foto Ampliada -->
+   <div class="modalbr" id="modalbrFotoAmpliada">
+    <div class="modalbr-content">
+     <span class="closeFoto">
+      ×
+     </span>
+     <div class="modalbr-nav">
+      <a class="prev">
+       ❮
+      </a>
+      <img alt="Foto do Produto Ampliada" id="fotoAmpliada" src="" style="max-width: 50%; height: auto;"/>
+      <a class="next">
+       ❯
+      </a>
+     </div>
+     <p id="fotoDescricao">
+     </p>
+     <!-- Local para a descrição da foto -->
+    </div>
+   </div>
+   <!-- modalbr Formulário de Avaliação -->
+   <div class="modalbr" id="modalbrFormularioAvaliacao">
+    <div class="modalbr-content">
+     <span class="close">
+      ×
+     </span>
+     <h2>
+      Deixe sua avaliação
+     </h2>
+     <form id="formAvaliacao">
+      <label for="nome">
+       Seu nome:
+      </label>
+      <br/>
+      <input id="nome" name="nome" type="text"/>
+      <br/>
+      <label for="comentario">
+       Comentário:
+      </label>
+      <br/>
+      <textarea id="comentario" name="comentario"></textarea>
+      <br/>
+      <div class="user-rating">
+       <label>
+        Avaliação:
+       </label>
+       <br/>
+       <div class="user-rating-starsbr" data-value="0" id="userRatingstarsbr">
+        ★★★★★
+       </div>
+      </div>
+      <button id="submitReview" type="button">
+       Enviar Avaliação
+      </button>
+     </form>
+    </div>
+   </div>
+   <div class="services">
+    <div class="service">
+     <div class="icon">
+      <i class="fas fa-lock">
+      </i>
+     </div>
+     <div class="description">
+      <h3>
+       Compra Segura
+      </h3>
+      <p>
+       Ambiente seguro para pagamentos online
+      </p>
+     </div>
+    </div>
+    <div class="service">
+     <div class="icon">
+      <i class="fas fa-shipping-fast">
+      </i>
+     </div>
+     <div class="description">
+      <h3>
+       Frete Grátis
+      </h3>
+      <p>
+       Envio rápido e acompanhado com código de rastreio
+      </p>
+     </div>
+    </div>
+    <div class="service">
+     <div class="icon">
+      <i class="fas fa-headset">
+      </i>
+     </div>
+     <div class="description">
+      <h3>
+       Suporte Profissional
+      </h3>
+      <p>
+       Equipe de suporte de extrema qualidade a semana toda
+      </p>
+     </div>
+    </div>
+    <div class="service">
+     <div class="icon">
+      <i class="fas fa-redo">
+      </i>
+     </div>
+     <div class="description">
+      <h3>
+       Satisfação ou Reembolso
+      </h3>
+      <p>
+       Caso haja algo, devolvemos seu dinheiro com velocidade
+      </p>
+     </div>
+    </div>
+   </div>
+   <script>
+    var modalbr = document.getElementById("modalbrFormularioAvaliacao");
+  var btn = document.getElementById("openmodalbr");
+  var span = document.getElementsByClassName("close")[0];
+
+  btn.onclick = function() {
+    modalbr.style.display = "block";
+  }
+
+  span.onclick = function() {
+    modalbr.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modalbr) {
+      modalbr.style.display = "none";
+    }
+  }
+
+  
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var modalbrFoto = document.getElementById("modalbrFotoAmpliada");
+  var spanFoto = document.getElementsByClassName("closeFoto")[0];
+  var fotos = document.querySelectorAll(".user-photo");
+  var videos = document.querySelectorAll(".user-video");
+  var descricao = document.getElementById("fotoDescricao");
+  var currentIndex = 0; // Índice da foto atual
+  var currentPhotos = []; // Fotos da avaliação atual
+
+  function abrirmodalbrFoto(event, photos, index, userComment) {
+    currentPhotos = photos;
+    currentIndex = index;
+    var img = document.getElementById("fotoAmpliada");
+    var video = document.getElementById("FotoAmpliada")
+    img.src = photos[currentIndex]; // Define o src para o da foto clicada
+    descricao.textContent = userComment; // Define a descrição
+    modalbrFoto.style.display = "block"; // Exibe o modalbr
+  }
+
+  // Adiciona evento de clique para cada foto, considerando múltiplas fotos
+  document.querySelectorAll('.review').forEach(review => {
+    const photos = Array.from(review.querySelectorAll('.user-photo')).map(img => img.src);
+    const userComment = review.querySelector('.comentario') ? review.querySelector('.comentario').textContent.trim() : "Comentário não encontrado";
+    review.querySelectorAll('.user-photo').forEach((photo, index) => {
+      photo.addEventListener('click', (event) => abrirmodalbrFoto(event, photos, index, userComment));
+    });
+  });
+
+  // Navegação entre as fotos
+  document.querySelector('.prev').addEventListener('click', () => {
+    if (currentPhotos.length > 0) {
+      currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+      document.getElementById("fotoAmpliada").src = currentPhotos[currentIndex];
+    }
+  });
+
+  document.querySelector('.next').addEventListener('click', () => {
+    if (currentPhotos.length > 0) {
+      currentIndex = (currentIndex + 1) % currentPhotos.length;
+      document.getElementById("fotoAmpliada").src = currentPhotos[currentIndex];
+    }
+  });
+
+  spanFoto.onclick = function() {
+    modalbrFoto.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modalbrFoto) {
+      modalbrFoto.style.display = "none";
+    }
+  }
+});
+   </script>
+  </div>
+ </body>
+</html>

@@ -3,7 +3,7 @@
 Plugin Name: Estoque Drop
 Description: Plugin para gerenciar o estoque de produtos.
 Version: 1.0
-Author: Seu Nome
+Author: IKARO CALIXTO 
 */
 
 

@@ -1,0 +1,162 @@
+.body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fc;
+}
+
+
+.main-content {
+   
+    padding: 20px;
+}
+
+.header h1 {
+    color: #30475e;
+}
+
+.info-card1s {
+    display: flex;
+    justify-content: space-between;
+   
+    gap: 10px; /* Cria um espaçamento uniforme entre os card1s */
+}
+
+.card1 {
+    background: linear-gradient(145deg, #f05454, #30475e);
+    border-radius: 10px;
+    color: white;
+    padding: 20px;
+    flex: 1;
+    min-width: 350px;
+    margin: 10px; /* Ou use gap no container, conforme sua preferência */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza a transição dos efeitos */
+}
+
+.card1:hover {
+    transform: translateY(-10px); /* Move o card1 um pouco para cima */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para criar profundidade */
+}
+
+
+.card1-icon {
+    font-size: 50px;
+    margin-right: 20px;
+}
+
+.card1-content h3 {
+    margin: 0;
+    color: #f5f5f5;
+    font-size: 14px;
+}
+
+.card1-content p {
+    font-size: 24px;
+    margin: 5px 0 0 0;
+}
+
+.details {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* Mais estilos aqui */
+}
+
+
+@media (max-width: 768px) {
+    .info-card1s {
+        justify-content: center; /* Centraliza os cartões para telas menores */
+        display: flex;
+    flex-wrap: wrap;
+
+    }
+
+    .card1 {
+        /* Opcional: ajuste o tamanho do cartão para telas menores */
+    }
+}
+
+@media (max-width: 400px) {
+    .card1 {
+        width: 100%; /* O cartão ocupa a largura total em telas muito pequenas */
+       
+    }
+}
+
+h2 {
+    font-size: 14px;
+}
+  
+
+.popup-container {
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.close-btn {
+    float: right;
+    cursor: pointer;
+}
+
+h2 {
+    font-size: 14px;
+}
+
+
+/* Estilo do Ícone de Extrato */
+.extrato-icon-wrapper {
+    margin: 20px;
+    font-size: 24px;
+}
+
+/* Estilo do Modal */
+.extrato-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.extrato-modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}

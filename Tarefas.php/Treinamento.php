@@ -848,6 +848,51 @@ function converterFormatoData($data) {
     
         $tarefas_treinamento = [
             // Módulo 1
+            ['nome' => 'Fiz minha reserva de estoque e agora?', 'descricao' => '  <button class="link-button" data-href="https://www.ladygriffeoficial.com.br/">Escolher os produtos da reserva!</button>   <audio src="https://inovetime.com.br/wp-content/uploads/reserva-teste.mp3" controls>
+            Seu navegador não suporta o elemento de áudio.
+          </audio>     <img src="https://inovetime.com.br/wp-content/uploads/Vamos-comecar-jpg.webp" alt="" />
+
+
+           Fiz Minha Reserva de Estoque, E Agora? O Que Fazer?
+
+            Introdução:
+            Bem-vindo ao guia passo a passo que o acompanhará após a realização da sua reserva de estoque na Lady Griffe. Compreender esse processo é crucial para aproveitar ao máximo a sua parceria conosco. Vamos desvendar juntos os próximos passos, garantindo uma experiência fluida e produtiva.
+            
+            1. Entendendo a Reserva de Estoque:
+            Inicialmente, é importante lembrar que a reserva de estoque na Lady Griffe é feita por cotas. Cada cota representa um valor de R$5.000. Esse sistema permite a você, franqueado, escolher o número de cotas que deseja e, consequentemente, o volume de produtos a reservar.
+            
+            2. Seleção de Produtos:
+            Após definir o número de cotas, o próximo passo é selecionar os produtos. Este processo é similar ao aprendizado do treinamento sobre reserva de estoque. A escolha do produto é essencial para que possamos proceder com a reserva junto aos nossos fornecedores.
+            
+            3. Procedimento de Reserva:
+            Para fazer a reserva dos seus produtos desejados, siga estes passos simples:
+            a. Acesse o site oficial da Lady Griffe.
+            b. Navegue pela seleção de produtos. Lembre-se, a reserva de estoque opera sob a lógica de compra no atacado, o que significa preços mais vantajosos para você.
+            c. Para produtos com valor inferior a R$200, selecione quantidades em múltiplos de 12 (ex.: 12, 24, 36...). Por exemplo, para uma coleção de marca com fragrâncias abaixo de R$200, é necessário reservar 12 unidades de cada.
+            d. Para produtos acima de R$200, o mínimo é de 6 unidades, também seguindo a regra de múltiplos (6, 12, 18...).
+            
+            4. Fechamento e Pagamento:
+            Após selecionar os produtos:
+            a. Prossiga para o fechamento da compra no site, escolhendo a opção de compra.
+            b. Selecione "orçamento" como forma de pagamento. Isso permite que você salve seu pedido.
+            c. Envie o pedido através do sistema de chamados da Lady Griffe.
+            
+            5. Produtos Fora de Estoque:
+            Caso não encontre um produto desejado no site ou deseje verificar a disponibilidade:
+            a. Envie uma relação dos produtos através do sistema de chamados.
+            b. Nossa equipe verificará a disponibilidade e retornará com as informações necessárias, incluindo o orçamento de atacado, assegurando que esteja próximo à sua cota de reserva.
+            
+            Conclusão:
+            A reserva de estoque na Lady Griffe é um processo estratégico que maximiza o seu potencial de vendas. Seguindo estes passos, você assegura não apenas uma seleção de produtos alinhada às suas necessidades, mas também condições de compra vantajosas. Estamos aqui para apoiá-lo em cada etapa desse caminho. Caso tenha dúvidas, não hesite em entrar em contato conosco através do sistema de chamados. Sua parceria e sucesso são nossas maiores prioridades.
+            
+            Encerramento:
+            Agradecemos por escolher a Lady Griffe. Estamos ansiosos para ver o crescimento e sucesso da sua franquia. Bem-vindo à jornada de sucesso com a Lady Griffe!
+            
+            
+            
+            
+            
+               ', 'modulo' => 55],
             ['nome' => 'Introdução Marketplace', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Guia-do-marketplace.pdf">Guia do Marketplace</button>  Olá, franqueados! Hoje, vamos mergulhar no mundo dos marketplaces e explorar como iniciar seu negócio nesse ambiente. A primeira pergunta que surge é: "Por onde começar e qual marketplace escolher?". É crucial compreender que cada marketplace tem seu público específico. Por exemplo, a Shopee tende a atrair vendas de produtos com ticket médio mais baixo, então produtos mais caros podem não ser a melhor estratégia aqui. Por outro lado, Americanas, Mercado Livre e Amazon são plataformas onde produtos de ticket médio mais alto são vendidos em grande escala. O segredo é estudar bem cada marketplace antes de se aventurar nele. Aconselhamos sempre começar focando em um marketplace, e após consolidar sua presença nele, expandir para outros.
 
             ', 'modulo' => 55],
@@ -892,6 +937,10 @@ function converterFormatoData($data) {
 
     
 
+
+
+    
+
 function ajax_iniciar_treinamento_trainee() {
     global $wpdb;
 
@@ -900,22 +949,24 @@ function ajax_iniciar_treinamento_trainee() {
 
     $tarefas_treinamento = [
         // Módulo 1
+        // Módulo 1
         ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
         aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
 
-            ['nome' => 'Definição do Nome da Sua Loja ', 'descricao' => ' <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Defina o nome da sua Loja</button> O nome da sua loja é uma das coisas mais importantes que você pode fazer para o seu negócio. Ao escolher um nome para sua loja franqueada Lady Griffe, lembre-se dos seguintes pontos:
-                Reflita sua marca: O nome da sua loja deve refletir os valores e a personalidade da sua marca. Deve ser algo que os clientes lembrem e que represente o que sua loja oferece.
-                Atraia seus clientes-alvo: Pense no tipo de cliente que você deseja atrair. 
-                Seja fácil de lembrar: O nome da sua loja deve ser fácil de lembrar e pronunciar. Isso facilitará para os clientes encontrarem sua loja e lembrarem dela. 
-                clique no botão acima e nomeie sua loja com personalidade e criatividade!
-                Nos envie suas ideias e receba um feedback de aprovação ou sugestões em até 72 horas. "', 'modulo' => 1],
+            ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '  <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Defina o nome da sua Loja</button>   <img src="https://inovetime.com.br/wp-content/uploads/nome-da-loja-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/nome-da-loja.mp3" controls>
+            Seu navegador não suporta o elemento de áudio.
+          </audio>
+          Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
             
-        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => '  <button class="link-button" data-href="https://registro.br/">Registre seu domínio</button> Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
+        ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => ' <img src="https://inovetime.com.br/wp-content/uploads/registre-o-site-jpg.webp" alt="" />  <button class="link-button" data-href="https://registro.br/">Registre seu domínio</button> Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
 
-        ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/qsm_quiz/briefing-para-design-de-marca-branding/">Preencha o Briefing</button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+        ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '  <img src="https://inovetime.com.br/wp-content/uploads/brienf-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/briefing-audio.mp3" controls>
+        Seu navegador não suporta o elemento de áudio.
+      </audio>
+       <button class="link-button" data-href="https://inovetime.com.br/qsm/briefing-para-design-de-marca-branding/">Preencha o Briefing </button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
 
         Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
-//
+
       
     
     ];
@@ -960,11 +1011,17 @@ function ajax_carregar_mais_tarefas() {
            ['nome' => 'Introdução - Modulo 1', 'descricao' => ' Bem-vindo ao início da sua jornada emocionante! Este vídeo de introdução fornece uma visão geral do que você pode esperar ao longo deste módulo. Ele aborda os objetivos principais, a estrutura do curso e como aproveitar ao máximo a experiência de
            aprendizado. Prepare-se para mergulhar no mundo fascinante do empreendedorismo e da gestão de lojas franqueadas.<iframe width="793" height="447" src="https://www.youtube.com/embed/_PCQD5mvexc" title="Introdução Treinamento trainee" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 1],
    
-               ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => 'Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
+               ['nome' => 'Definição do Nome da Sua Loja Franqueada', 'descricao' => '  <button class="link-button" data-href="https://franquia.ladygriffeoficial.com.br/linkdaloja">Defina o nome da sua Loja</button>   <img src="https://inovetime.com.br/wp-content/uploads/nome-da-loja-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/nome-da-loja.mp3" controls>
+               Seu navegador não suporta o elemento de áudio.
+             </audio>
+             Uma parte crucial do seu sucesso começa aqui: escolher um nome cativante e memorável para a sua loja franqueada. Pense em um nome que reflita sua marca e atraia seus clientes-alvo. clique nesse link:<a href="https://franquia.ladygriffeoficial.com.br/linkdaloja" target="_blank">Escolha o Nome de sua Loja!</a> e nos envie suas ideias e prepare-se para trazer sua visão à vida! * Assim que enviar os nomes, no prazo maximo de até 72hrs enviamos um email confirmando os nome de sua loja. "', 'modulo' => 1],
                
-           ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => 'Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
+           ['nome' => 'Registro do Domínio .br para a Sua Loja', 'descricao' => ' <img src="https://inovetime.com.br/wp-content/uploads/registre-o-site-jpg.webp" alt="" />  <button class="link-button" data-href="https://registro.br/">Registre seu domínio</button> Agora é hora de estabelecer sua presença online com um domínio .br. Escolha um domínio que corresponda ao nome da sua loja e compre ele. Siga as instruções para registrar seu domínio e dar o próximo passo importante em direção à construção da sua loja online.', 'modulo' => 1],
    
-           ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '<button class="link-button" data-href="https://inovetime.com.br/qsm/briefing-para-design-de-marca-branding/">Preencha o Briefing </button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
+           ['nome' => 'Briefing: Arte e Estratégia - Compondo o Palco do Seu Negócio.', 'descricao' => '  <img src="https://inovetime.com.br/wp-content/uploads/brienf-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/briefing-audio.mp3" controls>
+           Seu navegador não suporta o elemento de áudio.
+         </audio>
+          <button class="link-button" data-href="https://inovetime.com.br/qsm/briefing-para-design-de-marca-branding/">Preencha o Briefing </button>  O briefing é um documento essencial para o sucesso de qualquer projeto. Ele fornece informações sobre o contexto, os objetivos e os requisitos do projeto, o que permite aos profissionais envolvidos terem uma visão clara do que deve ser feito.
    
            Por favor, preencha todas as questões do briefing com o máximo de detalhes possível. Se houver informações que você considere importantes, mas que não estejam listadas, adicione-as no final do documento.', 'modulo' => 1],
    
@@ -997,29 +1054,13 @@ function ajax_carregar_mais_tarefas() {
             Recebimento e Configuração: Uma vez que seu e-mail corporativo estiver pronto, você receberá as credenciais e instruções para configurá-lo em seu dispositivo.', 'modulo' => 2],
        
            // Módulo 3
-           ['nome' => 'Introdução - Metodologia 2', 'descricao' => '  Parabéns, Franqueado, por ter alcançado esta etapa crucial! Neste módulo, vamos explorar aspectos fundamentais sobre a operação de sua loja e o dinamismo das vendas online. Estes conteúdos são essenciais para aprofundar seu entendimento sobre o marketing digital. Durante esta fase de desenvolvimento da sua loja, nosso objetivo é capacitá-lo com conhecimentos abrangentes, para que, quando sua loja estiver pronta, você esteja equipado para iniciar suas atividades com eficácia.
-           <iframe width="848" height="480" src="https://www.youtube.com/embed/NjKTQ2SjpKA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 3],
-           ['nome' => 'Conhecendo o painel de controle ', 'descricao' => '  
-                 
-           
-           
-          
-           Este tour pelo painel de controle da sua loja é uma etapa crucial para que você se familiarize com todas as ferramentas e funcionalidades à sua disposição. Nosso objetivo é proporcionar uma visão clara e resumida do que você pode realizar através deste painel, assegurando que você tenha o conhecimento necessário para gerenciar sua loja com eficiência.
-           
-           O que você vai aprender:
-           
-           Visão Geral das Funcionalidades: Descubra as várias funcionalidades que o seu painel de controle oferece, desde a gestão de inventário até análises de vendas.
-           
-           Gerenciamento de Produtos: Entenda como adicionar, editar e organizar produtos, além de gerenciar o estoque com facilidade.
-           
-           Análises e Relatórios: Aprenda a acessar relatórios detalhados que podem ajudar na tomada de decisões estratégicas para o crescimento da sua loja.
-           
-           Marketing e Promoções: Explore ferramentas que lhe permitirão criar e gerenciar campanhas promocionais, cupons de desconto e estratégias de marketing por e-mail.
-           
-           Configurações de Loja: Familiarize-se com as configurações gerais da sua loja, incluindo personalizações, configurações de pagamento e opções de envio.
-           
-           Suporte ao Cliente: Saiba como gerenciar consultas de clientes, resolver problemas e manter um alto nível de satisfação do cliente.   <iframe width="853" height="480" src="https://www.youtube.com/embed/KAr6h3pQabs" title="Painel de Controle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 3],
-           ['nome' => 'Faça as primeiras postagens ', 'descricao' => '  <button class="link-button" data-href="https://inovetime.com.br/postagens/">Fazer O Download De Posts </button>  Estamos nos aproximando de um momento empolgante – a inauguração de suas lojas! Para garantir um lançamento bem-sucedido, é crucial começar a criar expectativa e interesse em sua rede de contatos. Aqui está o que você pode fazer:
+           ['nome' => 'Conhecendo os Produtos', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/New-Collection-Lady-2.pdf">Veja nossa Revista!</button>  Embarque em uma viagem de estilo e sofisticação com a Lady Griffe, onde a beleza e a elegância se encontram em cada produto. <iframe width="848" height="480" src="https://www.youtube.com/embed/G7IYiKl44JQ" title="Apresentação de Produtos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 3],
+
+                  
+           ['nome' => 'Faça as primeiras postagens ', 'descricao' => '<img src="https://inovetime.com.br/wp-content/uploads/post-1-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/postagens.mp3" controls>
+           Seu navegador não suporta o elemento de áudio.
+         </audio>
+           <button class="link-button" data-href="https://inovetime.com.br/postagens/">Fazer O Download De Posts </button>  Estamos nos aproximando de um momento empolgante – a inauguração de suas lojas! Para garantir um lançamento bem-sucedido, é crucial começar a criar expectativa e interesse em sua rede de contatos. Aqui está o que você pode fazer:
 
            Engajamento nas Redes Sociais: Comece a se comunicar com seu público nas redes sociais. Utilize as contas que você criou e comece a compartilhar conteúdo que ressoa com seu círculo de relacionamentos. Isso pode incluir amigos, familiares e conhecidos profissionais.
            
@@ -1032,9 +1073,13 @@ function ajax_carregar_mais_tarefas() {
            Interaja com seu Público: Não se limite apenas a postar; interaja com quem comentar ou mostrar interesse. Construa relacionamentos e prepare o terreno para uma comunidade leal de clientes.
            
            Essa estratégia inicial é fundamental para estabelecer uma base sólida para o seu negócio. Vamos começar a criar uma onda de entusiasmo que culminará na grande inauguração da sua loja!', 'modulo' => 3],
-           ['nome' => 'Alcançar os Primeiros 50 Seguidores nas Redes Sociais', 'descricao' => 'Objetivo: Este é o seu primeiro marco significativo no mundo digital – conseguir os primeiros 50 seguidores em sua conta de rede social. Este objetivo inicial é crucial para estabelecer a presença online da sua franquia e começar a construir uma comunidade engajada.
+           ['nome' => 'Alcançar os Primeiros 50 Seguidores nas Redes Sociais', 'descricao' => '  
+           <img src="https://inovetime.com.br/wp-content/uploads/50-seg-jpg.webp" alt="" />  <audio src="https://inovetime.com.br/wp-content/uploads/ter-50-seguidores.mp3" controls>
+           Seu navegador não suporta o elemento de áudio.
+         </audio> 
+          Este é o seu primeiro marco significativo no mundo digital – conseguir os primeiros 50 seguidores em sua conta de rede social. Este objetivo inicial é crucial para estabelecer a presença online da sua franquia e começar a construir uma comunidade engajada.
 
-           Descrição da Tarefa:
+      
            
            Crie Conteúdo Atraente: Compartilhe posts que reflitam a identidade da sua marca e que sejam relevantes para o seu público-alvo. Isso pode incluir informações sobre produtos, dicas úteis, histórias por trás da marca ou até mesmo teasers sobre a inauguração da loja.
            
@@ -1049,7 +1094,9 @@ function ajax_carregar_mais_tarefas() {
 
 
         // Módulo 4
-        ['nome' => 'Conhecendo os Produtos', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/New-Collection-Lady-2.pdf">Veja nossa Revista!</button>  Embarque em uma viagem de estilo e sofisticação com a Lady Griffe, onde a beleza e a elegância se encontram em cada produto. <iframe width="848" height="480" src="https://www.youtube.com/embed/G7IYiKl44JQ" title="Apresentação de Produtos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
+        ['nome' => 'Introdução - Metodologia 2', 'descricao' => '  Parabéns, Franqueado, por ter alcançado esta etapa crucial! Neste módulo, vamos explorar aspectos fundamentais sobre a operação de sua loja e o dinamismo das vendas online. Estes conteúdos são essenciais para aprofundar seu entendimento sobre o marketing digital. Durante esta fase de desenvolvimento da sua loja, nosso objetivo é capacitá-lo com conhecimentos abrangentes, para que, quando sua loja estiver pronta, você esteja equipado para iniciar suas atividades com eficácia.
+        <iframe width="848" height="480" src="https://www.youtube.com/embed/NjKTQ2SjpKA" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 4],
+       
         ['nome' => 'Como funciona o dropshipping?', 'descricao' => ' <iframe width="848" height="480" src="https://www.youtube.com/embed/1WWhl2mpX3c" title="Como funciona o Drop lady Griffe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/2022/07/Manual-Dropshipping.pdf">Saiba mais</button> Dropshipping é um modelo de negócios de varejo onde a loja não mantém os produtos que vende em estoque. Em vez disso, quando uma loja vende um produto usando o modelo de dropshipping, ela compra o item de um terceiro e o envia diretamente ao cliente. Assim, o vendedor não precisa lidar diretamente com o produto.
 
         A principal vantagem do dropshipping é a redução dos custos operacionais, já que não é necessário investir em grandes estoques ou em um espaço de armazenamento. Isso torna o dropshipping uma opção atraente para empreendedores iniciantes ou para empresas que desejam expandir suas ofertas de produtos sem aumentar significativamente os custos.', 'modulo' => 4],
@@ -1072,12 +1119,142 @@ function ajax_carregar_mais_tarefas() {
         // ... Adicione outras tarefas, se houver, seguindo o mesmo formato
 
   // Módulo 5
-  ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo uma Estética Atraente', 'descricao' => '...', 'modulo' => 5],
-  ['nome' => 'Testando funcionalidade da loja: Pedido Teste', 'descricao' => '...', 'modulo' => 5],
-  ['nome' => 'Saiba como cadastrar um produto', 'descricao' => ' Cadastre 15 Produtos para entender a dinâmica', 'modulo' => 5],
-  ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => '...', 'modulo' => 5],
-  ['nome' => 'Melhor Envio', 'descricao' => '...', 'modulo' => 5],
-  ['nome' => 'Termo de Aprovação da Entrega da Loja: Oficializando a Inauguração"', 'descricao' => '...', 'modulo' => 5],
+  ['nome' => 'Aprovação do Layout da Sua Loja: Garantindo um Design Elegante e Atrativo', 'descricao' => ' <button class="link-button" data-href="https://inovetime.com.br/suporte/">Nos envie o Feedback </button> <audio src="https://inovetime.com.br/wp-content/uploads/aprovacao-da-loja.mp3" controls>
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+ <img src="https://inovetime.com.br/wp-content/uploads/Vamos-comecar-jpg.webp" alt="" />Esta tarefa é essencial para a verificação final do layout da sua loja. O seu objetivo é avaliar se a estética e o design estão alinhados com suas expectativas e necessidades. Se tudo estiver conforme desejado e a aparência geral da loja for satisfatória, você pode marcar esta tarefa como concluída. Esta é a versão beta, nossa primeira iteração, portanto, seu feedback é crucial.
+
+  Caso identifique qualquer aspecto que necessite de ajustes - seja na paleta de cores, no design dos banners, na disposição dos elementos ou em qualquer outro detalhe estético - por favor, liste estas observações. Em seguida, abra um chamado para que nossa equipe de design possa analisar e implementar as melhorias necessárias. Assim que as alterações forem realizadas e o layout estiver de acordo com suas expectativas, você poderá concluir esta tarefa.
+  
+  Lembre-se: sua satisfação é nossa prioridade e queremos garantir que a apresentação da sua loja reflita exatamente a imagem que deseja transmitir aos seus clientes.', 'modulo' => 5],
+  ['nome' => 'Testando a Funcionalidade da Loja: Verificação Abrangente do Site', 'descricao' => '  <img src="https://inovetime.com.br/wp-content/uploads/2-1-jpg.webp" alt="" />  <button class="link-button" data-href="https://inovetime.com.br/suporte/">Nos envie as melhorias</button>   <audio src="https://inovetime.com.br/wp-content/uploads/aprovacao-de-layout.mp3" controls>
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+
+  
+</audio> Esta tarefa é fundamental para garantir que seu novo site de e-commerce esteja funcionando perfeitamente e proporcionando uma experiência de usuário otimizada. O objetivo é simular o processo de um cliente real, desde a navegação no site até a realização de um pedido. Seguindo as subtarefas listadas abaixo, você poderá identificar e corrigir quaisquer problemas antes que seus clientes reais os encontrem.
+
+  Realizar um Pedido Teste:
+  
+  Faça um pedido simulado em sua loja. Esse pedido teste é essencial para verificar a funcionalidade completa do processo de compra, incluindo a seleção de produtos, a adição ao carrinho, a escolha das opções de pagamento e a calculação do frete. Confirme se todas essas etapas estão funcionando sem problemas e se as informações estão sendo exibidas corretamente.
+  Verificar os Menus da Loja:
+  
+  Navegue por todos os menus do seu site. Isso inclui menus de categorias de produtos, menus de informações e quaisquer outros links de navegação disponíveis. O foco aqui é garantir que todos os links estejam funcionando corretamente e levando às páginas corretas.
+  Avaliar a Página :
+  
+  Verifique a página "Quem Somos" do seu site. Esta página deve apresentar informações precisas e atraentes sobre sua empresa, sua missão, visão e valores. Certifique-se de que o texto está claro, sem erros de gramática ou ortografia, e que as imagens estão de alta qualidade e carregam corretamente.
+  Inspeção dos Produtos:
+  
+  Revise os produtos listados em sua loja. Confirme se as descrições dos produtos estão completas e corretas, se as imagens são de boa qualidade e se os preços estão atualizados. Verifique também se os produtos estão categorizados corretamente.
+  Ao concluir cada uma destas subtarefas, você terá uma visão abrangente da funcionalidade e da apresentação do seu site. Caso encontre qualquer discrepância ou problema, abra um chamado para que nossa equipe possa fazer as correções necessárias. Lembre-se, a usabilidade e a aparência profissional da sua loja são cruciais para atrair e reter clientes.', 'modulo' => 5],
+  
+  ['nome' => 'Primeira Venda: Avaliando a Logística da Sua Loja com uma Venda Piloto', 'descricao' => ' <img src="https://inovetime.com.br/wp-content/uploads/3-1-jpg.webp" alt="" />  <audio src="https://inovetime.com.br/wp-content/uploads/ttsmaker-file-2024-1-31-11-23-59.mp3" controls>
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+ Esta tarefa é um passo crucial no processo de validação do seu e-commerce, proporcionando a você uma experiência real e abrangente do funcionamento da sua loja online. O objetivo é ir além da simulação e realizar uma compra efetiva, permitindo que você avalie todo o processo de compra, desde a seleção do produto no site até a entrega em sua residência. Isso lhe dará insights valiosos sobre a dinâmica e a eficiência logística do seu negócio.
+
+Escolha e Compra do Produto:
+
+Selecione um produto de sua loja que você gostaria de adquirir. Esta é uma ótima oportunidade para se presentear e, ao mesmo tempo, testar o sistema de sua loja. Proceda com a compra do produto como se fosse um cliente, prestando atenção em cada etapa do processo, desde a adição do produto ao carrinho até a conclusão do pagamento.
+Acompanhamento do Pedido:
+
+Após a compra, monitore o status do pedido. Isso inclui a confirmação do pedido, o processamento, a preparação para envio e o rastreamento da entrega. Esta observação é fundamental para entender a eficiência e a comunicação com o cliente durante o processo de envio.
+Avaliação da Entrega:
+
+Quando o produto chegar, avalie todos os aspectos da entrega. Isso inclui a rapidez do serviço de entrega, a condição da embalagem ao chegar e a apresentação do produto. Verifique se o produto chegou em perfeito estado e dentro do prazo estimado.
+Análise do Produto Recebido:
+
+Avalie o produto em si. Confira se ele corresponde exatamente ao que foi anunciado no site, tanto em termos de qualidade quanto de especificações. Este é um momento crítico para verificar se o que sua loja está vendendo está alinhado com as expectativas dos clientes.
+Ao concluir esta tarefa, você terá uma compreensão profunda não apenas do funcionamento do seu site, mas também de toda a experiência do cliente, desde a navegação na loja online até o momento da entrega do produto. Use esta experiência para fazer ajustes e melhorias, garantindo que seus clientes tenham a melhor experiência possível ao comprar em sua loja.', 'modulo' => 5],
+  ['nome' => 'Como enviar as vendas da minha loja para logística', 'descricao' => '  Veja o que fazer e como fazer quando ocorrer as vendas em seu site. <iframe width="853" height="480" src="https://www.youtube.com/embed/JjlG8TPu9vY" title="como enviar o pedido da minha loja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 5],
+  ['nome' => 'Atestado de Prontidão e Conformidade da Loja Online: Assinatura de Autorização para Início das Atividades Comerciais"', 'descricao' => '<img src="https://inovetime.com.br/wp-content/uploads/5-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/termo-de-aprovacao.mp3" controls>
+    Seu navegador não suporta o elemento de áudio.
+  </audio> Após a verificação da prontidão, você deve solicitar formalmente o atestado. Isso geralmente é feito por meio de um chamado ou requerimento oficial, onde você pedirá o documento de autorização para iniciar as atividades comerciais.
+
+  Assinatura do Termo de Autorização: Uma vez que o atestado de prontidão e conformidade é concedido, é necessário assinar um termo de autorização. Este documento oficializa sua conformidade e prontidão para começar a operar a loja online.
+  
+  Início do Treinamento da Ferramenta da Loja: Após a assinatura do termo de autorização, iniciará o treinamento específico para a utilização da ferramenta da loja online. Este treinamento abordará todas as funcionalidades da loja, ensinando como aproveitá-las ao máximo.
+  
+  Temas do Treinamento: Durante o treinamento, serão abordados temas importantes como a gestão de inventário, processamento de pedidos, atendimento ao cliente, configurações de pagamento e envio, e estratégias de marketing digital.<button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Termo-da-entrega-de-loja.pdf">Ver o Termo de conclusão</button> ', 'modulo' => 5], 
+
+  // modulo 6
+  ['nome' => 'Conhecendo o painel de controle ', 'descricao' => ' <iframe width="617" height="480" src="https://www.youtube.com/embed/KAr6h3pQabs" title="Painel de Controle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Este tour pelo painel de controle da sua loja é uma etapa crucial para que você se familiarize com todas as ferramentas e funcionalidades à sua disposição. Nosso objetivo é proporcionar uma visão clara e resumida do que você pode realizar através deste painel, assegurando que você tenha o conhecimento necessário para gerenciar sua loja com eficiência.
+           
+  O que você vai aprender:
+  
+  Visão Geral das Funcionalidades: Descubra as várias funcionalidades que o seu painel de controle oferece, desde a gestão de inventário até análises de vendas.
+  
+  Gerenciamento de Produtos: Entenda como adicionar, editar e organizar produtos, além de gerenciar o estoque com facilidade.
+  
+  Análises e Relatórios: Aprenda a acessar relatórios detalhados que podem ajudar na tomada de decisões estratégicas para o crescimento da sua loja.
+  
+  Marketing e Promoções: Explore ferramentas que lhe permitirão criar e gerenciar campanhas promocionais, cupons de desconto e estratégias de marketing por e-mail.
+  
+  Configurações de Loja: Familiarize-se com as configurações gerais da sua loja, incluindo personalizações, configurações de pagamento e opções de envio.
+  
+  Suporte ao Cliente: Saiba como gerenciar consultas de clientes, resolver problemas e manter um alto nível de satisfação do cliente. ', 'modulo' => 6],
+  ['nome' => 'Saiba como cadastrar um produto ', 'descricao' => '   Neste vídeo, apresentamos um guia detalhado e prático sobre como cadastrar produtos em sua loja, um passo fundamental para o sucesso do seu negócio. Para facilitar o aprendizado, disponibilizamos uma lista cuidadosamente selecionada de produtos para que você possa praticar o processo de cadastro. Ao seguir este tutorial, você não apenas aprenderá a adicionar produtos à sua loja, mas também entenderá a lógica e as melhores práticas por trás desse processo essencial. Este conhecimento será crucial para otimizar suas operações e garantir uma experiência de compra fluida para seus clientes. Assista agora e domine a arte de cadastrar produtos com eficiência e precisão.   <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Lista-de-produtos-para-cadastrar.pdf">Lista de Produtos</button>  <iframe width="853" height="480" src="https://www.youtube.com/embed/fpHSGbaVlpg" title="Como cadastrar um produto em minha loja" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 6],
+  ['nome' => 'Como participar da Promoção do mês ', 'descricao' => 'Neste vídeo, revelamos o segredo para ampliar a visibilidade e o crescimento da sua marca com as promoções mensais da Lady Griffe. Descubra como participar efetivamente dessas campanhas para maximizar suas oportunidades de atrair novos clientes e fortalecer sua presença no mercado. Através de nossas orientações detalhadas, você aprenderá as melhores práticas para se destacar nas promoções, aumentando significativamente suas chances de sucesso. Assista agora e transforme sua participação nas promoções da Lady Griffe em um poderoso impulso para o seu negócio.  <iframe width="853" height="480" src="https://www.youtube.com/embed/RApTDNkiTvo" title="como participar da promoção do mes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 6],
+  ['nome' => 'Como gerenciar o estoque Dropshipping ', 'descricao' => 'Neste vídeo, guiamos você, franqueado, através das melhores práticas para gerenciar eficientemente o estoque de sua loja, com foco especial no modelo de dropshipping. Entender a gestão de estoque é crucial para evitar situações em que produtos sejam vendidos em seu site sem que haja disponibilidade real para entrega. Com nossas dicas e estratégias, você aprenderá a monitorar e ajustar seu inventário de forma precisa, garantindo que cada venda realizada possa ser atendida com sucesso. Assista e domine as técnicas essenciais para manter a satisfação do cliente e a saúde operacional do seu negócio. <iframe width="515" height="290" src="https://www.youtube.com/embed/r9FdsFWzwls" title="Nova Ferramenta - Estoque Drop" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 6],
+  ['nome' => 'Como criar blog ', 'descricao' => '   <iframe width="853" height="480" src="https://www.youtube.com/embed/o_2AJZgX4nM" title="Como cadastrar meu blog" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>   Neste vídeo, vamos guiá-lo através do processo de adicionar um blog ao seu site. Esse recurso é uma ferramenta poderosa para compartilhar insights, novidades e informações relevantes sobre seus produtos e serviços, diretamente com seu público. Como exercício prático, convidamos você a escrever dois artigos para o seu blog, focando nos produtos que sua loja oferece. Escolha uma categoria que você acredita ter potencial para atrair seus clientes e utilize sua criatividade para desenvolver conteúdos envolventes e informativos.
+
+Após a criação dos artigos, dê um passo adiante e compartilhe-os nas suas redes sociais. Isso não apenas aumentará a visibilidade do seu blog, mas também permitirá que seus seguidores compreendam melhor o valor e a variedade do que você tem a oferecer. Encorajamos você a aproveitar essa oportunidade para conectar-se com seu público de maneira mais profunda e significativa, destacando as qualidades únicas dos seus produtos e da sua marca. ', 'modulo' => 6],
+  ['nome' => 'Como oferecer desconto para seu cliente? ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/oAKwJWuq19Y" title="Como oferecer desconto ao meu cliente" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Neste vídeo, abordaremos estratégias eficazes para impulsionar suas vendas e engajar clientes, incluindo como implementar cupons de desconto, descontos baseados no valor da compra e até mesmo oferecer frete grátis. É importante ressaltar que, caso decida promover qualquer tipo de oferta especial ou desconto que não esteja previsto no cronograma oficial da Lady Griffe, é fundamental que nos comunique para que possamos avaliar e aprovar a promoção. Esse passo é essencial para garantir a consistência das estratégias de marketing e a integridade da nossa marca. Estamos aqui para apoiá-lo na realização de campanhas bem-sucedidas que beneficiem tanto a sua loja quanto os seus clientes. ', 'modulo' => 6],
+  ['nome' => 'Melhor envio  ', 'descricao' => '  <img src="https://inovetime.com.br/wp-content/uploads/Imagem-para-atividades-jpg.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/melhor-envio.mp3" controls>
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+ Na tarefa relacionada ao Melhor Envio, quando a integração foi realizada na sua loja, utilizamos os dados da Lady Griffe de forma temporária, válidos por apenas um mês. Agora, vamos orientá-lo(a) sobre como cadastrar o Melhor Envio em sua loja de maneira definitiva. Mas, antes disso, é importante entender o que é o Melhor Envio e como ele pode beneficiar seu negócio.
+
+  O Melhor Envio é uma ferramenta inovadora que busca as melhores tarifas de frete para seus clientes, garantindo que eles paguem o menor valor possível. Ele realiza cotações em diversas transportadoras e seleciona a opção mais vantajosa, o que pode significativamente aumentar suas chances de venda, pois o custo do frete é um fator decisivo para muitos consumidores.
+  
+  Para fazer com que o Melhor Envio seja uma funcionalidade permanente em sua loja, é necessário realizar uma configuração específica. Para isso, siga o passo a passo disponível ao clicar no botão abaixo. Esse procedimento é simples e garantirá que você ofereça sempre as melhores condições de frete para seus clientes, potencializando suas vendas e a satisfação do seu público.
+  
+  Clique aqui para aprender a configurar o Melhor Envio em sua loja <button class="link-button" data-href="https://inovetime.com.br/wp-content/uploads/Como-configurar-o-melhor-envio.pdf">Veja o passo a passo </button>  ', 'modulo' => 6],
+  ['nome' => 'Fazer as 10 Primeiras vendas ( Prova social) ', 'descricao' => '<img src="https://inovetime.com.br/wp-content/uploads/DALL·E-2024-02-14-13.40.50-Create-a-visually-stunning-and-surreal-image-designed-to-motivate-franchisees-towards-achieving-their-goal-of-10-sales-to-establish-social-proof.-The-.webp" alt="" /> <audio src="https://inovetime.com.br/wp-content/uploads/ttsmaker-file-2024-2-14-13-23-21.mp3" controls>
+  Seu navegador não suporta o elemento de áudio.
+</audio>
+ Como franqueado, seu novo desafio é alcançar o marco de 10 vendas. Esta meta é crucial não apenas para o crescimento inicial do seu negócio, mas também para construir uma forte prova social nas plataformas digitais, como Instagram e WhatsApp. A prova social é uma poderosa ferramenta de marketing que demonstra a confiança e satisfação dos seus clientes, incentivando novos compradores potenciais a confiarem em sua marca e produtos.
+
+  Por que esta tarefa é importante?
+  
+  Construção de Credibilidade: Ao atingir 10 vendas e compartilhar esses sucessos nas redes sociais, você mostra aos futuros clientes que sua marca é confiável e que seus produtos são desejados por outros consumidores.
+  
+  Engajamento e Alcance: Compartilhar essas conquistas nas redes sociais aumenta o engajamento e expande seu alcance, atraindo mais seguidores e potenciais clientes.
+  
+  Aprendizado Prático: Esta tarefa é uma oportunidade excelente para aplicar na prática as estratégias de venda e marketing que discutimos até agora, desde a apresentação do produto até o fechamento de vendas e o pós-venda.
+  
+  Como alcançar esse objetivo?
+  
+  Estratégias de Marketing Digital: Utilize as redes sociais para promover seus produtos, destacando seus benefícios, ofertas exclusivas e depoimentos de clientes satisfeitos.
+  
+  Atendimento Personalizado: Ofereça um atendimento excepcional, entendendo as necessidades dos seus clientes e oferecendo soluções que atendam a essas necessidades.
+  
+  Acompanhamento Pós-Venda: Após cada venda, peça aos clientes que compartilhem suas experiências positivas e feedbacks nas redes sociais, marcando sua loja.
+  
+  Promoções e Descontos: Incentive as vendas oferecendo promoções limitadas ou descontos para os primeiros compradores.
+  
+  Monitoramento e Ajustes: Monitore o progresso em direção ao objetivo e ajuste as estratégias conforme necessário para garantir o sucesso. ', 'modulo' => 6],
+  ['nome' => 'Como sacar minhas comissões ', 'descricao' => ' ', 'modulo' => 6],
+
+  //modulo 7 divulgação online
+  ['nome' => 'O que é público alvo e persona? ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/ISPTDHJAOE4" title="Público alvo x Persona" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
+  ['nome' => 'O que é tráfego pago/ funil de venda? ', 'descricao' => 'Este vídeo ensina franqueados a utilizar tráfego pago e funis de vendas para impulsionar o negócio. Abordamos técnicas de tráfego pago, como Google e Facebook Ads, para atrair clientes. Em seguida, exploramos o funil de vendas, ensinando a converter visitantes em clientes através de estratégias de conteúdo e ofertas. O vídeo é um guia completo para usar marketing digital no crescimento do negócio. <iframe width="853" height="480" src="https://www.youtube.com/embed/bo2NIeuTeyw" title="Trafego pago x Funil de vendas" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
+  ['nome' => 'O que é busca orgânica/ Seo ?  ', 'descricao' => 'A busca orgânica refere-se aos resultados de pesquisa que aparecem nos motores de busca, como o Google, de forma natural, sem que haja pagamento por essas posições. Quando você pesquisa por algo na internet, os links que você vê na página, excluindo os anúncios, são o resultado da busca orgânica. Esses resultados são determinados com base na relevância e na autoridade das páginas, conforme avaliado pelo algoritmo do motor de busca.
+
+  SEO, ou Otimização para Motores de Busca, é o conjunto de estratégias e técnicas aplicadas para melhorar a visibilidade e o ranking de páginas da web nos resultados orgânicos dos motores de busca. Isso envolve otimizar conteúdo com palavras-chave relevantes, melhorar a velocidade de carregamento da página, assegurar uma experiência de usuário de alta qualidade, e obter links de outros sites de qualidade, entre outras táticas.
+  
+  O objetivo do SEO é aumentar a quantidade e a qualidade do tráfego para um site através de resultados de busca orgânica, tornando o conteúdo mais acessível e visível para aqueles que estão procurando por informações, produtos ou serviços relacionados.
+  
+  Portanto, enquanto a busca orgânica é o processo pelo qual os usuários encontram conteúdo na internet de maneira não paga, o SEO é a arte e a ciência de fazer com que suas páginas sejam encontradas mais facilmente nesse processo orgânico.
+  
+   <iframe width="853" height="480" src="https://www.youtube.com/embed/a8KvqS3tcn8" title="Busca Orgânica e SEO" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
+  ['nome' => 'Como trabalhar com Marketplace? ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/GMKg0Fj-9o0" title="Como funciona o Marketplace" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
+ 
+  ['nome' => 'Direitos e Deveres  ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/k68Lr5su0TA" title="Direitos e Deveres - Franquia Lady Griffe" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> ', 'modulo' => 7],
+  
+  
+  ['nome' => 'Planos e Metas  ', 'descricao' => ' <iframe width="848" height="480" src="https://www.youtube.com/embed/TRDot8bhyNA" title="Planos e metas" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> ', 'modulo' => 7],
+  ['nome' => 'Teste suas Habilidade na Prova Swot  ', 'descricao' => 'Você dedicou tempo e esforço ao seu treinamento de trainee, absorvendo conhecimento e desenvolvendo novas habilidades. Agora, chegou o momento de colocar tudo isso à prova! Convidamos você a participar do nosso Desafio de Análise SWOT, uma oportunidade única para aplicar o que aprendeu de maneira prática e concreta. <button class="link-button" data-href="https://inovetime.com.br/prova-swot/">Faça sua Avaliação! </button> ', 'modulo' => 7],
 ];
 
   // Verifique se todas as tarefas do módulo atual estão concluídas
@@ -1141,6 +1318,25 @@ if ($tarefas_nao_concluidas > 0) {
                     ),
                     array('%d', '%s', '%s', '%s', '%s', '%d')
                 );
+            }
+        }
+    }
+     // Processar e salvar as subtarefas
+     if (!empty($subtarefas)) {
+        $lista_subtarefas = explode(',', $subtarefas);
+
+        foreach ($lista_subtarefas as $descricao_subtarefa) {
+            $descricao_subtarefa = trim($descricao_subtarefa);
+            if (!empty($descricao_subtarefa)) {
+                $wpdb->insert('kanban_subtarefas', array(
+                    'id_tarefa' => $id_tarefa,
+                    'descricao' => $descricao_subtarefa,
+                    'status' => 'pendente'
+                ));
+
+                if ($wpdb->last_error) {
+                    error_log('Erro ao inserir subtarefa: ' . $wpdb->last_error);
+                }
             }
         }
     }
@@ -1379,3 +1575,4 @@ function excluir_subtarefa() {
 add_action('wp_ajax_excluir_subtarefa', 'excluir_subtarefa');
 add_action('wp_ajax_nopriv_excluir_subtarefa', 'excluir_subtarefa');
 // Se necessário, adicione também a ação 'wp_ajax_nopriv_excluir_subtarefa'
+

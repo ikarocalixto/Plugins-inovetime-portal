@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Avaliações do Produto</title>
+<style>
+  body {
+  
+  }
+
+
+  .services {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.service {
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px;
+  width: calc(50% - 20px); /* Ajusta para duas colunas */
+}
+
+.icon {
+  font-size: 2em; /* Tamanho do ícone */
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.description h3, .description p {
+  margin: 0;
+}
+
+.description h3 {
+  font-size: 1em;
+  color: #000;
+}
+
+.description p {
+  font-size: 0.8em;
+  color: #555;
+}
+
+/* Media query para telas menores */
+@media (max-width: 768px) {
+  .services {
+    justify-content: center;
+  }
+
+  .service {
+    width: 100%; /* Ajusta para uma coluna */
+  }
+
+  .icon {
+    margin-right: 10px;
+  }
+}
+
+  .container {
+   
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  } 
+
+  .reviews-summary, .reviews {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .reviews-summary {
+    flex-basis: 35%;
+  }
+
+  .reviews {
+    flex-basis: 60%;
+    max-width: 100%;
+  }
+
+  .review, .rating-overview, .rating-details {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .starsbrbr, .user-rating-starsbr {
+    color: #ffd700;
+    cursor: pointer;
+  }
+
+  .user-comment {
+    display: flex;
+    align-items: center;
+  }
+
+  .user-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    margin-right: 10px;
+  }
+
+  .user-photo {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .leave-review {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+  }
+
+  .review-link {
+    background-color: #0056b3;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+
+  .review-link:hover {
+    background-color: #003d82;
+  }
+
+  /* modalbr */
+  .modalbr {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+  }
+
+  .modalbr-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .modalbr-content {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalbr-nav {
+  display: flex;
+  align-items: center;
+}
+
+.prev, .next {
+  cursor: pointer;
+  padding: 10px;
+  margin: 0 20px;
+  color: black;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.prev:hover, .next:hover {
+  color: grey;
+}
+
+
+.closeFoto {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 50px;
+  color: #333; /* Cor do ícone */
+  cursor: pointer;
+}
+
+.closeFoto:hover {
+  color: #000; /* Cor do ícone ao passar o mouse */
+}
+.boxCalculoFreteProduto {
+    display: none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="reviews-summary">
+    <!-- Conteúdo do resumo das avaliações -->
+  </div>
+
+  <div class="reviews">
+    <!-- Avaliação 1 -->
+    <div class="review">
+      <div class="starsbr">
+        &#9733; &#9733; &#9733; &#9733; &#9734;
+      </div>
+      <div class="user-comment">
+        <img src="https://down-br.img.susercontent.com/file/br-11134233-7r98o-lp6wew8xgcqta0_tn" alt="Imagem do usuário" class="user-image">
+        <p><span class="username">marcossilva029</span> - <span class="date">19 jun. 2023</span></p>
+      </div>
+      <div class="comment">
+        Perfume perfeito, muito bem embalado e com ótima fixação. Passei o perfume e tomei banho de piscina e msm assim não saiu. Perfeitooo 😍
+      </div>
+      <div class="user-photos">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lr7ojg0pg7pp3b.webp" alt="Foto do produto" class="user-photo">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lr7ojg0pvnz88a.webp" alt="Foto do produto" class="user-photo">
+      </div>
+    </div>
+    <!-- Avaliação 2 -->
+    <div class="review">
+      <div class="starsbr">
+        &#9733; &#9733; &#9733; &#9733; &#9734;
+      </div>
+      <div class="user-comment">
+        <img src="https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/823085c9-8726-4d3c-9232-14f497811d8b._CR0,0,500,500_SX460_.jpg" alt="Imagem do usuário" class="user-image">
+        <p><span class="username">helenamorena641</span> - <span class="date">06 setembro. 2023</span></p>
+      </div>
+      <div class="comment">
+        Custo-benefício: sim
+        Parecido com anúncio: idêntico
+        Vale super a pena comprar.comprei pelo vidro pra coloca na penteadeira mais o perfume é muito cheiroso vou usa e pedir outros,podem comprar concerteza não vão si arrepender
+      </div>
+      <div class="user-photos">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lr634qqsqvjv53.webp" alt="Foto do produto" class="user-photo">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lr634qqssa4b5e.webp" alt="Foto do produto" class="user-photo">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lr634qqsv3972a.webp" alt="Foto do produto" class="user-photo">
+        <video controls autoplay muted loop class="user-video" style="max-width: 20%; height: auto;">
+          <source src="https://down-cvs-br.vod.susercontent.com/api/v4/11110103/mms/br-11110103-6kfkr-lr638eutdlpg78.default.mp4" type="video/mp4">
+          Seu navegador não suporta vídeos.
+        </video>
+      </div>
+    </div>
+    <!-- Avaliação 3 -->
+    <div class="review">
+      <div class="starsbr">
+        &#9733; &#9733; &#9733; &#9733; &#9734;
+      </div>
+      <div class="user-comment">
+        <img src="https://down-br.img.susercontent.com/file/br-11134233-7r98o-lp8g47zvklgyf9_tn" alt="Imagem do usuário" class="user-image">
+        <p><span class="username">bemvestida26</span> - <span class="date">19 outubro. 2023</span></p>
+      </div>
+      <div class="comment">
+        Amei ! Produto original é com ótima fixação ! A entrega foi rápida e veio bem embalado!
+      </div>
+      <div class="user-photos">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lqf7mglz4aova4.webp" alt="Foto do produto" class="user-photo">
+        <img src="https://down-ws-br.img.susercontent.com/br-11134103-7r98o-lqf7our70mwz0a.webp" alt="Foto do produto" class="user-photo">
+       
+      </div>
+
+    </div>
+    <!-- Seção para deixar uma avaliação -->
+    <div class="leave-review">
+      <a href="#" class="review-link" id="openmodalbr">Faça sua avaliação do produto</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- modalbr para Foto Ampliada -->
+<div id="modalbrFotoAmpliada" class="modalbr">
+  <div class="modalbr-content">
+    <span class="closeFoto">&times;</span>
+    <div class="modalbr-nav">
+      <a class="prev">&#10094;</a>
+      <img id="fotoAmpliada" src="" alt="Foto do Produto Ampliada" style="max-width: 50%; height: auto;">
+      <a class="next">&#10095;</a>
+    </div>
+    <p id="fotoDescricao"></p> <!-- Local para a descrição da foto -->
+  </div>
+</div>
+
+
+<!-- modalbr Formulário de Avaliação -->
+
+<div id="modalbrFormularioAvaliacao" class="modalbr">
+  <div class="modalbr-content">
+    <span class="close">&times;</span>
+    <h2>Deixe sua avaliação</h2>
+    <form id="formAvaliacao">
+      <label for="nome">Seu nome:</label><br>
+      <input type="text" id="nome" name="nome"><br>
+      <label for="comentario">Comentário:</label><br>
+      <textarea id="comentario" name="comentario"></textarea><br>
+      <div class="user-rating">
+        <label>Avaliação:</label><br>
+        <div id="userRatingstarsbr" class="user-rating-starsbr" data-value="0">
+          &#9733;&#9733;&#9733;&#9733;&#9733;
+        </div>
+      </div>
+      <button type="button" id="submitReview">Enviar Avaliação</button>
+    </form>
+  </div>
+</div>
+
+<div class="services">
+    <div class="service">
+      <div class="icon"><i class="fas fa-lock"></i></div>
+      <div class="description">
+        <h3>Compra Segura</h3>
+        <p>Ambiente seguro para pagamentos online</p>
+      </div>
+    </div>
+  
+    <div class="service">
+      <div class="icon"><i class="fas fa-shipping-fast"></i></div>
+      <div class="description">
+        <h3>Frete Grátis</h3>
+        <p>Envio rápido e acompanhado com código de rastreio</p>
+      </div>
+    </div>
+  
+    <div class="service">
+      <div class="icon"><i class="fas fa-headset"></i></div>
+      <div class="description">
+        <h3>Suporte Profissional</h3>
+        <p>Equipe de suporte de extrema qualidade a semana toda</p>
+      </div>
+    </div>
+  
+    <div class="service">
+      <div class="icon"><i class="fas fa-redo"></i></div>
+      <div class="description">
+        <h3>Satisfação ou Reembolso</h3>
+        <p>Caso haja algo, devolvemos seu dinheiro com velocidade</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var modalbr = document.getElementById("modalbrFormularioAvaliacao");
+  var btn = document.getElementById("openmodalbr");
+  var span = document.getElementsByClassName("close")[0];
+
+  btn.onclick = function() {
+    modalbr.style.display = "block";
+  }
+
+  span.onclick = function() {
+    modalbr.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modalbr) {
+      modalbr.style.display = "none";
+    }
+  }
+
+  
+
+  document.addEventListener('DOMContentLoaded', function() {
+  var modalbrFoto = document.getElementById("modalbrFotoAmpliada");
+  var spanFoto = document.getElementsByClassName("closeFoto")[0];
+  var fotos = document.querySelectorAll(".user-photo");
+  var videos = document.querySelectorAll(".user-video");
+  var descricao = document.getElementById("fotoDescricao");
+  var currentIndex = 0; // Índice da foto atual
+  var currentPhotos = []; // Fotos da avaliação atual
+
+  function abrirmodalbrFoto(event, photos, index, userComment) {
+    currentPhotos = photos;
+    currentIndex = index;
+    var img = document.getElementById("fotoAmpliada");
+    var video = document.getElementById("FotoAmpliada")
+    img.src = photos[currentIndex]; // Define o src para o da foto clicada
+    descricao.textContent = userComment; // Define a descrição
+    modalbrFoto.style.display = "block"; // Exibe o modalbr
+  }
+
+  // Adiciona evento de clique para cada foto, considerando múltiplas fotos
+  document.querySelectorAll('.review').forEach(review => {
+    const photos = Array.from(review.querySelectorAll('.user-photo')).map(img => img.src);
+    const userComment = review.querySelector('.comentario') ? review.querySelector('.comentario').textContent.trim() : "Comentário não encontrado";
+    review.querySelectorAll('.user-photo').forEach((photo, index) => {
+      photo.addEventListener('click', (event) => abrirmodalbrFoto(event, photos, index, userComment));
+    });
+  });
+
+  // Navegação entre as fotos
+  document.querySelector('.prev').addEventListener('click', () => {
+    if (currentPhotos.length > 0) {
+      currentIndex = (currentIndex - 1 + currentPhotos.length) % currentPhotos.length;
+      document.getElementById("fotoAmpliada").src = currentPhotos[currentIndex];
+    }
+  });
+
+  document.querySelector('.next').addEventListener('click', () => {
+    if (currentPhotos.length > 0) {
+      currentIndex = (currentIndex + 1) % currentPhotos.length;
+      document.getElementById("fotoAmpliada").src = currentPhotos[currentIndex];
+    }
+  });
+
+  spanFoto.onclick = function() {
+    modalbrFoto.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modalbrFoto) {
+      modalbrFoto.style.display = "none";
+    }
+  }
+});
+
+
+</script>
+</body>
+</html>
