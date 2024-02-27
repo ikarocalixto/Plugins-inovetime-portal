@@ -1234,10 +1234,18 @@ Após a criação dos artigos, dê um passo adiante e compartilhe-os nas suas re
   Promoções e Descontos: Incentive as vendas oferecendo promoções limitadas ou descontos para os primeiros compradores.
   
   Monitoramento e Ajustes: Monitore o progresso em direção ao objetivo e ajuste as estratégias conforme necessário para garantir o sucesso. ', 'modulo' => 6],
-  ['nome' => 'Como sacar minhas comissões ', 'descricao' => ' ', 'modulo' => 6],
+  ['nome' => 'Como sacar minhas comissões ', 'descricao' => '<iframe width="853" height="480" src="https://www.youtube.com/embed/NFjJzu0FgY8" title="como sacar minhas comissão" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> Bem-vindo ao nosso vídeo tutorial exclusivo para franqueados! 🌟 Se você faz parte da nossa rede de franquias e deseja aprender a sacar suas comissões de forma rápida e segura, este vídeo foi feito especialmente para você.
+
+    Neste guia passo a passo, vou te mostrar:
+    
+    O processo detalhado para acessar o seu painel de franqueado.
+    Como visualizar o saldo de suas comissões acumuladas.
+    Instruções claras sobre como solicitar o saque de suas comissões.
+    Dicas importantes para garantir que o processo seja concluído com sucesso.
+    Respostas às perguntas mais frequentes sobre o saque de comissões. ', 'modulo' => 6],
 
   //modulo 7 divulgação online
-  ['nome' => 'O que é público alvo e persona? ', 'descricao' => ' <iframe width="853" height="480" src="https://www.youtube.com/embed/ISPTDHJAOE4" title="Público alvo x Persona" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
+  ['nome' => 'O que é público alvo e persona? ', 'descricao' => '<button class="link-button" data-href="https://www.geradordepersonas.com.br/">Crie sua persona agora! </button> <iframe width="853" height="480" src="https://www.youtube.com/embed/ISPTDHJAOE4" title="Público alvo x Persona" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
   ['nome' => 'O que é tráfego pago/ funil de venda? ', 'descricao' => 'Este vídeo ensina franqueados a utilizar tráfego pago e funis de vendas para impulsionar o negócio. Abordamos técnicas de tráfego pago, como Google e Facebook Ads, para atrair clientes. Em seguida, exploramos o funil de vendas, ensinando a converter visitantes em clientes através de estratégias de conteúdo e ofertas. O vídeo é um guia completo para usar marketing digital no crescimento do negócio. <iframe width="853" height="480" src="https://www.youtube.com/embed/bo2NIeuTeyw" title="Trafego pago x Funil de vendas" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>', 'modulo' => 7],
   ['nome' => 'O que é busca orgânica/ Seo ?  ', 'descricao' => 'A busca orgânica refere-se aos resultados de pesquisa que aparecem nos motores de busca, como o Google, de forma natural, sem que haja pagamento por essas posições. Quando você pesquisa por algo na internet, os links que você vê na página, excluindo os anúncios, são o resultado da busca orgânica. Esses resultados são determinados com base na relevância e na autoridade das páginas, conforme avaliado pelo algoritmo do motor de busca.
 
