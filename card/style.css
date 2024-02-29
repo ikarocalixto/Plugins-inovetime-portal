@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:100,300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i');
+
+*{
+  box-sizing: border-box;
+}
+
+
+
+.cards {
+    width: 100%;
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    max-width: 1220px;
+}
+
+.card--1 .card__img, .card--1 .card__img--hover {
+    background-image: url('https://inovetime.com.br/wp-content/uploads/area-de-estudo.jpg');
+}
+
+.card--2 .card__img, .card--2 .card__img--hover {
+    background-image: url('https://inovetime.com.br/wp-content/uploads/painel-de-controle.jpg');
+}
+
+.card--3 .card__img, .card--3 .card__img--hover {
+    background-image: url('https://inovetime.com.br/wp-content/uploads/promocao.jpg');
+}
+
+.card--4 .card__img, .card--4 .card__img--hover {
+    background-image: url('https://inovetime.com.br/wp-content/uploads/estoque-drop.jpg');
+}
+
+.card__like {
+    width: 18px;
+}
+
+.card__clock {
+    width: 15px;
+  vertical-align: middle;
+    fill: #AD7D52;
+}
+.card__time {
+    font-size: 12px;
+    color: #AD7D52;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.card__clock-info {
+    float: right;
+}
+
+.card__img {
+  visibility: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 235px;
+  border-top-left-radius: 12px;
+border-top-right-radius: 12px;
+  
+}
+
+.card__info-hover {
+    position: absolute;
+    padding: 16px;
+  width: 100%;
+  opacity: 0;
+  top: 0;
+}
+
+.card__img--hover {
+  transition: 0.2s all ease-out;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+  position: absolute;
+    height: 235px;
+  border-top-left-radius: 12px;
+border-top-right-radius: 12px;
+top: 0;
+  
+}
+.card-section{
+padding-left: 280px;
+background: white;
+
+}
+  
+.sidebar-collapsed .card-section{
+    padding-left: 100px;
+}
+
+.card {
+    width: 220px; /* Largura fixa dos cards */
+    margin: 10px; /* Margem entre os cards */
+    transition: all .4s cubic-bezier(0.175, 0.885, 0, 1);
+    background-color: #fff;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 13px 10px -7px rgba(0, 0, 0,0.1);
+  }
+  
+  /* Estilo adicional quando o sidebar está recolhido */
+  .sidebar-collapsed .card {
+    flex: 0 0 27.3%; /* Ocupa 33.3% da largura disponível do contêiner */
+    width: auto; /* Permite que a largura seja ajustada automaticamente */
+    
+  }
+   /* Ajustes responsivos para telas menores */
+   @media (max-width: 1200px) {
+    .card-section {
+      justify-content: center; /* Centraliza os cards */
+      padding-left: 150px; /* Considera o sidebar recolhido em telas menores */
+    }
+  }
+    /* Ajustes responsivos para telas menores */
+    @media (min-width: 1700px) {
+        .card {
+         width: 750px;
+         
+        }
+      }
+       /* Ajustes responsivos para telas menores */
+    @media (min-width: 1700px) {
+        .card-section {
+         padding-left: 400px;
+         
+        }
+      }
+  
+      @media (max-width: 768px) {
+        .card {
+          padding-left: 0; /* Remove o padding quando em telas muito pequenas */
+          width: 150px;
+          display: flex;
+        }
+      }
+
+
+  @media (max-width: 768px) {
+    .card-section {
+      padding-left: 0; /* Remove o padding quando em telas muito pequenas */
+      width: 150px;
+      display: flex;
+    }
+  }
+    
+  @media (max-width: 768px) {
+    .sidebar-collapsed .card-section {
+      padding-left: 0; /* Remove o padding quando em telas muito pequenas */
+      width: 200px;
+      display: flex;
+    }
+  
+  
+    .card {
+      flex-basis: calc(50% - 20px); /* Ajusta dois cards por linha */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      flex-basis: calc(100% - 20px); /* Ajusta para um card por linha */
+    }
+  }
+  
+.card:hover {
+  box-shadow: 0px 30px 18px -8px rgba(0, 0, 0,0.1);
+    transform: scale(1.10, 1.10);
+}
+
+.card__info {
+z-index: 2;
+  background-color: #fff;
+  border-bottom-left-radius: 12px;
+border-bottom-right-radius: 12px;
+   padding: 16px 24px 24px 24px;
+}
+
+.card__category {
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    font-size: 8px;
+    letter-spacing: 2px;
+    font-weight: 500;
+  color: #868686;
+}
+
+.card__title {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-family: 'Roboto Slab', serif;
+    font-size: 16px;
+}
+
+.card__by {
+    font-size: 12px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+}
+
+.card__author {
+    font-weight: 600;
+    text-decoration: none;
+    color: #AD7D52;
+}
+
+.card:hover .card__img--hover {
+    height: 100%;
+    opacity: 0.3;
+}
+
+.card:hover .card__info {
+    background-color: transparent;
+    position: relative;
+}
+
+.card:hover .card__info-hover {
+    opacity: 1;
+}

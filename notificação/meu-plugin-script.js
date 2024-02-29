@@ -17,8 +17,8 @@ $(document).on('click', '.usuario', function() {
                 'border-radius': '50%',
                 'padding': '0 5px',
                 'position': 'absolute',
-                'top': '0',
-                'right': '0'
+                'margin: ': '-10px',
+                
             }).hide().appendTo('#meu-plugin-icone-sino');
 
             var $popupNotificacoes = $('#meu-plugin-popup-notificacoes');

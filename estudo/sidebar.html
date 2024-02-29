@@ -1,0 +1,83 @@
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header" id="collapse-btn">
+      <img src="https://i0.wp.com/inovetime.com.br/wp-content/uploads/2022/08/cropped-logo-insta.png?w=1200&ssl=1" alt="Logo" class="sidebar-logo">
+      <h2 class="sidebar-brand">Lady Griffe</h2>
+      <i class="ri-menu-line menu-toggle"></i>
+    </div>
+    <!-- Menu Items -->
+    <div class="menu-items">
+      <div class="menu-item"><i class="ri-dashboard-line"></i> <span class="menu-text">Dashboard</span></div>
+      <div class="menu-item"><i class="ri-git-merge-line"></i> <span class="menu-text">Components</span></div>
+      <div class="menu-item"><i class="ri-input-method-line"></i> <span class="menu-text">Forms</span></div>
+      <div class="menu-item"><i class="ri-pie-chart-line"></i> <span class="menu-text">Analytics</span></div>
+      <!-- Add more items here -->
+    </div>
+  </aside>
+</div>
+
+<!-- Aqui você pode incluir o CSS diretamente ou enfileirar em um arquivo externo -->
+<style>
+.layout {
+  display: flex;
+}
+.sidebar {
+  background-color: #f9f9f9;
+  padding: 20px;
+  width: 250px;
+  position: relative; /* Para o posicionamento absoluto do toggle */
+}
+.sidebar-logo {
+  width: 100%;
+  max-height: 50px;
+  object-fit: contain;
+}
+.sidebar-brand {
+  margin: 10px 0;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.menu-text {
+  display: inline-block; /* Garantir que os textos podem ser escondidos */
+}
+.menu-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+/* Responsividade */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+  }
+  .sidebar-brand, .menu-text {
+    display: none;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('.menu-toggle').addEventListener('click', function () {
+    var sidebar = document.getElementById('sidebar');
+    var menuTexts = document.querySelectorAll('.menu-text');
+    if (sidebar.style.width === '80px') {
+      sidebar.style.width = '250px';
+      menuTexts.forEach(function(text) {
+        text.style.display = 'inline-block';
+      });
+    } else {
+      sidebar.style.width = '80px';
+      menuTexts.forEach(function(text) {
+        text.style.display = 'none';
+      });
+    }
+  });
+});
+</script>
