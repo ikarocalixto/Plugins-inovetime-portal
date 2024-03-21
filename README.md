@@ -1,4 +1,4 @@
-# Portal de Treinamento para Franqueado online
+# Portal de Treinamento Para Franqueado Online
 
 Este README oferece uma visão geral do portal que criei, destacando os principais recursos e funcionalidades implementadas. O portal foi desenvolvido utilizando plugins personalizados no WordPress, e inclui os seguintes componentes:
 
