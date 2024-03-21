@@ -16,7 +16,7 @@ Um sino de notificações foi implementado para informar os usuários sobre atua
 
 ## 3. Comissão
 
-O portal inclui uma seção dedicada à comissão, onde os membros podem visualizar informações, documentos e comunicados relacionados às atividades da comissão.
+O portal inclui uma seção dedicada à comissão, onde os membros podem visualizar informações valores de sua comissão e solicitar o saque. 
 
 ![Comissão](https://inovetime.com.br/wp-content/uploads/screencapture-inovetime-br-comissao-2024-03-21-16_12_07.png)
 
