@@ -24,7 +24,8 @@ O portal inclui uma seção dedicada à comissão, onde os membros podem visuali
 
 Um quadro de tarefas com funcionalidade de treinamento automatizado foi integrado ao portal para gerenciar e acompanhar o progresso das atividades e treinamentos.
 
-![Quadro de Tarefas e Treinamento Automatizado](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-161609-jpg.webp)
+![Quadro de Tarefas e Treinamento Automatizado](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-161609-jpg.webp) 
+![Quadro de Tarefas e Treinamento Automatizado](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-161839-jpg.webp)
 
 ## Instalação
 
