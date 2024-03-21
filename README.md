@@ -27,6 +27,10 @@ Um quadro de tarefas com funcionalidade de treinamento automatizado foi integrad
 ![Quadro de Tarefas e Treinamento Automatizado](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-161609-jpg.webp) 
 ![Quadro de Tarefas e Treinamento Automatizado](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-161839-jpg.webp)
 
+## 5. Sistema de estoque controle e relatorio e notificação 
+Um painel onde conseguimos visualizar a quantidade de produto em estoque e filtrar por marca, ativo, ou pelo nome do produto e ainda quando o produto sai de linha ou estoque chega uma notificação para o usuario. 
+![Sistema de estoque controle e relatorio e notificação](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-172706-jpg.webp)
+![Sistema de estoque controle e relatorio e notificação](https://inovetime.com.br/wp-content/uploads/Captura-de-tela-2024-03-21-172740-jpg.webp)
 ## Instalação
 
 Para instalar e utilizar este portal, siga estas etapas:
