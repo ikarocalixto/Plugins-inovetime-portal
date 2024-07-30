@@ -1,0 +1,1082 @@
+
+#meu-plugin-icone-sino {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#meu-plugin-popup-notificacoes {
+  display: none; /* Começa escondido */
+  position: absolute;
+  bottom: 50px; /* ajustado para abrir para cima */
+  right: 0;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000; /* Certifique-se de que o popup esteja acima de outros elementos */
+}
+
+#meu-plugin-popup-notificacoes.show {
+  display: block; /* Mostra o popup quando necessário */
+}
+
+
+#meu-plugin-popup-notificacoes {
+  position: absolute;
+  top: 50px; /* ajuste conforme necessário */
+  right: 0;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.nav-slot-bottom {
+  flex-basis: 15%;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+        .main {
+  margin: 0px;
+  height: 300vh;
+  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+}
+
+.bg-white {
+  background: white;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  height: 100vh;
+  filter: drop-shadow(0 0 5px rgba(31, 31, 31, 0.1));
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.nav-slot {
+  text-align: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-link {
+  width: 45px;
+  height: 45px;
+  line-height: 1.5;
+  align-items: center;
+  color: #aab2bd;
+  border-radius: 50rem;
+  padding: 0.5rem 0.5rem;
+  transition: 0.3s all;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  transition: 0.3s all;
+  background: rgba(31, 31, 31, 0.1);
+}
+
+.curve {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff'%3E%3Cpath d='M99,0A36.33,36.33,0,0,0,70,15,25,25,0,0,1,30,15,36.33,36.33,0,0,0,1,0H0V50H100V0Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: center;
+  width: 60px;
+}
+
+svg {
+  height: 100%;
+}
+
+i {
+  font-size: 18px;
+}
+
+.bottom-nav {
+  display: none;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  height: 50px;
+  filter: drop-shadow(0 0 5px rgba(31, 31, 31, 0.1));
+  position: fixed;
+  bottom: 0;
+  background: white;
+}
+
+
+
+.floating-button {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  line-height: 3;
+  text-align: center;
+  color: red;
+  border-radius: 50%;
+  bottom: 35px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 219, 217, 1) 35%, rgb(158 21 21 / 43%) 100%);
+  box-shadow: 0 10px 6px -6px #777;
+  z-index: 1;
+  transition: 0.3s all;
+}
+
+.floating-button:hover {
+  bottom: 40px;
+  transition: 0.3s all;
+}
+
+.round-top-left {
+  border-top-left-radius: 15px;
+}
+
+.round-top-right {
+  border-top-right-radius: 15px;
+}
+
+
+
+
+@media screen and (max-width:480px){
+  svg {
+      width: 25px;
+      margin-top: -5px;
+  }
+
+}
+
+
+
+.empresa-logo {
+  width: 50px; /* Ajuste o tamanho conforme necessário */
+  height: 50px; /* Ajuste o tamanho conforme necessário */
+  border-radius: 20px; /* Borda arredondada */
+  transition: all 0.3s ease;
+}
+
+.floating-button img.empresa-logo {
+  width: 100%; /* O logo ocupa todo o botão flutuante */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+.floating-button:hover .empresa-logo {
+  transform: scale(1.1); /* Aumenta o logo ao passar o mouse */
+  transition: all 0.3s ease;
+}
+
+
+/* Estilos para o popup de pesquisa */
+.search-popup {
+  display: none; /* Inicialmente escondido */
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro com opacidade */
+}
+
+.search-popup-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 300px;
+  border-radius: 10px;
+}
+
+.search-popup-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.search-popup-close:hover,
+.search-popup-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.search-form input[type="text"] {
+  width: 80%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-form button i {
+  margin: 0;
+}
+
+@media screen and (max-width: 480px) {
+  .search-popup-content {
+      width: 90%;
+      margin-top: 30%;
+  }
+
+  .search-form input[type="text"] {
+      width: 40%;
+      font-size:10px;
+      margin-left:-25px;
+  }
+  
+  a.next.page-numbers {
+  margin-top: 3520px;
+  color: black;
+}
+}
+
+
+.cart-popup {
+  display: none;
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 300px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.cart-popup.show {
+  display: block;
+}
+
+.widget_shopping_cart .remove {
+  background: none;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.widget_shopping_cart .remove:hover {
+  color: #cc0000;
+}
+
+a.next.page-numbers {
+  margin-top: 1220px;
+  color: black;
+}
+
+
+.menu-categorias {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.menu-botao {
+  text-decoration: none;
+  color: #000;
+  background-color: #fff;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  margin: 0 7px;
+  border-radius: 5px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-botao:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+div#meuslideunico {
+  margin-top: 30px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  width: 500px;
+}
+
+.search-form input[type="text"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px 0 0 20px;
+  outline: none;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.search-form button {
+  padding: 10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.search-form button i {
+  font-size: 16px;
+}
+
+.search-form button:hover {
+  background: #333;
+}
+
+.carrinho-icon {
+  position: relative;
+}
+
+.cart-contents {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 10px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #000;
+  transition: background 0.3s;
+}
+
+.cart-contents:hover {
+  background: #e0e0e0;
+}
+
+.cart-contents i {
+  margin-right: 5px;
+}
+
+.cart-popup {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 350px;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  z-index: 10;
+  padding: 10px;
+}
+
+.carrinho-icon:hover .cart-popup {
+  display: block;
+}
+
+.woocommerce-mini-cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.woocommerce-mini-cart-item img {
+  max-width: 50px;
+  margin-right: 10px;
+}
+
+.woocommerce-mini-cart-item .product-details {
+  flex: 1;
+}
+
+.woocommerce-mini-cart-item .product-quantity {
+  display: flex;
+  align-items: center;
+}
+
+.woocommerce-mini-cart-item .product-quantity input {
+  width: 50px;
+  text-align: center;
+}
+
+.woocommerce-mini-cart-item .quantity-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.woocommerce-mini-cart-item .quantity-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: #000;
+}
+
+span.woocommerce-Price-amount.amount {
+  font-size: 14px;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ff0000;
+  font-size: 16px;
+}
+
+.remove-button:hover {
+  color: #ff4d4d;
+}
+
+.elementor-menu-cart__product-name.product-name {
+  width: 70%;
+  font-size: 14px;
+}
+
+img.attachment-woocommerce_thumbnail.size-woocommerce_thumbnail.not-transparent {
+  width: 100px;
+  border-radius: 50px !important;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  flex-direction: column;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Public Sans', sans-serif;
+}
+
+.icon {
+  font-size: 42px; /* Tamanho do ícone */
+  margin-right: 8px; /* Espaço entre o ícone e o texto */
+  color: #000000; /* Cor inicial do ícone */
+  transition: transform 0.3s ease; /* Animação suave para transformação */
+}
+
+.icon:hover {
+  transform: rotate(360deg); /* Gira o ícone ao passar o mouse */
+  color: #640808; /* Muda a cor do ícone ao passar o mouse */
+}
+
+.img-icon {
+  width: 65px; /* Tamanho da imagem para corresponder ao tamanho do ícone */
+  height: 65px; /* Garantir que a imagem seja quadrada */
+  margin-right: 8px; /* Espaço entre a imagem e o texto */
+  transition: transform 0.3s ease; /* Animação suave para transformação */
+  margin: 5px;
+}
+
+.img-icon:hover {
+  transform: rotate(360deg); /* Gira a imagem ao passar o mouse */
+}
+
+@media (max-width: 768px) {
+  .icon-text {
+      font-size: 7px; /* Diminui o tamanho da fonte em dispositivos móveis */
+      text-align: center;
+  }
+
+  .icon, .img-icon {
+      font-size: 28px; /* Ajusta o tamanho do ícone em dispositivos móveis */
+      width: 28px;
+      height: 28px;
+  }
+}
+
+.content-area {
+  flex-grow: 1; /* Ocupa o espaço restante */
+}
+
+.sidebar {
+  width: 250px; /* Largura inicial do sidebar expandido */
+  flex-shrink: 0; /* Impede o sidebar de encolher */
+  transition: width 0.5s; /* Suaviza a transição de largura */
+}
+
+.content-area {
+  flex-grow: 1; /* Ocupa o espaço restante */
+  transition: margin-left 0.5s; /* Suaviza a transição */
+}
+
+
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: #ffffff;
+  color: #fff;
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 20px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 219, 217, 1) 35%, rgb(158 21 21 / 43%) 100%);
+
+  text-align: center;
+  
+}
+
+
+
+.menu-toggle {
+  cursor: pointer;
+  float: right;
+ 
+}
+
+.menu-item {
+  display: block;
+  padding: 7px 20px;
+  color: #030303;
+  text-decoration: none;
+}
+
+.submenu-item:hover, .submenu-item:focus{
+
+  background: #3d0909;
+  color: white;
+  font-size: 14px;
+}
+
+.menu-item:hover, .menu-item:focus {
+  background: #3d0909;
+  color: #ffffff;
+}
+
+.menu-item i {
+  margin-right: 10px;
+  font-size: 17px;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+  }
+   .menu-text {
+  
+    font-size: 12px;
+    display: none;
+  }
+}
+
+/* Estilos anteriores permanecem */
+
+.sidebar-footer {
+  position: absolute;
+  top: 99px; /* Move para a parte superior do sidebar */
+  left: 0;
+  width: 100%;
+  text-align: center;
+  padding: 5px 0; /* Reduz o padding para diminuir a altura */
+  font-size: 12px; /* Reduz o tamanho da fonte para torná-lo visualmente menor */
+  opacity: 0.7; /* Opcional: Reduz a opacidade para um visual mais discreto */
+}
+
+i#menu-toggle {
+  width: 15px 
+
+
+}
+
+.menu-toggle {
+  cursor: pointer;
+  font-size: 20px; /* Ajuste conforme necessário */
+  color: #fff; /* Ou outra cor conforme o design */
+}
+
+/* Ajustes responsivos permanecem */
+.site-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-left: -40px;
+}
+
+.notification-icon {
+  margin-right: 20px;
+  /* Estilize seu ícone de notificação aqui */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-photo {
+  width: 70px; /* Ajuste conforme necessário */
+  height: 70px; /* Mantenha igual ao width para um círculo perfeito */
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+img.user-photo {
+  max-width: 70px;
+  max-height: 70px;
+  transition: transform 0.3s ease;
+  border-radius: 50px !important;
+  max-width: 80px !important;
+  height: auto !important;
+
+}
+.notificar {
+  padding: 20px;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 14px; /* Ajuste conforme necessário */
+}
+
+.user-bio {
+  font-size: 11px;
+}
+
+.site-banner img {
+  width: 100%;
+  height: auto;
+}
+
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Estilização dos cards aqui */
+
+.sidebar-banner img {
+  width: 100%; /* Mantém a largura em 100% */
+  height: 400px !important; /* Define a altura para 400px */
+  object-fit: cover; /* Garante que a imagem cubra o espaço disponível sem distorcer */
+}
+
+
+
+/* Quando o sidebar está expandido */
+.sidebar .sidebar-logo {
+  width: 100%; /* Reduz o tamanho da imagem para 50% do container */
+  transition: width 0.5s ease; /* Transição suave para a mudança de largura */
+  display: block; /* Garante que a imagem seja tratada como bloco */
+  margin-left: auto; /* Centraliza a imagem horizontalmente */
+  margin-right: auto; /* Centraliza a imagem horizontalmente */
+  margin-top:  25px;
+  border-radius: 30px;
+}
+
+/* Quando o sidebar está recolhido */
+.sidebar.collapsed .sidebar-logo {
+  width: 90px; /* Mantém a largura original da imagem quando recolhido */
+}
+
+/* quando o sidebar recolher o texto do menu sumir*/ 
+.sidebar-collapse .text-sidebar{
+ 
+}
+
+.menu-item {
+  position: relative; /* Posicionamento relativo para os itens do menu */
+}
+
+.submenu {
+  display: none; /* Inicialmente oculto */
+  position: relative; /* Posicionamento relativo para fluir na estrutura normal */
+  background-color: #f9f9f9; /* Cor de fundo do submenu */
+  color: black; /* Cor do texto */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destaque (opcional) */
+  width: 100%; /* Ocupa a largura total do item do menu */
+  padding: 10px 0; /* Padding para espaçamento interno */
+}
+
+.submenu-item {
+  display: block; /* Itens do submenu como blocos para ocupar a largura total */
+  padding: 5px 20px; /* Padding para os itens do submenu */
+  color: black; /* Cor do texto */
+  text-decoration: none; /* Remove o sublinhado dos links */
+  font-size: 12px;
+}
+
+/* Estilo para o submenu quando o sidebar está recolhido */
+.sidebar.collapsed .menu-item .submenu {
+  display: none; /* Inicialmente oculto para evitar flash de conteúdo não estilizado */
+  position: absolute; /* Posicionamento absoluto para sobrepor conteúdo */
+  left: 100%; /* Alinha o submenu à direita do item do menu */
+  top: 0; /* Alinha o topo do submenu com o topo do item do menu */
+  white-space: nowrap; /* Evita quebra de linha nos itens do submenu */
+}
+
+.sidebar.collapsed .menu-item:hover .submenu,
+.sidebar.collapsed .menu-item:focus-within .submenu {
+  display: block; /* Exibe o submenu ao passar o mouse ou focar */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 219, 217, 1) 35%, rgb(158 21 21 / 43%) 100%);
+}
+
+span.menu-text {
+  font-size: 10px;
+  padding-left: 10px;
+}
+
+.slideshow-container {
+  width: 80%; /* Faz o slideshow ocupar a largura total disponível */
+  height: auto; /* Define a altura do slideshow */
+  position: relative;
+  margin: auto;
+  overflow: hidden; /* Oculta qualquer parte do slide que exceda a altura definida */
+  padding: 40px;
+}
+
+.mySlides img {
+  width: 80%; /* Faz a imagem ocupar a largura total do slideshow */
+  height: 400px; /* Define a altura das imagens para 400px */
+  object-fit: cover; /* Garante que a imagem cubra o espaço disponível sem distorcer */
+  border-radius:30px !important; 
+}
+
+
+/* Esconde as imagens por padrão */
+.mySlides {
+  display: none;
+}
+
+/* Estilo dos botões de navegação */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Posicionamento dos botões */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.prev {
+  left: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* Faz imagens "fade in" e "fade out" */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+     
+
+
+aside#sidebar {
+  z-index: 500;
+}
+
+.card-home1 {
+  background: linear-gradient(145deg, #f05454, #30475e);
+  border-radius: 10px;
+  color: white;
+  padding: 20px;
+  flex: 1;
+  min-width: 250px;
+  margin: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* padding-left: 80px; */
+}
+
+.card-home1-content h3 {
+  margin: 0;
+  color: #f5f5f5;
+  font-size: 14px;
+}
+
+
+
+.info-card-home1s {
+  display: flex;
+  justify-content: space-between;
+ 
+  gap: 10px; /* Cria um espaçamento uniforme entre os card-home1s */
+}
+
+
+.card-home1:hover {
+  transform: translateY(-10px); /* Move o card-home1 um pouco para cima */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adiciona uma sombra para criar profundidade */
+}
+
+
+.card-home1-icon {
+  font-size: 50px;
+  margin-right: 20px;
+}
+
+
+
+.card-home1-content p {
+  font-size: 15px;
+  margin: 5px 0 0 0;
+}
+
+.details {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  /* Mais estilos aqui */
+}
+
+
+@media (max-width: 768px) {
+  .info-card-home1s {
+      justify-content: center; /* Centraliza os cartões para telas menores */
+      display: flex;
+  flex-wrap: wrap;
+
+  }
+
+  .card-home1 {
+      /* Opcional: ajuste o tamanho do cartão para telas menores */
+  }
+}
+
+@media (max-width: 400px) {
+  .card-home1 {
+      width: 100%; /* O cartão ocupa a largura total em telas muito pequenas */
+     
+  }
+}
+.sidebar.collapsed.site-header {
+  display: flex;
+  /* justify-content: flex-end; */
+  padding-left: -40px;
+  /* flex-grow: 1; */
+  padding-left: 150px;
+}
+
+/* Ajustes gerais para a sidebar */
+.sidebar {
+  width: 250px; /* Largura padrão da sidebar */
+  transition: width 0.5s; /* Transição suave para a largura */
+}
+
+/* Para telas menores, reduza a largura da sidebar ou esconda-a completamente */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px; /* Largura reduzida para telas menores */
+  }
+
+  .sidebar-header, .menu-text {
+  /* Oculta o texto da sidebar em telas pequenas */
+  }
+  .card-home1{
+    margin-left: 80px;
+  }
+  .cards{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .cartoes
+  
+}
+
+/* Ajustes gerais para os cards */
+.card-home1 {
+  
+  margin: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Ajustes para a responsividade dos cards */
+@media (max-width: 768px) {
+  .info-card-home1s {
+    flex-direction: column; /* Empilha os cards verticalmente em telas menores */
+  }
+
+  .card-home1 {
+    max-width: 100%; /* Permite que os cards ocupem a largura total em telas pequenas */
+  }
+}
+
+.layout {
+  flex-wrap: wrap; /* Permite que os elementos da layout envolvam conforme necessário */
+}
+
+.content-area, .sidebar-banner, .card-section {
+  width: 100%; /* Garante que ocupem a largura total em telas menores */
+}
+
+@media (max-width: 768px) {
+  .sidebar.collapsed .card-section, .sidebar.collapsed .content-area {
+    padding-left: 0; /* Remove o padding esquerdo quando a sidebar está recolhida em telas pequenas */
+  }
+}
+
+
+
+/* Ajustes para a responsividade dos cards */
+@media (min-width: 1768px) {
+  .menu-item i {
+    font-size: 25px; /* Empilha os cards verticalmente em telas menores */
+  }
+  span.menu-text {
+    font-size: 15px;
+}
+a.menu-item {
+  font-size: 25px;
+}
+}
+
+
+
+
+
+.site-header.sidebar-collapse {
+  justify-content: flex-start; /* ou outro valor conforme desejado */
+}
+
+.sidebar-collapse .site-header {
+  justify-content: flex-start; /* ou outro valor conforme desejado */
+}
+
+header.site-header {
+  box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.15);
+}
+.sidebar-header {
+  
+  height: 150px;
+  box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.15);
+}
+
+.hidden {
+  display: none;
+}
+
+.menu-items {
+  
+  padding-top: 10px;
+
+}
+.menu-item:hover .fas {
+  transform: translateY(-3px);
+}
+.menu-item:hover .fa .fa-brands {
+  transform: translateY(-3px);
+}
+
+.menu-item:hover .fa-solid {
+  transform: translateY(-3px);
+}
+.menu-item:hover .fa-brands {
+  transform: translateY(-3px);
+}
+
+
+
+.botões {
+  display: flex; /* Usa flexbox para o layout das colunas */
+  justify-content: space-between; /* Espaçamento igual entre os elementos */
+  align-items: center; /* Alinha os itens verticalmente no centro */
+}
+
+.botões > div {
+  flex-grow: 1; /* Faz com que cada div ocupe um espaço igual dentro do container */
+  text-align: center; /* Centraliza o texto dentro de cada div */
+}
+
+.botões .buscar_franqueados {
+  flex-basis: 50%; /* Define a largura base da coluna do meio para 50% */
+  flex-grow: 0; /* Previne que a coluna do meio cresça além de 50% */
+}
+
+/* Estilos adicionais para garantir um pouco de espaço entre as colunas */
+.botões > div:not(:last-child) {
+  margin-right: 10px; /* Adiciona margem à direita de cada div, exceto a última */
+}
+
+
+
+.form-busca-franqueados2 {
+  flex: 0 1 auto; /* Não cresce, mas pode encolher, baseado no conteúdo */
+  margin: 0 20px; /* Adiciona margem para não colar nas bordas ou outros itens */
+  text-align: center; /* Centraliza o texto dentro do formulário */
+}
+
+/* Estilos para os elementos dentro de .form-busca-franqueados2, se necessário */
+.form-busca-franqueados2 select, .form-busca-franqueados2 input[type="submit"] {
+  margin: 5px 0; /* Adiciona um espaço vertical entre os elementos do formulário */
+}
+
+.popup-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Certifique-se de que está acima de outros conteúdos */
+}
+
+.popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-popup {
+  cursor: pointer;
+  float: right;
+  font-size: 30px;
+}
