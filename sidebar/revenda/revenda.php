@@ -491,9 +491,9 @@ i {
     
        <!-- Ícone de Calculadora -->
     <div class="nav-slot-bottom bg-white round-top-right">
-        <a href="#calculator" class="nav-link" title="Calculator" style="color: black;">
-            <i class="fa-solid fa-calculator"></i>
-        </a>
+       
+           [simulador_margem]
+        
     </div>
     
       
@@ -579,6 +579,22 @@ add_shortcode('revenda', 'revenda');
 
 
 add_filter('woocommerce_add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment');
+
+function woocommerce_header_add_to_cart_fragment( $fragments ) {
+    ob_start();
+    ?>
+    <a class="cart-contents" href="<?php echo wc_get_cart_url(); ?>" title="<?php _e( 'Ver seu carrinho' ); ?>">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-contents-total"><?php echo WC()->cart->get_cart_total(); ?></span>
+    </a>
+    <?php
+    $fragments['a.cart-contents'] = ob_get_clean();
+    return $fragments;
+}
+
+
+
+
 
 
 ?>
