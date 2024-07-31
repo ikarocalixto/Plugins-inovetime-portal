@@ -140,7 +140,9 @@ include( plugin_dir_path( __FILE__ ) . 'menu/menu.php' );
         </div>
         <div class="notificar">
     <div class="notification-icon">[icone_sino]</div>
+    
     </div>
+    <div>[help_icon_faq]</div>
       </div>
 
     
@@ -459,6 +461,315 @@ i.fas.fa-phone-alt.icon {
 }
 
 add_shortcode('blog_card', 'blog_card_shortcode');
+
+
+
+function help_icon_with_faq_shortcode() {
+    ob_start();
+    ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        i.fas.fa-question-circle {
+            font-size: 25px;
+        }
+        .help-icon {
+           
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            color: #333;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            
+            right: 20px;
+            width: 500px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 20px;
+        }
+        .popup h2 {
+            font-size: 1.2rem;
+            margin-top: 0;
+        }
+        .popup .faq {
+            margin: 10px 0;
+        }
+        .popup .faq h3 {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        .popup .faq p {
+            margin: 5px 0 15px;
+        }
+        .popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .popup .faq button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+        }
+        .popup .faq button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <div class="help-icon">
+        <i class="fas fa-question-circle"></i>
+    </div>
+    <div class="popup" id="faqPopup">
+        <div class="close-btn" id="closePopup">&times;</div>
+        <h2>FAQ</h2>
+        <div class="faq">
+            <h3>Como Cadastrar produto na minha loja?</h3>
+            <p>Clique no link e veja o passo a passo.
+                <a href="https://inovetime.com.br/wp-content/uploads/Como-cadastrar-um-produto-simples-na-sua-loja-lady-griffe.pdf" target="_blank"><button>Acessar o passo a passo!</button></a>
+            </p>
+        </div>
+        <div class="faq">
+            <h3>Precisa de Ajuda?</h3>
+            <p>Você pode abrir um chamado para falar com um de nossos especialista, o prazo de resposta é de 48hrs.
+            Caso precise de atendimento urgente você pode estar ligando para nossa central (11) 2803-8217</p>
+        </div>
+        <!-- Add more FAQs as needed -->
+    </div>
+ <script>
+        document.querySelector('.help-icon').addEventListener('click', function() {
+            document.getElementById('faqPopup').style.display = 'block';
+        });
+
+        document.querySelector('i.fas.fa-question-circle').addEventListener('click', function() {
+            document.getElementById('faqPopup').style.display = 'block';
+        });
+
+        document.getElementById('closePopup').addEventListener('click', function() {
+            document.getElementById('faqPopup').style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            var popup = document.getElementById('faqPopup');
+            if (event.target !== popup && !popup.contains(event.target) && event.target !== document.querySelector('.help-icon')) {
+                popup.style.display = 'none';
+            }
+        });
+    </script>
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('help_icon_faq', 'help_icon_with_faq_shortcode');
+
+
+
+
+
+function simulador_margem_shortcode() {
+    ob_start();
+    ?>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMU9U1S2euk9eDJ5iUM3xu6l2L2wF7SlS4PZp4N" crossorigin="anonymous">
+    <i class="fa-solid fa-calculator" id="openSimuladorBtn" style="font-size: 40px; cursor: pointer; color: #4CAF50;"></i>
+
+    <div id="simuladorModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000;">
+        <div id="modalContent" style="background-color: white; padding: 10px; margin: auto; max-width: 100%; border-radius: 5px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <span id="closeSimuladorBtn" style="position: absolute; top: 10px; right: 10px; cursor: pointer; font-size: 20px;">&times;</span>
+            <h1>Precificação do Produto</h1>
+            <div class="form-container">
+                <label for="nome">Nome do Produto:</label>
+                <input type="text" id="nome">
+
+                <label for="custo">Valor de Custo:</label>
+                <input type="number" id="custo" step="0.01">
+
+                <label for="venda">Valor de Venda:</label>
+                <input type="number" id="venda" step="0.01">
+
+                <button onclick="calcularMargens()">Calcular</button>
+            </div>
+
+            <div class="result-container">
+                <h2>Resultados para <span id="nomeProduto"></span>:</h2>
+                <p id="resultadoMarkup"></p>
+                <p id="resultadoLucro"></p>
+                <p id="markupMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+    
+    
+    div#modalContent {
+    width: 300px !important;
+    margin-top: -200px !important;
+}
+    
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 300px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        
+        .form-container button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        
+        .result-container {
+            background-color: #fff;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-container h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .result-container p {
+            margin: 10px 0;
+        }
+        
+        .red-text {
+            color: red;
+        }
+        
+        .yellow-text {
+            color: #B8860B;
+        }
+        
+        .green-text {
+            color: green;
+        }
+        
+        .blue-text {
+            color: blue;
+        }
+        
+           i#openSimuladorBtn {
+    font-size: 22px !important;
+    color: black !important;
+    margin-top: -10px;
+}
+
+        @media (max-width: 600px) {
+            .form-container, .result-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+
+    <script>
+        document.getElementById('openSimuladorBtn').addEventListener('click', function() {
+            document.getElementById('simuladorModal').style.display = 'block';
+        });
+
+        document.getElementById('closeSimuladorBtn').addEventListener('click', function() {
+            document.getElementById('simuladorModal').style.display = 'none';
+        });
+
+        function calcularMargens() {
+            var nomeProduto = document.getElementById("nome").value;
+            var custoProduto = parseFloat(document.getElementById("custo").value);
+            var valorVenda = parseFloat(document.getElementById("venda").value);
+
+            var margemMarkup = ((valorVenda - custoProduto) / custoProduto) * 100;
+            var margemLucro = ((valorVenda - custoProduto) / valorVenda) * 100;
+            var markupValue = valorVenda - custoProduto;
+            var lucroBruto = markupValue.toFixed(2);
+
+            document.getElementById("nomeProduto").innerHTML = nomeProduto;
+            document.getElementById("resultadoMarkup").innerHTML = "Margem de Markup: " + Math.round(margemMarkup) + "% (Lucro Bruto: R$ " + lucroBruto + ")";
+            document.getElementById("resultadoLucro").innerHTML = "Margem de Lucro: " + margemLucro.toFixed(2) + "%";
+
+            var markupMessageElement = document.getElementById("markupMessage");
+            markupMessageElement.innerHTML = "";
+
+            if (margemMarkup < 35) {
+                markupMessageElement.innerHTML = "Percentual Mínimo de Markup tem que ser maior que 35% - Aumente o valor de venda";
+                markupMessageElement.classList.add("red-text");
+            } else if (margemMarkup >= 35 && margemMarkup < 40) {
+                markupMessageElement.innerHTML = "Precificação razoável para venda do mesmo";
+                markupMessageElement.classList.add("yellow-text");
+            } else if (margemMarkup >= 40 && margemMarkup < 100) {
+                markupMessageElement.innerHTML = "Precificação boa para venda do mesmo";
+                markupMessageElement.classList.add("green-text");
+            } else if (margemMarkup >= 100) {
+                markupMessageElement.innerHTML = "Precificação Excelente - Ótima margem!";
+                markupMessageElement.classList.add("blue-text");
+            }
+
+            window.scrollTo({ top: document.getElementById("resultadoMarkup").offsetTop, behavior: 'smooth' });
+        }
+    </script>
+    <?php
+    return ob_get_clean();
+}
+
+add_shortcode('simulador_margem', 'simulador_margem_shortcode');
+
+
 
 
 // incluindo o painel do treinamento 
